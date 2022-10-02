@@ -8,7 +8,7 @@ const Usuario = sequelize.define('usuario', {
         type: DataTypes.STRING
     },
     contrasena: {
-        type: DataTypes.STRING
+        type: DataTypes.STRING(500)
     },
     fecha_expiracion: {
         type: DataTypes.DATE
