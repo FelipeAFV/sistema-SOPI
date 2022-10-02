@@ -5,6 +5,7 @@ const cookieParser = require('cookie-parser');
 const express = require('express');
 const { verifyToken } = require('./auth/middlewares/check-auth');
 const userService = require('./auth/services/user-service');
+const authRoutes = require('./auth/routes/auth-routes')
 require('dotenv').config();
 
 require('./database/db-init');
@@ -20,6 +21,7 @@ app.use(cookieParser());
 
 /** MIDDELWARES */
 app.use('/requireAuth', verifyToken);
+
 
 app.get('/test', async (req, res ) => {
     try {
@@ -43,5 +45,8 @@ app.get('/test', async (req, res ) => {
         return;
     }
 })
+
+
+app.use('/', authRoutes)
 
 app.listen(8000);
