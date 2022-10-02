@@ -1,4 +1,5 @@
 const { Usuario, Perfil } = require("../models/models")
+const bcrypt = require('bcrypt');
 
 class UserServiceSequelMySQL{
 
@@ -27,9 +28,10 @@ class UserServiceSequelMySQL{
     
     addUserSequelMySQL = async (userData) => {
         const date = new Date();
+        const password = await bcrypt.hash(userData.contrasena, 5)
         const newUser = await Usuario.create({
             usuario: userData.usuario,
-            contrasena: userData.contrasena,
+            contrasena: password,
             fecha_expiracion: date.setDate(date.getDate() + 31),
             nombre: userData.nombre,
             apellido: userData.apellido,
