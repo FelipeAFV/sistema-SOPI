@@ -47,6 +47,6 @@ app.get('/test', async (req, res ) => {
 })
 
 
-app.use('/', authRoutes)
+app.use('/api/v1/auth', authRoutes)
 
 app.listen(8000);
