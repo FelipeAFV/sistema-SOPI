@@ -1,5 +1,6 @@
 const {UserService} = require('../services/user-service')
 const bcrypt = require('bcrypt');
+const { sendHttpResponse } = require('../../share/utils/response-parser');
 
 
 
@@ -23,27 +24,27 @@ class AuthController {
         const {username, password} = req.body;
 
         if (!username || !password) {
-            res.status(400).json({
-                message: 'body is empty'
-            })
+            sendHttpResponse(res, 'Empty body',400);
+            return;
         }
-
+        
         const user = await UserService.findUserByUsername(username)
-
+        
         if(!user) {
-            res.status(400).json({
-                error: "user doesnt exists"
-            })
+            sendHttpResponse(res, 'Usuario no existe',400);
+            return;
         }
 
         const result = await bcrypt.compare(password ,user.contrasena)
 
         if(result){
-            res.status(200).json(user)
+            sendHttpResponse(res,user,200);
+            return
+            
         }else {
-            res.status(400).json({
-                error: "password doesnt match"
-            })
+            sendHttpResponse(res,'Contraseña no coincide',400);
+            return;
+            
         }
     }
 
