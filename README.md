@@ -1,15 +1,26 @@
 # Proyecto Backend para la administración de solicitudes de compras municipales
 ## Requerimientos
     * Registro de SOPI.
-    * Aceptación o rechazo de una SOPI según especificaciones técnicas, presupuesto u otros parámetros.
-    * Agrupación de SOPI con ítems comunes en un único proceso de compra
-    * Control de estados 
-        * Seguimiento e integración de los estados del mercado público
-        * Seguimiento de estados internos
+    
+    * Seguimiento / Visualización del estado de la SOPI
+    
+    * Aceptación o rechazo de una SOPI según especificaciones técnicas, presupuesto u otros parámetros, previo a la creación del proceso de compra.
+
+    * Creación de proceso de compra con o sin agrupación de SOPI con ítems comunes en para apoyar órdenes de compras
+
     * Asignación de responsables para el proceso de compra.
-    * Gestión del proceso de compra
-        * Realizar análisis jurídico
-         * Registro de bases para proceso de compra pública
+    
+    * Asociación de documentos a un proceso de compra
+    
+    * Visualización de los datos del proceso de compra
+    
+    * Seguimiento e integración de los estados del mercado público
+    
+    * Tareas del proceso de compra
+        + Registro y seguimiento del análisis jurídico y generación de tickets
+        + Registro de bases para proceso de compra pública
+        + Generar respuesta a ticket para apoyar el proceso de compra
+
 
 ## Arquitectura
     La arquitectura seleccionada para el desarrollo es la arquitectura hexagonal, ya que esta permite:
