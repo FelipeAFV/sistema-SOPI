@@ -1,7 +1,9 @@
 #!/usr/bin/env node
 
 const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser');
 const express = require('express');
+const { verifyToken } = require('./auth/middlewares/check-auth');
 const userService = require('./auth/services/user-service');
 require('dotenv').config();
 
@@ -11,7 +13,13 @@ require('./database/db-associate-models').loadAllAssociations();
 
 const app = express();
 
+
+
 app.use(bodyParser.json());
+app.use(cookieParser());
+
+/** MIDDELWARES */
+app.use('/requireAuth', verifyToken);
 
 app.get('/test', async (req, res ) => {
     try {
