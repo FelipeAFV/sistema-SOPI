@@ -14,7 +14,7 @@ class AuthController {
             })
         }
 
-        const userCreated = await UserService.addUserSequelMySQL(userData)
+        const userCreated = await UserService.addUser(userData)
 
         res.status(200).json(userCreated)
     }
@@ -28,7 +28,7 @@ class AuthController {
             })
         }
 
-        const user = await UserService.findUserByUsernameSequelMySQL(username)
+        const user = await UserService.findUserByUsername(username)
 
         if(!user) {
             res.status(400).json({

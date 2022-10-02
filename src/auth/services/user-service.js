@@ -3,7 +3,7 @@ const bcrypt = require('bcrypt');
 
 class UserServiceSequelMySQL{
 
-    findUserByUsernameSequelMySQL = async (username) => {
+    findUserByUsername = async (username) => {
         const user = await Usuario.findOne({
             where: {
                 usuario: username
@@ -13,7 +13,7 @@ class UserServiceSequelMySQL{
         return user;
     }
     
-    findUsersByProfileSequelMySQL = async (profile) => {
+    findUsersByProfile = async (profile) => {
         const users = await Usuario.findAll(
             { include: {
                 model: Perfil,
@@ -26,7 +26,7 @@ class UserServiceSequelMySQL{
     }
     
     
-    addUserSequelMySQL = async (userData) => {
+    addUser = async (userData) => {
         const date = new Date();
         const password = await bcrypt.hash(userData.contrasena, 5)
         const newUser = await Usuario.create({
