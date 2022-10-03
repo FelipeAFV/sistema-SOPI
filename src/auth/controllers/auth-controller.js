@@ -1,6 +1,7 @@
 const {UserService} = require('../services/user-service')
 const bcrypt = require('bcrypt');
 const { sendHttpResponse } = require('../../share/utils/response-parser');
+const jwt = require("jsonwebtoken");
 
 
 
@@ -16,6 +17,14 @@ class AuthController {
         }
 
         const userCreated = await UserService.addUser(userData)
+
+        const token = (jwt.sign({
+            id: userCreated.id,
+            username: userCreated.usuario
+        },process.env.SECRET_KEY))
+
+        res.cookie('jwt',token,{httpOnly:true})
+        console.log(token);
 
         res.status(200).json(userCreated)
     }
@@ -38,6 +47,12 @@ class AuthController {
         const result = await bcrypt.compare(password ,user.contrasena)
 
         if(result){
+            const token = (jwt.sign({
+                id: user.id,
+                username: user.usuario
+            },process.env.SECRET_KEY))
+    
+            res.cookie('jwt',token,{httpOnly:true})
             sendHttpResponse(res,user,200);
             return
             
@@ -46,6 +61,18 @@ class AuthController {
             return;
             
         }
+    }
+
+    logOutUser = (req,res) => {
+        const cookie = req.cookies['jwt']
+        if(!cookie){
+            sendHttpResponse(res,'Cookie no encontrada',400);
+        }else {
+            res.clearCookie('jwt')
+            sendHttpResponse(res,'Sesion finalizada con exito',200);
+        }
+        
+
     }
 
 
