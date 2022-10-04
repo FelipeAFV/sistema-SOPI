@@ -1,12 +1,12 @@
-const { Usuario, Perfil } = require("../models/models")
+const { User, Profile } = require("../models/models")
 const bcrypt = require('bcrypt');
 
 class UserServiceSequelMySQL{
 
     findUserByUsername = async (username) => {
-        const user = await Usuario.findOne({
+        const user = await User.findOne({
             where: {
-                usuario: username
+                username: username
             }
         })
         /**Retorna nulo si no existe */
@@ -14,11 +14,11 @@ class UserServiceSequelMySQL{
     }
     
     findUsersByProfile = async (profile) => {
-        const users = await Usuario.findAll(
+        const users = await User.findAll(
             { include: {
-                model: Perfil,
+                model: Profile,
                 where: {
-                    tipo: profile
+                    type: profile
                 }
             } }
             )
@@ -29,25 +29,25 @@ class UserServiceSequelMySQL{
     addUser = async (userData) => {
         const date = new Date();
         const password = await bcrypt.hash(userData.contrasena, 5)
-        const newUser = await Usuario.create({
-            usuario: userData.usuario,
-            contrasena: password,
-            fecha_expiracion: date.setDate(date.getDate() + 31),
-            nombre: userData.nombre,
-            apellido: userData.apellido,
+        const newUser = await User.create({
+            username: userData.usuario,
+            password: password,
+            expirationDate: date.setDate(date.getDate() + 31),
+            firstname: userData.nombre,
+            lastname: userData.apellido,
             mail: userData.mail,
         })
     
-        const profile = await Perfil.findOne({
+        const profile = await Profile.findOne({
             where: {
-                tipo: userData.perfil
+                type: userData.perfil
             }
         })
     
-        await newUser.setPerfil(profile)
+        await newUser.setProfile(profile)
 
 
-        newUser.setDataValue('userProfile', await newUser.getPerfil());
+        newUser.setDataValue('userProfile', await newUser.getProfile());
     
         return newUser;
     

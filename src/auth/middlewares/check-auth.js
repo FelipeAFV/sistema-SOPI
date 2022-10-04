@@ -26,7 +26,7 @@ const hasProfile = (profile) => {
     const middleware = async (req, res, next) => {
 
         const user = await UserService.findUserByUsername(req.user.username);
-        const profile = user.getPerfil();
+        const profile = user.getProfile();
         if (profile.tipo != profile) {
             sendHttpResponse(res, 'No tienes los permisos necesarios', 403);
             return;

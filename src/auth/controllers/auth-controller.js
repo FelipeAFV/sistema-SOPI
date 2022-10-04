@@ -20,7 +20,7 @@ class AuthController {
 
         const token = (jwt.sign({
             id: userCreated.id,
-            username: userCreated.usuario
+            username: userCreated.username
         },process.env.SECRET_KEY))
 
         res.cookie('jwt',token,{httpOnly:true})
@@ -44,12 +44,12 @@ class AuthController {
             return;
         }
 
-        const result = await bcrypt.compare(password ,user.contrasena)
+        const result = await bcrypt.compare(password ,user.password)
 
         if(result){
             const token = (jwt.sign({
                 id: user.id,
-                username: user.usuario
+                username: user.username
             },process.env.SECRET_KEY))
     
             res.cookie('jwt',token,{httpOnly:true})
