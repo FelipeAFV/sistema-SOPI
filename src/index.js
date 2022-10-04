@@ -4,8 +4,9 @@ const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const express = require('express');
 const { verifyToken, hasProfile } = require('./auth/middlewares/check-auth');
-const userService = require('./auth/services/user-service');
-const authRoutes = require('./auth/routes/auth-routes')
+
+const authRoutes = require('./auth/routes/auth-routes');
+const { UserService } = require('./auth/services/user-service');
 require('dotenv').config();
 
 require('./database/db-init');
@@ -31,8 +32,8 @@ app.get('/test', async (req, res ) => {
             return;
         } 
 
-        const user = await userService.findUserByUsername(req.body.username);
-
+        const user = await UserService.findUserByUsername(req.body.username);
+        console.log(await user.getProfile())
         if (!user) {
             res.status(400).json({message: `No existe el usuario '${username}'`});
             return;
@@ -42,6 +43,7 @@ app.get('/test', async (req, res ) => {
 
     } catch (e) {
         res.status(500).json({message: 'Error'});
+        console.log(e)
         return;
     }
 })

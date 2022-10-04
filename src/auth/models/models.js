@@ -3,48 +3,61 @@ const { sequelize } = require("../../database/db-init");
 
 
 
-const Usuario = sequelize.define('usuario', {
-    usuario: {
-        type: DataTypes.STRING
+const Usuario = sequelize.define('user', {
+    username: {
+        type: DataTypes.STRING,
+        field: 'usuario'
     },
-    contrasena: {
-        type: DataTypes.STRING(500)
+    password: {
+        type: DataTypes.STRING(500),
+        field: 'contrasena'
     },
-    fecha_expiracion: {
-        type: DataTypes.DATE
+    expirationDate: {
+        type: DataTypes.DATE,
+        field: 'fecha_expiracion'
     },
-    nombre: {
-        type: DataTypes.STRING
+    firstname: {
+        type: DataTypes.STRING,
+        field: 'nombre'
     },
-    apellido: {
-        type: DataTypes.STRING
+    lastname: {
+        type: DataTypes.STRING,
+        field: 'apellido'
     },
     mail: {
-        type: DataTypes.STRING
+        type: DataTypes.STRING,
+        field: 'mail'
     },
 },
     { tableName: 'usuarios' });
 
 
-const Perfil = sequelize.define('perfil', {
-    tipo: {
-        type: DataTypes.STRING
+const Perfil = sequelize.define('profile', {
+    type: {
+        type: DataTypes.STRING,
+        field: 'tipo'
     },
 },
     {
         tableName: 'perfiles'
     })
 
-const Acceso = sequelize.define('acceso', {
+const Acceso = sequelize.define('access', {
 
 },
     {
         tableName: 'accesos'
     })
 
-const Permiso = sequelize.define('permiso', {
-    nombre: DataTypes.STRING,
-    codigo: DataTypes.INTEGER
+const Permiso = sequelize.define('permission', {
+    name: {
+        type: DataTypes.STRING,
+        field: 'nombre'
+    },
+    code: {
+        type: DataTypes.INTEGER,
+        field: 'codigo'
+    }
 },
     {
         tableName: 'permisos'
