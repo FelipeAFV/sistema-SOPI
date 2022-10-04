@@ -3,7 +3,7 @@
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const express = require('express');
-const { verifyToken } = require('./auth/middlewares/check-auth');
+const { verifyToken, hasProfile } = require('./auth/middlewares/check-auth');
 const userService = require('./auth/services/user-service');
 const authRoutes = require('./auth/routes/auth-routes')
 require('dotenv').config();
@@ -20,7 +20,7 @@ app.use(bodyParser.json());
 app.use(cookieParser());
 
 /** MIDDELWARES */
-app.use('/requireAuth', verifyToken);
+app.use('/api/v1/auth/registrarse', verifyToken, hasProfile('admin'));
 
 
 app.get('/test', async (req, res ) => {
