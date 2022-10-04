@@ -3,7 +3,7 @@ const { sequelize } = require("../../database/db-init");
 
 
 
-const Usuario = sequelize.define('user', {
+const User = sequelize.define('user', {
     username: {
         type: DataTypes.STRING,
         field: 'usuario'
@@ -32,7 +32,7 @@ const Usuario = sequelize.define('user', {
     { tableName: 'usuarios' });
 
 
-const Perfil = sequelize.define('profile', {
+const Profile = sequelize.define('profile', {
     type: {
         type: DataTypes.STRING,
         field: 'tipo'
@@ -42,14 +42,14 @@ const Perfil = sequelize.define('profile', {
         tableName: 'perfiles'
     })
 
-const Acceso = sequelize.define('access', {
+const Access = sequelize.define('access', {
 
 },
     {
         tableName: 'accesos'
     })
 
-const Permiso = sequelize.define('permission', {
+const Permission = sequelize.define('permission', {
     name: {
         type: DataTypes.STRING,
         field: 'nombre'
@@ -63,28 +63,28 @@ const Permiso = sequelize.define('permission', {
         tableName: 'permisos'
     })
 
-Permiso.loadAssociations = () => {
-    Permiso.belongsToMany(Perfil, {through: Acceso})
+Permission.loadAssociations = () => {
+    Permission.belongsToMany(Profile, {through: Access})
 }
 
-Acceso.loadAssociations = () => {
+Access.loadAssociations = () => {
     
 }
 
-Usuario.loadAssociations = () => {
+User.loadAssociations = () => {
 
-    Usuario.belongsTo(Perfil);
+    User.belongsTo(Profile);
 }
 
-Perfil.loadAssociations = () => {
-    Perfil.hasMany(Usuario);
-    Perfil.belongsToMany(Permiso, { through: Acceso});
+Profile.loadAssociations = () => {
+    Profile.hasMany(User);
+    Profile.belongsToMany(Permission, { through: Access});
 }
 
 
 
-exports.Usuario = Usuario;
-exports.Perfil = Perfil;
-exports.Acceso = Acceso;
-exports.Permiso = Permiso;
+exports.User = User;
+exports.Profile = Profile;
+exports.Access = Access;
+exports.Permission = Permission;
 
