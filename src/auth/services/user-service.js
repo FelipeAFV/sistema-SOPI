@@ -28,19 +28,19 @@ class UserServiceSequelMySQL{
     
     addUser = async (userData) => {
         const date = new Date();
-        const password = await bcrypt.hash(userData.contrasena, 5)
+        const password = await bcrypt.hash(userData.password, 5)
         const newUser = await User.create({
-            username: userData.usuario,
+            username: userData.username,
             password: password,
             expirationDate: date.setDate(date.getDate() + 31),
-            firstname: userData.nombre,
-            lastname: userData.apellido,
+            firstname: userData.firstname,
+            lastname: userData.lastname,
             mail: userData.mail,
         })
     
         const profile = await Profile.findOne({
             where: {
-                type: userData.perfil
+                type: userData.profile
             }
         })
     
