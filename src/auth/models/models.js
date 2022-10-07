@@ -33,13 +33,14 @@ const User = sequelize.define('user', {
 
 
 const Profile = sequelize.define('profile', {
-    type: {
+    name: {
         type: DataTypes.STRING,
-        field: 'tipo'
+        field: 'nombre'
     },
 },
     {
-        tableName: 'perfiles'
+        tableName: 'perfiles',
+        timestamps: false
     })
 
 const Access = sequelize.define('access', {

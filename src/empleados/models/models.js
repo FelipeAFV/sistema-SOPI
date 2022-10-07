@@ -10,12 +10,12 @@ const Employee = sequelize.define('employee',{
 const Department = sequelize.define('department',{
     
 }, {
-    tableName: 'area'
+    tableName: 'areas'
 });
 const Job = sequelize.define('job',{
     
 }, {
-    tableName: 'cargo'
+    tableName: 'cargos'
 });
 
 Employee.loadAssociations = () => {

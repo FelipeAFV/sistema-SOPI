@@ -18,7 +18,7 @@ class UserServiceSequelMySQL{
             { include: {
                 model: Profile,
                 where: {
-                    type: profile
+                    name: profile
                 }
             } }
             )
@@ -40,7 +40,7 @@ class UserServiceSequelMySQL{
     
         const profile = await Profile.findOne({
             where: {
-                type: userData.profile
+                name: userData.profile
             }
         })
     

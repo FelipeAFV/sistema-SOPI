@@ -1,4 +1,5 @@
 
+const { DataTypes } = require("sequelize");
 const { sequelize } = require("../../database/db-init");
 
 
@@ -40,19 +41,30 @@ const SuppliesCategory = sequelize.define('suppliesCategory', {
     
 },
 {
-    tableName: 'categoria'
+    tableName: 'categorias'
 });
 const CostCenter = sequelize.define('costCenter', {
+    name: {
+        type: DataTypes.STRING,
+        field: 'nombre'
+    },
+    
     
 },
 {
-    tableName: 'centro_costo'
+    tableName: 'centros_costo',
+    timestamps: false
 });
 const Financing = sequelize.define('financing', {
+    name: {
+        type: DataTypes.STRING,
+        field: 'nombre'
+    }
     
 },
 {
-    tableName: 'financiamiento'
+    tableName: 'financiamientos',
+    timestamps: false
 });
 
 Sopi.loadAssociations = () => {
