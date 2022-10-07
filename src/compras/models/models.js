@@ -1,76 +1,82 @@
 const { sequelize } = require("../../database/db-init");
 
 
-const ProcesoCompra = sequelize.define('procesoCompra',{
+const Purchase = sequelize.define('purchase',{
 
 }, {
-    tableName: 'procesos_compra'
+    tableName: 'compras'
 });
 
-const Financiamiento = sequelize.define('financiamiento', {
+const PurchaseDetail = sequelize.define('purchaseDetail', {
 
 }, {
-    tableName: 'financiamientos'
+    tableName: 'compras_detalle'
 });
-
-const TipoCompra = sequelize.define('tipoCompra', {
+const PurchaseLog = sequelize.define('purchaseLog', {
 
 }, {
-    tableName: 'tipos_compra'
+    tableName: 'compras_log'
 });
-const EstadoCompraCC = sequelize.define('estadoCompraCC', {
+
+const PurchaseType = sequelize.define('purchaseType', {
 
 }, {
-    tableName: 'estados_compra_cc'
+    tableName: 'compras_tipo'
 });
-const EstadoLicitacionCC = sequelize.define('estadoLicitacionCC', {
+
+const PurchaseStatus = sequelize.define('purchaseStatus', {
 
 }, {
-    tableName: 'estados_licitación_cc'
+    tableName: 'compras_estado'
 });
-const CentroCosto = sequelize.define('tipoCompra', {
+
+const Supplier = sequelize.define('supplier', {
 
 }, {
-    tableName: 'centros_costo'
+    tableName: 'proveedores'
 });
 
-ProcesoCompra.loadAssociations = () => {
-    ProcesoCompra.belongsTo(EstadoCompraCC);
-    ProcesoCompra.belongsTo(EstadoLicitacionCC);
-    ProcesoCompra.belongsTo(CentroCosto);
-    ProcesoCompra.belongsTo(TipoCompra);
-    ProcesoCompra.belongsTo(Financiamiento);
 
-    const { Detalle } = require("../../solicitudes/models/models");
-    ProcesoCompra.hasMany(Detalle);
-    const { Workflow } = require("../../workflow/models/models");
-    ProcesoCompra.belongsTo(Workflow);
+Purchase.loadAssociations = () => {
+    Purchase.belongsTo(PurchaseType);
+    Purchase.belongsTo(Supplier);
+    Purchase.hasMany(PurchaseLog);
+    Purchase.hasMany(PurchaseDetail);
+
+    const { Document, Manager } = require("../../gestion/models/models");
+    Purchase.hasMany(Document);
+    Purchase.hasMany(Manager);
+
     
 }
-Financiamiento.loadAssociations = () => {
-    Financiamiento.hasMany(ProcesoCompra);
+
+PurchaseDetail.loadAssociations = () => {
+    PurchaseDetail.belongsTo(Purchase);
+
+    const { SopiDetail } = require("../../solicitudes/models/models");
+    PurchaseDetail.belongsTo(SopiDetail)
 }
-TipoCompra.loadAssociations = () => {
-    TipoCompra.hasMany(ProcesoCompra);
+PurchaseLog.loadAssociations = () => {
+    PurchaseLog.belongsTo(PurchaseStatus)
+    PurchaseLog.belongsTo(Purchase)
     
 }
-EstadoCompraCC.loadAssociations = () => {
-    EstadoCompraCC.hasMany(ProcesoCompra);
+PurchaseType.loadAssociations = () => {
+    PurchaseType.hasMany(Purchase)
+}
+PurchaseStatus.loadAssociations = () => {
+    PurchaseStatus.hasMany(PurchaseLog);
     
 }
-EstadoLicitacionCC.loadAssociations = () => {
-    EstadoLicitacionCC.hasMany(ProcesoCompra);
-    
-}
-CentroCosto.loadAssociations = () => {
-    CentroCosto.hasMany(ProcesoCompra);
+Supplier.loadAssociations = () => {
+    Supplier.hasMany(Purchase)
 
 }
 
 
-exports.ProcesoCompra = ProcesoCompra;
-exports.TipoCompra = TipoCompra;
-exports.EstadoCompraCC =EstadoCompraCC;
-exports.EstadoLicitacionCC =EstadoLicitacionCC;
-exports.CentroCosto = CentroCosto;
-exports.Financiamiento = Financiamiento;
+exports.Purchase = Purchase;
+exports.PurchaseDetail = PurchaseDetail;
+exports.PurchaseLog =PurchaseLog;
+exports.PurchaseType =PurchaseType;
+exports.PurchaseStatus = PurchaseStatus;
+exports.Supplier = Supplier;
