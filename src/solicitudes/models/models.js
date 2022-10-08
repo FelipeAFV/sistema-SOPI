@@ -125,8 +125,8 @@ Sopi.loadAssociations = () => {
     Sopi.hasMany(SopiLog);
     Sopi.hasMany(SopiDetail);
 
-    const { Employee } = require("../../empleados/models/models");
-    Sopi.belongsTo(Employee);
+    const { User } = require("../../auth/models/models");
+    Sopi.belongsTo(User);
     
 }
 SopiDetail.loadAssociations = () => {

@@ -62,12 +62,7 @@ Employee.loadAssociations = () => {
     Employee.belongsTo(Department);
     Employee.belongsTo(Job);
 
-    const { Ticket, Manager } = require("../../gestion/models/models");
-    Employee.hasMany(Ticket);
-    Employee.hasMany(Manager);
 
-    const { Sopi } = require("../../solicitudes/models/models");
-    Employee.hasMany(Sopi)
 }
 
 Job.loadAssociations = () => {

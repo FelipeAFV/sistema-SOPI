@@ -2,7 +2,7 @@ const { sequelize } = require("../../database/db-init");
 const { Sopi } = require("../models/models")
 
 
-const createSopi = async ({costCenterId, financingId, basis}) => {
+const createSopiSeqTransactional = async ({costCenterId, financingId, basis}) => {
     let t = null;
     try {
         t = await sequelize.transaction();
@@ -23,4 +23,4 @@ const createSopi = async ({costCenterId, financingId, basis}) => {
 
 
 
-exports.createSopi = createSopi;
+exports.createSopi = createSopiSeqTransactional;

@@ -1,6 +1,5 @@
 const { DataTypes } = require("sequelize");
 
-
 const { sequelize } = require("../../database/db-init");
 
 
@@ -60,13 +59,17 @@ const Manager = sequelize.define('manager',{
 
 Document.loadAssociations = () => {
     const { Purchase } = require("../../compras/models/models");
-
+    
     Document.belongsTo(Purchase);
-
-
+    
+    
 }
 
 Manager.loadAssociations = () => {
+    const { User } = require("../../auth/models/models");
+    Manager.belongsTo(User);
+    const { Purchase } = require("../../compras/models/models");
+    Manager.belongsTo(Purchase);
 
     Manager.hasMany(Ticket);
 }
@@ -74,6 +77,9 @@ Manager.loadAssociations = () => {
 Ticket.loadAssociations = () => {
     Ticket.belongsTo(Manager);
     Ticket.hasMany(Comment);
+
+    const { User } = require("../../auth/models/models");
+    Ticket.belongsTo(User);
 }
 
 Comment.loadAssociations = () => {

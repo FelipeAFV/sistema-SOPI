@@ -75,6 +75,13 @@ Access.loadAssociations = () => {
 User.loadAssociations = () => {
 
     User.belongsTo(Profile);
+
+    const { Ticket, Manager } = require("../../gestion/models/models");
+    User.hasMany(Ticket);
+    User.hasMany(Manager);
+
+    const { Sopi } = require("../../solicitudes/models/models");
+    User.hasMany(Sopi)
 }
 
 Profile.loadAssociations = () => {
