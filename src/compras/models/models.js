@@ -17,7 +17,7 @@ const PurchaseDetail = sequelize.define('purchaseDetail', {
         type: DataTypes.NUMBER,
         field: 'precio'
     },
-    
+
 }, {
     tableName: 'compras_detalle'
 });
@@ -31,7 +31,15 @@ const PurchaseType = sequelize.define('purchaseType', {
     purchaseTypeName: {
         type: DataTypes.STRING,
         field: 'nombre_tipo_compra'
-    }
+    },
+    minValue: {
+        type: DataTypes.DOUBLE,
+        field: 'valor_minimo'
+    },
+    maxValue: {
+        type: DataTypes.DOUBLE,
+        field: 'valor_maximo'
+    },
 }, {
     tableName: 'compras_tipo'
 });

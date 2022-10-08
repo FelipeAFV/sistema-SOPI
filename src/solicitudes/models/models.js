@@ -32,9 +32,6 @@ const SopiDetail = sequelize.define('sopiDetail', {
         type: DataTypes.DATE,
         field: 'fecha_entrega'
     },
-    
-
-
 
 
 },
@@ -55,6 +52,14 @@ const SopiStatus = sequelize.define('sopiStatus', {
     statusName: {
         type: DataTypes.STRING,
         field: 'nombre_estado'
+    },
+    cod: {
+        type: DataTypes.STRING,
+        field: 'código'
+    },
+    level: {
+        type: DataTypes.INTEGER,
+        field: 'nivel_completitud'
     }
 },
 {
