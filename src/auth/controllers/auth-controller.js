@@ -2,6 +2,7 @@ const {UserService} = require('../services/user-service')
 const bcrypt = require('bcrypt');
 const { sendHttpResponse } = require('../../share/utils/response-parser');
 const jwt = require("jsonwebtoken");
+const {sequelize} = require('../../database/db-init')
 
 
 
@@ -15,18 +16,33 @@ class AuthController {
                 message: 'body is empty'
             })
         }
+        const check = await UserService.findUserByUsername(userData.username)
+        if(check) {
+            sendHttpResponse(res, 'nombre de usuario en uso')
+        }else{
 
-        const userCreated = await UserService.addUser(userData)
+            const userCreated = await UserService.addUser(userData)
+            if(!userCreated){
+                sendHttpResponse(res,'error al crear usuario')
+            }else {
 
-        const token = (jwt.sign({
-            id: userCreated.id,
-            username: userCreated.username
-        },process.env.SECRET_KEY))
+                const token = (jwt.sign({
+                    id: userCreated.id,
+                    username: userCreated.username
+                },process.env.SECRET_KEY))
+    
+                res.cookie('jwt',token,{httpOnly:true})
+                console.log(token);
+    
+                res.status(200).json(userCreated)
 
-        res.cookie('jwt',token,{httpOnly:true})
-        console.log(token);
+            }
 
-        res.status(200).json(userCreated)
+            
+
+        }
+
+        
     }
 
     loginUser = async (req,res) => {
