@@ -12,9 +12,9 @@ const Sopi = sequelize.define('sopi', {
 
 
 const SopiDetail = sequelize.define('sopiDetail', {
-    sopiName: {
+    name: {
         type: DataTypes.STRING,
-        field: 'nombre_sopi'
+        field: 'nombre'
     },
     priority: {
         type: DataTypes.BOOLEAN,
@@ -49,9 +49,9 @@ const SopiLog = sequelize.define('sopiLog', {
     tableName: 'solicitudes_log'
 });
 const SopiStatus = sequelize.define('sopiStatus', {
-    statusName: {
+    name: {
         type: DataTypes.STRING,
-        field: 'nombre_estado'
+        field: 'nombre'
     },
     cod: {
         type: DataTypes.STRING,
@@ -66,17 +66,17 @@ const SopiStatus = sequelize.define('sopiStatus', {
     tableName: 'solicitudes_estado'
 });
 const Supplies = sequelize.define('supplies', {
-    supplyName: {
+    name: {
         type: DataTypes.STRING,
-        field: 'nombre_insumo'
+        field: 'nombre'
     },
     feature: {
         type: DataTypes.STRING,
         field: 'caracteristicas'
     },
-    supplyPrice: {
+    price: {
         type: DataTypes.NUMBER,
-        field: 'precio_insumo'
+        field: 'precio'
     }
 },
 {
@@ -84,9 +84,9 @@ const Supplies = sequelize.define('supplies', {
 });
 
 const SuppliesCategory = sequelize.define('suppliesCategory', {
-    categoryName: {
+    name: {
         type: DataTypes.STRING,
-        field: 'nombre_categoria'
+        field: 'nombre'
     }
 },
 {

@@ -3,13 +3,13 @@ const { sequelize } = require("../../database/db-init");
 
 
 const Employee = sequelize.define('employee',{
-    employeeFirstName: {
+    firstName: {
         type: DataTypes.STRING,
-        field: 'nombre_empleado'
+        field: 'nombre'
     },
-    employeeLastName: {
+    lastName: {
         type: DataTypes.STRING,
-        field: 'apellido_empleado'
+        field: 'apellido'
     },
     phone: {
         type: DataTypes.STRING,
@@ -26,6 +26,10 @@ const Employee = sequelize.define('employee',{
     salary: {
         type: DataTypes.INTEGER,
         field: 'salario'
+    },
+    rut: {
+        type: DataTypes.STRING,
+        field: 'rut'
     }
 
 }, {
@@ -33,9 +37,9 @@ const Employee = sequelize.define('employee',{
 });
 
 const Department = sequelize.define('department',{
-    departmentName: {
+    name: {
         type: DataTypes.STRING,
-        field: 'nombre_departamento'
+        field: 'nombre'
     },
     manager: {
         type: DataTypes.STRING,
@@ -46,9 +50,9 @@ const Department = sequelize.define('department',{
     tableName: 'areas'
 });
 const Job = sequelize.define('job',{
-    jobName: {
+    name: {
         type: DataTypes.STRING,
-        field: 'nombre_trabajo'
+        field: 'nombre'
     }
 }, {
     tableName: 'cargos'

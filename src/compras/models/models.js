@@ -28,9 +28,9 @@ const PurchaseLog = sequelize.define('purchaseLog', {
 });
 
 const PurchaseType = sequelize.define('purchaseType', {
-    purchaseTypeName: {
+    name: {
         type: DataTypes.STRING,
-        field: 'nombre_tipo_compra'
+        field: 'nombre'
     },
     minValue: {
         type: DataTypes.DOUBLE,
@@ -45,9 +45,9 @@ const PurchaseType = sequelize.define('purchaseType', {
 });
 
 const PurchaseStatus = sequelize.define('purchaseStatus', {
-    purchaseStatusName: {
+    name: {
         type: DataTypes.STRING,
-        field: 'nombre_estado_compra'
+        field: 'nombre'
     }
 }, {
     tableName: 'compras_estado'
@@ -56,7 +56,7 @@ const PurchaseStatus = sequelize.define('purchaseStatus', {
 const Supplier = sequelize.define('supplier', {
     supplierName: {
         type: DataTypes.STRING,
-        field: 'nombre_proveedor'
+        field: 'nombre'
     },
     businessName: {
         type: DataTypes.STRING,
@@ -76,7 +76,7 @@ const Supplier = sequelize.define('supplier', {
     },
     phone: {
         type: DataTypes.STRING,
-        field: 'telefono_proveedor'
+        field: 'telefono'
     },
     
 }, {
