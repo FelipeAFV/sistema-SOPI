@@ -7,7 +7,7 @@ const { verifyToken, hasProfile } = require('./auth/middlewares/check-auth');
 
 const authRoutes = require('./auth/routes/auth-routes');
 const { UserService } = require('./auth/services/user-service');
-const sopiRoutes  = require('./solicitudes/routes/sopi-routes');
+const sopiRoutes = require('./solicitudes/routes/sopi-routes');
 require('dotenv').config();
 
 require('./database/db-init');
@@ -25,32 +25,46 @@ app.use(cookieParser());
 //app.use('/api/v1/auth/registrarse', verifyToken, hasProfile('admin'));
 
 
-app.get('/test', async (req, res ) => {
+app.get('/test', async (req, res) => {
     try {
-        const {username} = req.body;
+        const { username } = req.body;
         if (!username) {
-            res.status(400).json({message: 'Se debe ingresar el nombre de usuario'});
+            res.status(400).json({ message: 'Se debe ingresar el nombre de usuario' });
             return;
-        } 
+        }
 
         const user = await UserService.findUserByUsername(req.body.username);
         console.log(await user.getProfile())
         if (!user) {
-            res.status(400).json({message: `No existe el usuario '${username}'`});
+            res.status(400).json({ message: `No existe el usuario '${username}'` });
             return;
         }
         res.status(200).json(user);
         return;
 
     } catch (e) {
-        res.status(500).json({message: 'Error'});
+        res.status(500).json({ message: 'Error' });
         console.log(e)
         return;
     }
 })
 
 
+
+
 app.use('/api/v1/auth', authRoutes)
 app.use('/api/v1/sopi', sopiRoutes)
+
+if (process.env.TEST == 'true') {
+
+    /**test */
+    app.use('/api/v1/test/sopi', (req, res, next) => {
+        req.user = {
+            id: 1
+        }
+        next()
+    }, sopiRoutes)
+
+}
 
 app.listen(8000);

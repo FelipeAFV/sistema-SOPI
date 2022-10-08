@@ -2,11 +2,11 @@ const { sequelize } = require("../../database/db-init");
 const { Sopi } = require("../models/models")
 
 
-const createSopiSeqTransactional = async ({costCenterId, financingId, basis}) => {
+const createSopiSeqTransactional = async ({costCenterId, financingId, basis, userId}) => {
     let t = null;
     try {
         t = await sequelize.transaction();
-        let sopiCreated = await Sopi.create({costCenterId, financingId, basis: ''}, { transaction: t})
+        let sopiCreated = await Sopi.create({costCenterId, financingId, basis: '', userId}, { transaction: t})
             .catch(e => {throw new Error('Centro de costo o financiamiento no existe')});
 
         sopiCreated = await sopiCreated.update({basis: basis || null}, {transaction: t})

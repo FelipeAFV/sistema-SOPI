@@ -1,3 +1,4 @@
+const { request } = require("express");
 const { sendHttpResponse } = require("../../share/utils/response-parser");
 const sopiService = require("../services/sopi-service");
 
@@ -5,7 +6,9 @@ const sopiService = require("../services/sopi-service");
 const addNewSopi = async (req, res) => {
 
     try {
-        let sopiData = req.body;
+        const sopiData = req.body;
+        sopiData.userId = req.user.id;
+
         const sopiCreated = await sopiService.createSopi(sopiData);
 
         sendHttpResponse(res, sopiCreated, 200);
