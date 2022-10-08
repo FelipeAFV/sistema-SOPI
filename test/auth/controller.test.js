@@ -1,6 +1,6 @@
 
 const { AuthController } = require('../../src/auth/infraestructure/auth-controller');
-const { UserService } = require('../../src/auth/application/user-service');
+const { userRepository } = require('../../src/auth/domain/user-repository');
 const { loadAllAssociations } = require('../../src/database/db-associate-models');
 const { sequelize } = require('../../src/database/db-init');
 
@@ -53,7 +53,7 @@ test('Ingreso de usuario con perfil que no existe', async () => {
 
         const result = await AuthController.addUser(req, res);
 
-        const user = await UserService.findUserByUsername(req.body.username)
+        const user = await userRepository.findUserByUsername(req.body.username)
         console.log(res.json())
         await expect(user).toBeNull();
 

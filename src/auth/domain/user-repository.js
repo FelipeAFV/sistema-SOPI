@@ -1,8 +1,8 @@
-const { User, Profile } = require("../domain/models")
+const { User, Profile } = require("./models")
 const bcrypt = require('bcrypt');
 const {sendHttpResponse} = require('../../share/utils/response-parser')
 
-class UserServiceSequelMySQL{
+class UserRepositorySequelMySQL{
 
     findUserByUsername = async (username) => {
         const user = await User.findOne({
@@ -60,4 +60,4 @@ class UserServiceSequelMySQL{
 
 
 
-exports.UserService = new UserServiceSequelMySQL;
+exports.userRepository = new UserRepositorySequelMySQL;

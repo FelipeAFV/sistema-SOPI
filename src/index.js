@@ -6,7 +6,7 @@ const express = require('express');
 const { verifyToken, hasProfile } = require('./auth/infraestructure/check-auth-middleware');
 
 const authRoutes = require('./auth/infraestructure/auth-routes');
-const { UserService } = require('./auth/application/user-service');
+const { UserService } = require('./auth/domain/user-repository');
 const sopiRoutes = require('./solicitude/infraestructure/solicitudes-routes');
 require('dotenv').config();
 

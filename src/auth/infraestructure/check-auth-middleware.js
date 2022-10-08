@@ -1,6 +1,6 @@
 const jwt = require("jsonwebtoken");
 const { sendHttpResponse } = require("../../share/utils/response-parser");
-const { UserService } = require("../application/user-service");
+const { userRepository } = require("../domain/user-repository");
 
 const verifyToken = (req, res, next) => {
     try {
@@ -25,9 +25,9 @@ const verifyToken = (req, res, next) => {
 const hasProfile = (profile) => {
     const middleware = async (req, res, next) => {
 
-        const user = await UserService.findUserByUsername(req.user.username);
-        const profile = user.getProfile();
-        if (profile.tipo != profile) {
+        const user = await userRepository.findUserByUsername(req.user.username);
+        const userProfile = user.getProfile();
+        if (userProfile.tipo != profile) {
             sendHttpResponse(res, 'No tienes los permisos necesarios', 403);
             return;
 

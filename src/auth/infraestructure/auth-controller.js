@@ -1,4 +1,4 @@
-const {UserService} = require('../application/user-service')
+const {userRepository} = require('../domain/user-repository')
 const {Profile} = require('../domain/models')
 const bcrypt = require('bcrypt');
 const { sendHttpResponse } = require('../../share/utils/response-parser');
@@ -19,7 +19,7 @@ class AuthController {
             })
         }else{
 
-            const check = await UserService.findUserByUsername(userData.username)
+            const check = await userRepository.findUserByUsername(userData.username)
             if(check) {
                 sendHttpResponse(res, 'nombre de usuario en uso')
             }else{
@@ -33,7 +33,7 @@ class AuthController {
                     sendHttpResponse(res, 'perfil no existe')
                 }else{
 
-                    const userCreated = await UserService.addUser(userData)
+                    const userCreated = await userRepository.addUser(userData)
                     if(!userCreated){
                         sendHttpResponse(res,'error al crear usuario')
                     }else {
