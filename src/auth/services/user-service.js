@@ -10,6 +10,7 @@ class UserServiceSequelMySQL{
                 username: username
             }
         })
+        
         /**Retorna nulo si no existe */
         return user;
     }
@@ -44,10 +45,6 @@ class UserServiceSequelMySQL{
                 name: userData.profile
             }
         })
-
-        if(!profile){
-            return null
-        }
     
         await newUser.setProfile(profile)
 
