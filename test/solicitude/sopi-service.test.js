@@ -1,7 +1,7 @@
 const { loadAllAssociations } = require('../../src/database/db-associate-models');
 const { sequelize } = require('../../src/database/db-init');
-const sopiController = require('../../src/solicitudes/controllers/sopi-controller');
-const { createSopi } = require('../../src/solicitudes/services/sopi-service');
+const sopiController = require('../../src/solicitude/infraestructure/sopi-controller');
+const { createSopi } = require('../../src/solicitude/application/sopi-service');
 
 /**
  * Provide mock sequelize and add transaction scope
@@ -29,17 +29,28 @@ afterAll(async () => {
 
 test('Servicio para ingreso de sopi', async () => {
 
-   
+    try {
+
+    } catch (e) {
+
+        sequelize.transaction(async () => {
 
 
-        const result = await createSopi({costCenterId: 1, financingId: 1, userId: 1, basis: 'Escases'})
+            const result = await createSopi({
+                costCenterId: 42, financingId: 10, userId: 1, basis: 'Escases', items: [{
+                    name: 'asd', features: 'asdas', quantity: 1
+                }]
+            })
 
-        await expect(result).not.toBeNull()
+            await expect(result).not.toBeNull()
 
-        /**
-         * Trow error for transaction to ROLLBACK
-         */
+            /**
+             * Trow error for transaction to ROLLBACK
+             */
+            throw new Error('Error controlado')
 
+        })
+    }
 
 
 });

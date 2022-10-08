@@ -1,6 +1,6 @@
 
-const { AuthController } = require('../../src/auth/controllers/auth-controller');
-const { UserService } = require('../../src/auth/services/user-service');
+const { AuthController } = require('../../src/auth/infraestructure/auth-controller');
+const { UserService } = require('../../src/auth/application/user-service');
 const { loadAllAssociations } = require('../../src/database/db-associate-models');
 const { sequelize } = require('../../src/database/db-init');
 

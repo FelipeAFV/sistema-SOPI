@@ -33,7 +33,8 @@ const insertSopiDetails = async (items, sopiId) => {
 const createSopiSeqTransactional = async ({ costCenterId, financingId, basis, userId, items }) => {
 
     try {
-        if (!items || items.size() == 0) {
+        console.log(items.length)
+        if (!items || items.length == 0) {
             throw new Error('La sopi debe ser ingresada con detalles')
         }
         const response = await sequelize.transaction(async () => {
