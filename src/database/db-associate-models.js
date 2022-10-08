@@ -3,11 +3,11 @@ const loadAllAssociations = () => {
      * When connections is ready, create models
      */
     // const { Workflow, Documento, EstadoWorkflow, Responsable, WorkflowLog } = require('../workflow/models/models');
-    const { User, Permission, Profile, Access } = require('../auth/models/models');
-    const { CostCenter, Financing, Sopi, SopiDetail, SopiLog, SopiStatus, Supplies, SuppliesCategory } = require('../solicitudes/models/models');
-    const { Comment, Document, Manager, Ticket } = require('../gestion/models/models');
-    const { Department, Employee, Job } = require('../empleados/models/models');
-    const { Purchase, PurchaseDetail, PurchaseLog, PurchaseStatus, PurchaseType, Supplier } = require('../compras/models/models');
+    const { User, Permission, Profile, Access } = require('../auth/domain/models');
+    const { CostCenter, Financing, Sopi, SopiDetail, SopiLog, SopiStatus, Supplies, SuppliesCategory } = require('../solicitude/domain/models');
+    const { Comment, Document, Manager, Ticket } = require('../management/domain/models');
+    const { Department, Employee, Job} = require('../employees/domain/models');
+    const { Purchase, PurchaseDetail, PurchaseLog, PurchaseStatus, PurchaseType, Supplier } = require('../purchases/domain/models');
 
     /**Load associations when all models exists */
     User.loadAssociations();

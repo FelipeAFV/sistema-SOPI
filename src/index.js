@@ -3,11 +3,11 @@
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const express = require('express');
-const { verifyToken, hasProfile } = require('./auth/middlewares/check-auth');
+const { verifyToken, hasProfile } = require('./auth/infraestructure/check-auth-middleware');
 
-const authRoutes = require('./auth/routes/auth-routes');
-const { UserService } = require('./auth/services/user-service');
-const sopiRoutes = require('./solicitudes/routes/sopi-routes');
+const authRoutes = require('./auth/infraestructure/auth-routes');
+const { UserService } = require('./auth/application/user-service');
+const sopiRoutes = require('./solicitude/infraestructure/solicitudes-routes');
 require('dotenv').config();
 
 require('./database/db-init');
