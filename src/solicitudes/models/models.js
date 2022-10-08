@@ -4,7 +4,11 @@ const { sequelize } = require("../../database/db-init");
 
 
 const Sopi = sequelize.define('sopi', {
-    
+    basis: {
+        type: DataTypes.STRING,
+        field: 'fundamento',
+        allowNull: false
+    }
 },
 {
     tableName: 'solicitudes'
@@ -75,7 +79,7 @@ const Supplies = sequelize.define('supplies', {
         field: 'caracteristicas'
     },
     price: {
-        type: DataTypes.NUMBER,
+        type: DataTypes.INTEGER,
         field: 'precio'
     }
 },
@@ -149,10 +153,18 @@ SuppliesCategory.loadAssociations = () => {
     SuppliesCategory.hasMany(Supplies);
 }
 CostCenter.loadAssociations = () => {
-    CostCenter.hasMany(Sopi);
+    CostCenter.hasMany(Sopi, {
+        foreignKey: {
+            allowNull: false
+        }
+    });
 }
 Financing.loadAssociations = () => {
-    Financing.hasMany(Sopi);
+    Financing.hasMany(Sopi, {
+        foreignKey: {
+            allowNull: false
+        }
+    });
 }
 
 

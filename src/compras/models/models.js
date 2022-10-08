@@ -14,7 +14,7 @@ const PurchaseDetail = sequelize.define('purchaseDetail', {
         field: 'cantidad'
     },
     price: {
-        type: DataTypes.NUMBER,
+        type: DataTypes.INTEGER,
         field: 'precio'
     },
 

@@ -7,6 +7,7 @@ const { verifyToken, hasProfile } = require('./auth/middlewares/check-auth');
 
 const authRoutes = require('./auth/routes/auth-routes');
 const { UserService } = require('./auth/services/user-service');
+const sopiRoutes  = require('./solicitudes/routes/sopi-routes');
 require('dotenv').config();
 
 require('./database/db-init');
@@ -50,5 +51,6 @@ app.get('/test', async (req, res ) => {
 
 
 app.use('/api/v1/auth', authRoutes)
+app.use('/api/v1/sopi', sopiRoutes)
 
 app.listen(8000);
