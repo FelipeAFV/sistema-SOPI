@@ -1,5 +1,6 @@
 const { User, Profile } = require("../models/models")
 const bcrypt = require('bcrypt');
+const {sendHttpResponse} = require('../../share/utils/response-parser')
 
 class UserServiceSequelMySQL{
 
@@ -43,6 +44,10 @@ class UserServiceSequelMySQL{
                 name: userData.profile
             }
         })
+
+        if(!profile){
+            return null
+        }
     
         await newUser.setProfile(profile)
 

@@ -21,7 +21,7 @@ app.use(bodyParser.json());
 app.use(cookieParser());
 
 /** MIDDELWARES */
-app.use('/api/v1/auth/registrarse', verifyToken, hasProfile('admin'));
+//app.use('/api/v1/auth/registrarse', verifyToken, hasProfile('admin'));
 
 
 app.get('/test', async (req, res ) => {
