@@ -12,33 +12,77 @@ const Sopi = sequelize.define('sopi', {
 
 
 const SopiDetail = sequelize.define('sopiDetail', {
+    sopiName: {
+        type: DataTypes.STRING,
+        field: 'nombre_sopi'
+    },
+    priority: {
+        type: DataTypes.BOOLEAN,
+        field: 'prioridad'
+    },
+    reason: {
+        type: DataTypes.STRING,
+        field: 'fundamento'
+    },
+    features: {
+        type: DataTypes.STRING,
+        field: 'caracteristicas'
+    },
+    deliveryDate: {
+        type: DataTypes.DATE,
+        field: 'fecha_entrega'
+    },
     
+
+
+
+
 },
 {
     tableName: 'solicitudes_detalle'
 });
 
 const SopiLog = sequelize.define('sopiLog', {
-    
+    updateDate: {
+        type: DataTypes.DATE,
+        field: 'fecha_actualización'
+    }
 },
 {
     tableName: 'solicitudes_log'
 });
 const SopiStatus = sequelize.define('sopiStatus', {
-    
+    statusName: {
+        type: DataTypes.STRING,
+        field: 'nombre_estado'
+    }
 },
 {
     tableName: 'solicitudes_estado'
 });
 const Supplies = sequelize.define('supplies', {
-    
+    supplyName: {
+        type: DataTypes.STRING,
+        field: 'nombre_insumo'
+    },
+    feature: {
+        type: DataTypes.STRING,
+        field: 'caracteristicas'
+    },
+    supplyPrice: {
+        type: DataTypes.NUMBER,
+        field: 'precio_insumo'
+    }
 },
 {
     tableName: 'insumos'
 });
 
 const SuppliesCategory = sequelize.define('suppliesCategory', {
-    
+    categoryName: {
+        type: DataTypes.STRING,
+        field: 'nombre_categoria'
+    }
 },
 {
     tableName: 'categorias'
@@ -48,7 +92,6 @@ const CostCenter = sequelize.define('costCenter', {
         type: DataTypes.STRING,
         field: 'nombre'
     },
-    
     
 },
 {

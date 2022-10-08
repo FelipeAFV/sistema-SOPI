@@ -5,14 +5,17 @@ const { sequelize } = require("../../database/db-init");
 
 
 const Document = sequelize.define('documento', {
-    nombre : {
-        type: DataTypes.STRING
+    documentName : {
+        type: DataTypes.STRING,
+        field: 'nombre_documento'
     },
-    tipo: {
-        type: DataTypes.STRING
+    documentType: {
+        type: DataTypes.STRING,
+        field: 'tipo_documento'
     },
-    ruta: {
-        type: DataTypes.STRING
+    documentRoute: {
+        type: DataTypes.STRING,
+        field: 'ruta_documento'
     }
 }, {
     tableName: 'documentos'
@@ -24,12 +27,31 @@ const Ticket = sequelize.define('ticket',{
     tableName: 'tickets'
 });
 const Comment = sequelize.define('comment',{
+    title: {
+        type: DataTypes.STRING,
+        field: 'titulo_comentario'
+    },
+    content: {
+        type: DataTypes.STRING,
+        field: 'contenido'
+    },
+    state: {
+        type: DataTypes.INTEGER,
+        field: 'estado'
+    },
+    expirationDate: {
+        type: DataTypes.DATE,
+        field: 'fecha_vencimiento'
+    }
 
 }, {
     tableName: 'commentarios'
 });
 const Manager = sequelize.define('manegar',{
-
+    managerName: {
+        type: DataTypes.STRING,
+        field: 'nombre_jefe'
+    }
 }, {
     tableName: 'gestores'
 });

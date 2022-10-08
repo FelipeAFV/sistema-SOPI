@@ -1,3 +1,4 @@
+const { DataTypes } = require("sequelize");
 const { sequelize } = require("../../database/db-init");
 
 
@@ -8,7 +9,15 @@ const Purchase = sequelize.define('purchase',{
 });
 
 const PurchaseDetail = sequelize.define('purchaseDetail', {
-
+    quantity: {
+        type: DataTypes.INTEGER,
+        field: 'cantidad'
+    },
+    price: {
+        type: DataTypes.NUMBER,
+        field: 'precio'
+    },
+    
 }, {
     tableName: 'compras_detalle'
 });
@@ -19,19 +28,49 @@ const PurchaseLog = sequelize.define('purchaseLog', {
 });
 
 const PurchaseType = sequelize.define('purchaseType', {
-
+    purchaseTypeName: {
+        type: DataTypes.STRING,
+        field: 'nombre_tipo_compra'
+    }
 }, {
     tableName: 'compras_tipo'
 });
 
 const PurchaseStatus = sequelize.define('purchaseStatus', {
-
+    purchaseStatusName: {
+        type: DataTypes.STRING,
+        field: 'nombre_estado_compra'
+    }
 }, {
     tableName: 'compras_estado'
 });
 
 const Supplier = sequelize.define('supplier', {
-
+    supplierName: {
+        type: DataTypes.STRING,
+        field: 'nombre_proveedor'
+    },
+    businessName: {
+        type: DataTypes.STRING,
+        field: 'razon_social'
+    },
+    address:{
+        type: DataTypes.STRING,
+        field: 'dirección'
+    },
+    city: {
+        type: DataTypes.STRING,
+        field: 'ciudad'
+    },
+    sector:{
+        type: DataTypes.STRING,
+        field: 'comuna'
+    },
+    phone: {
+        type: DataTypes.STRING,
+        field: 'telefono_proveedor'
+    },
+    
 }, {
     tableName: 'proveedores'
 });
