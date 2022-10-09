@@ -21,11 +21,6 @@ const Document = sequelize.define('documento', {
 });
 
 const Ticket = sequelize.define('ticket',{
-
-}, {
-    tableName: 'tickets'
-});
-const Comment = sequelize.define('comment',{
     title: {
         type: DataTypes.STRING,
         field: 'titulo'
@@ -42,6 +37,16 @@ const Comment = sequelize.define('comment',{
         type: DataTypes.DATE,
         field: 'fecha_vencimiento'
     }
+
+}, {
+    tableName: 'tickets'
+});
+const Comment = sequelize.define('comment',{
+    response: {
+        type: DataTypes.STRING,
+        field: 'respuesta'
+    },
+    
 
 }, {
     tableName: 'commentarios'
