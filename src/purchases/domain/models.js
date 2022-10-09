@@ -50,7 +50,8 @@ const PurchaseStatus = sequelize.define('purchaseStatus', {
         field: 'nombre'
     }
 }, {
-    tableName: 'compras_estado'
+    tableName: 'compras_estado',
+    timestamps: false
 });
 
 const Supplier = sequelize.define('supplier', {

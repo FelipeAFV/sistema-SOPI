@@ -1,7 +1,8 @@
 const { loadAllAssociations } = require('../../src/database/db-associate-models');
 const { sequelize } = require('../../src/database/db-init');
-const sopiController = require('../../src/solicitude/infraestructure/sopi-controller');
+
 const { createSopi } = require('../../src/solicitude/application/sopi-service');
+const { findSopi } = require('../../src/solicitude/domain/sopi-repository');
 
 /**
  * Provide mock sequelize and add transaction scope
@@ -29,28 +30,19 @@ afterAll(async () => {
 
 test('Servicio para ingreso de sopi', async () => {
 
-    try {
+        const sopiCreated = await createSopi({
+            costCenterId: 69, financingId: 19, userId: 1, basis: 'Wena', items: [{
 
-    } catch (e) {
-
-        sequelize.transaction(async () => {
-
-
-            const result = await createSopi({
-                costCenterId: 42, financingId: 10, userId: 1, basis: 'Escases', items: [{
-                    name: 'asd', features: 'asdas', quantity: 1
-                }]
-            })
-
-            await expect(result).not.toBeNull()
-
-            /**
-             * Trow error for transaction to ROLLBACK
-             */
-            throw new Error('Error controlado')
-
+                name: 'asd', features: 'asdas', quantity: 1
+            }]
         })
-    }
+        await expect(sopiCreated).not.toBeNull();
 
+
+        const statuses = await sopiCreated.getSopiStatuses();
+
+        console.log('Status ', statuses[0].name);
+
+        await expect(statuses[0].name).toBe('INGRESADA');
 
 });

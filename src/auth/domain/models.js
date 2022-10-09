@@ -80,8 +80,9 @@ User.loadAssociations = () => {
     User.hasMany(Ticket);
     User.hasMany(Manager);
 
-    const { Sopi } = require("../../solicitude/domain/models");
-    User.hasMany(Sopi)
+    const { Sopi, SopiLog } = require("../../solicitude/domain/models");
+    User.hasMany(Sopi);
+    User.hasMany(SopiLog, { foreignKey: {allowNull: false}});
 }
 
 Profile.loadAssociations = () => {

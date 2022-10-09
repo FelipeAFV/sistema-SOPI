@@ -63,7 +63,8 @@ const SopiStatus = sequelize.define('sopiStatus', {
     }
 },
 {
-    tableName: 'solicitudes_estado'
+    tableName: 'solicitudes_estado', 
+    timestamps: false
 });
 const Supplies = sequelize.define('supply', {
     name: {
@@ -118,7 +119,7 @@ const Financing = sequelize.define('financing', {
 Sopi.loadAssociations = () => {
     Sopi.belongsTo(CostCenter);
     Sopi.belongsTo(Financing);
-    Sopi.hasMany(SopiLog);
+    Sopi.belongsToMany(SopiStatus, { through: SopiLog});
     Sopi.hasMany(SopiDetail);
 
     const { User } = require("../../auth/domain/models");
@@ -133,12 +134,14 @@ SopiDetail.loadAssociations = () => {
     
 }
 SopiLog.loadAssociations = () => {
-    SopiLog.belongsTo(Sopi);
-    SopiLog.belongsTo(SopiStatus);
+    // SopiLog.belongsTo(Sopi);
+    // SopiLog.belongsTo(SopiStatus);
+    const { User } = require("../../auth/domain/models");
+    SopiLog.belongsTo(User);
     
 }
 SopiStatus.loadAssociations = () => {
-    SopiStatus.hasMany(SopiLog);
+    SopiStatus.belongsToMany(Sopi, { through: SopiLog});
 
 }
 Supplies.loadAssociations = () => {

@@ -1,8 +1,10 @@
 const { sequelize } = require("../../database/db-init");
-const { Sopi, SopiDetail } = require("../domain/models")
+const { saveSopi, updateSopi } = require("../domain/sopi-repository");
+const { saveSopiDetail } = require("../domain/sopidetail-repository");
+const { addLogEntryByStatusName } = require("../domain/sopilog-repository");
 
 
-const insertSopiDetails = async (items, sopiId) => {
+const generateSopiDetails = async (items) => {
 
 
     const sopiDetails = [];
@@ -10,7 +12,7 @@ const insertSopiDetails = async (items, sopiId) => {
 
         if (item.supplyId) {
 
-            const sopiDetailCreated = await SopiDetail.create({ supplyId: item.supplyId, quantity: item.quantity })
+            const sopiDetailCreated = await saveSopiDetail({ supplyId: item.supplyId, quantity: item.quantity })
             sopiDetails.push(sopiDetailCreated);
             return;
         }
@@ -19,7 +21,7 @@ const insertSopiDetails = async (items, sopiId) => {
         if (!name || !features || !quantity) {
             throw new Error(`Datos faltantes para item ${JSON.stringify(item)}`);
         }
-        const sopiDetailCreated = await SopiDetail.create({ name, features, quantity });
+        const sopiDetailCreated = await saveSopiDetail({ name, features, quantity });
         sopiDetails.push(sopiDetailCreated);
     }
 
@@ -40,13 +42,16 @@ const createSopiSeqTransactional = async ({ costCenterId, financingId, basis, us
         const response = await sequelize.transaction(async () => {
 
 
-            let sopiCreated = await Sopi.create({ costCenterId, financingId, basis: '', userId })
-                .catch(e => { throw new Error('Centro de costo o financiamiento no existe') });
+            let sopiCreated = await saveSopi({ costCenterId, financingId, basis: '', userId })
+            .catch(e => { throw new Error('Centro de costo o financiamiento no existe') });
+            
+            sopiCreated = await updateSopi( sopiCreated.id, { basis: basis || null })
+            .catch(e => { throw new Error('Fundamento debe existir') });
+            
+            await addLogEntryByStatusName(sopiCreated.id, userId, 'INGRESADA');
+            console.log('A añadir entrada de logs')
 
-            sopiCreated = await sopiCreated.update({ basis: basis || null })
-                .catch(e => { throw new Error('Fundamento debe existir') });
-
-            const details = await insertSopiDetails(items);
+            const details = await generateSopiDetails(items);
 
             for (let detail of details) {
 
@@ -59,7 +64,7 @@ const createSopiSeqTransactional = async ({ costCenterId, financingId, basis, us
         return response;
 
     } catch (e) {
-
+        console.log(e)
         throw new Error(e.message);
     }
 
