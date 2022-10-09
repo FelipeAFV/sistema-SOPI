@@ -13,7 +13,7 @@ insert into centros_costo(nombre) values('farmacia_municipal');
 insert into perfiles(nombre) values('admin');
 insert into perfiles(nombre) values('jefe_compra');
 insert into perfiles(nombre) values('gestor_compra');
-insert into perfiles(nombre) values('jurídico');
+insert into perfiles(nombre) values('juridico');
 insert into perfiles(nombre) values('referente');
 insert into perfiles(nombre) values('solicitante');
 

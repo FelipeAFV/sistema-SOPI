@@ -16,39 +16,20 @@ require('./database/db-associate-models').loadAllAssociations();
 
 const app = express();
 
-
-
 app.use(bodyParser.json());
 app.use(cookieParser());
 
 /** MIDDELWARES */
-//app.use('/api/v1/auth/registrarse', verifyToken, hasProfile('admin'));
 
 
-app.get('/test', async (req, res) => {
-    try {
-        const { username } = req.body;
-        if (!username) {
-            res.status(400).json({ message: 'Se debe ingresar el nombre de usuario' });
-            return;
-        }
-        
-        const user = await UserService.findUserByUsername(req.body.username);
-        console.log(await user.getProfile())
-        if (!user) {
-            res.status(400).json({ message: `No existe el usuario '${username}'` });
-            return;
-        }
-        res.status(200).json(user);
-        return;
-        
-    } catch (e) {
-        res.status(500).json({ message: 'Error' });
-        console.log(e)
-        return;
-    }
-})
+app.use('/api/v1/auth/registrarse', verifyToken, hasProfile(['admin']));
 
+app.use('/api/v1/sopi', verifyToken);
+app.use('\/api\/v1\/sopi$', hasProfile(['admin', 'solicitante']));
+
+/**
+ * Routes
+ */
 
 app.use('/api/v1/auth', authRoutes)
 app.use('/api/v1/sopi', sopiRoutes)

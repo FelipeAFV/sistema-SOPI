@@ -22,17 +22,21 @@ const verifyToken = (req, res, next) => {
     }
 }
 
-const hasProfile = (profile) => {
+const hasProfile = (profiles) => {
     const middleware = async (req, res, next) => {
 
         const user = await userRepository.findUserByUsername(req.user.username);
-        const userProfile = user.getProfile();
-        if (userProfile.tipo != profile) {
-            sendHttpResponse(res, 'No tienes los permisos necesarios', 403);
-            return;
+        const userProfile = await user.getProfile();
+        for (let acceptedProfile of profiles) {
+            console.log(userProfile)
+            if (userProfile.name == acceptedProfile) {
 
+                next()
+                return;
+            }
         }
-        next()
+        sendHttpResponse(res, 'No tienes los permisos necesarios', 403);
+        return;
         
     }
     return middleware;
