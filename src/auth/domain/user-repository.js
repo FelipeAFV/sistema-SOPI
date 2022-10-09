@@ -48,8 +48,6 @@ class UserRepositorySequelMySQL{
     
         await newUser.setProfile(profile)
 
-
-        newUser.setDataValue('userProfile', await newUser.getProfile());
     
         return newUser;
     
