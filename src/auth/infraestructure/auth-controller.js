@@ -45,8 +45,16 @@ class AuthController {
             
                         res.cookie('jwt',token,{httpOnly:true})
                         console.log(token);
-            
-                        res.status(200).json(userCreated)
+
+                        const req_response = {
+                            username: userCreated.username,
+                            firstname: userCreated.firstname,
+                            lastname: userCreated.lastname,
+                            mail: userCreated.mail,
+                            profile: profile                        
+                        }
+                        
+                        sendHttpResponse(res,req_response,200)
 
                     }
                 }  
@@ -85,14 +93,20 @@ class AuthController {
                     id: user.profileId
                 }
             })
-            user.setDataValue('userProfile', profile.name);
             const token = (jwt.sign({
                 id: user.id,
                 username: user.username
             },process.env.SECRET_KEY))
     
+            const req_response = {
+                username: user.username,
+                firstname: user.firstname,
+                lastname: user.lastname,
+                mail: user.mail,
+                profile: profile
+            }
             res.cookie('jwt',token,{httpOnly:true})
-            sendHttpResponse(res,user,200);
+            sendHttpResponse(res,req_response,200);
             return
             
         }else {
