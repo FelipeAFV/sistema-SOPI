@@ -5,7 +5,7 @@ const getAllCostCenter = async (req, res) => {
     const costCenters = await findAllCostCenter();
 
     if (!costCenters) {
-        sendHttpResponse(res, 'Error al buscar centros de costo', 200);
+        sendHttpResponse(res, 'Error al buscar centros de costo', 200, 'Error al buscar centros de costo');
         return;
         
     }

@@ -32,7 +32,7 @@ app.get('/test', async (req, res) => {
             res.status(400).json({ message: 'Se debe ingresar el nombre de usuario' });
             return;
         }
-
+        
         const user = await UserService.findUserByUsername(req.body.username);
         console.log(await user.getProfile())
         if (!user) {
@@ -41,7 +41,7 @@ app.get('/test', async (req, res) => {
         }
         res.status(200).json(user);
         return;
-
+        
     } catch (e) {
         res.status(500).json({ message: 'Error' });
         console.log(e)
@@ -50,10 +50,9 @@ app.get('/test', async (req, res) => {
 })
 
 
-
-
 app.use('/api/v1/auth', authRoutes)
 app.use('/api/v1/sopi', sopiRoutes)
+
 
 if (process.env.TEST == 'true') {
 

@@ -6,7 +6,7 @@ const getAllFinancing = async (req, res) => {
     const financings = await findAllCostCenter();
 
     if (financings == null) {
-        sendHttpResponse(res, 'Error al buscar financiamientos', 500);
+        sendHttpResponse(res, 'Error al buscar financiamientos', 500, 'Error al buscar financiamientos');
         return;
     }
     sendHttpResponse(res, financings, 500);

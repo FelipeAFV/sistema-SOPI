@@ -69,7 +69,7 @@ class AuthController {
             return;
         }
         
-        const user = await UserService.findUserByUsername(username)
+        const user = await userRepository.findUserByUsername(username)
         
         if(!user) {
             sendHttpResponse(res, 'Usuario no existe',400);
@@ -102,6 +102,7 @@ class AuthController {
         }
             
         } catch (error) {
+
             sendHttpResponse(res,'error interno de servidor')
         }
         
