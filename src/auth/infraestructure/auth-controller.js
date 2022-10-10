@@ -116,7 +116,7 @@ class AuthController {
         }
             
         } catch (error) {
-
+            console.log(e)
             sendHttpResponse(res,'error interno de servidor')
         }
         
