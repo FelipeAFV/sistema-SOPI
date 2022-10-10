@@ -1,4 +1,3 @@
-use sopi;
 insert into centros_costo(nombre) values('das');
 insert into centros_costo(nombre) values('chiguayante');
 insert into centros_costo(nombre) values('pinares');

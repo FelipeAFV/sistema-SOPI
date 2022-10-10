@@ -49,6 +49,7 @@ const populate = async () => {
         console.log(`SQL executed successfully`)
 
     } catch (e) {
+        console.log(e)
         console.log(`Error running query ${sqlInsert}`)
     }
 

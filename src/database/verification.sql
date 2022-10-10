@@ -1,4 +1,3 @@
-use sopi;
 select * from financiamientos;
 select * from centros_costo;
 select * from perfiles;
