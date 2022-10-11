@@ -22,9 +22,11 @@ insert into financiamientos(nombre) values('presupuesto_bienestar');
 
 insert into solicitudes_estado(nombre, nivel_completitud) values('RECHAZADA', 0);
 insert into solicitudes_estado(nombre, nivel_completitud) values('INGRESADA', 1);
-insert into solicitudes_estado(nombre, nivel_completitud) values('EN_GESTION', 2);
-insert into solicitudes_estado(nombre, nivel_completitud) values('PARCIALMENTE_GESTIONADA', 3);
-insert into solicitudes_estado(nombre, nivel_completitud) values('COMPLETAMENTE_GESTIONADA', 4);
+insert into solicitudes_estado(nombre, nivel_completitud) values('REVISION_REFERENTE', 2);
+insert into solicitudes_estado(nombre, nivel_completitud) values('REVISADO_REFERENTE', 3);
+insert into solicitudes_estado(nombre, nivel_completitud) values('EN_GESTION', 4);
+insert into solicitudes_estado(nombre, nivel_completitud) values('PARCIALMENTE_GESTIONADA', 5);
+insert into solicitudes_estado(nombre, nivel_completitud) values('COMPLETAMENTE_GESTIONADA', 6);
 
 insert into compras_estado(nombre) values('PREPARANDO');
 insert into compras_estado(nombre) values('VINCULADA_CC');

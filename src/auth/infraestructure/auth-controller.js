@@ -96,7 +96,7 @@ class AuthController {
             const token = (jwt.sign({
                 id: user.id,
                 username: user.username
-            },process.env.SECRET_KEY))
+            },process.env.SECRET_KEY, { expiresIn: '8h'}))
     
             const req_response = {
                 username: user.username,

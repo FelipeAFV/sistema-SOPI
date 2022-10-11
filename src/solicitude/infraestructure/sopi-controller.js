@@ -33,5 +33,30 @@ const getSopi = async  (req, res) => {
     }
 }
 
+const updateSopi = async (req, res) => {
+
+    try {
+        const {sopiId, statusId, comment } = req.body;
+        
+
+        if (!sopiId || !statusId || !comment) {
+            sendHttpResponse(res, '', 400, 'Datos faltantes en solicitud');
+            return;
+        }
+    
+        const updatedSopi = await sopiService.updateSopiStatus({sopiId, statusId, userId: req.user.id, comment});
+    
+        sendHttpResponse(res, updatedSopi,200);
+        return;
+        
+    } catch (e) {
+        console.log(e)
+        sendHttpResponse(res, '', 500, 'Error al procesar la actualizacion de sopi');
+        return;
+
+    }
+}
+
 exports.addNewSopi = addNewSopi;
 exports.getSopi = getSopi;
+exports.updateSopi = updateSopi;

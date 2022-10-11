@@ -8,8 +8,9 @@ class UserRepositorySequelMySQL{
         const user = await User.findOne({
             where: {
                 username: username
-            }
-        })
+            }, 
+            include: Profile
+        },)
         
         /**Retorna nulo si no existe */
         return user;

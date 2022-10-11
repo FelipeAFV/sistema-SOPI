@@ -28,13 +28,13 @@ app.use(cookieParser());
 app.use('/api/v1/auth/registrarse', verifyToken, hasProfile(['admin']));
 
 app.use('/api/v1/sopi', verifyToken);
-app.use('\/api\/v1\/sopi$', hasProfile(['admin', 'solicitante']));
+// app.use('\/api\/v1\/sopi$', hasProfile(['admin', 'solicitante']));
 
 /**
  * Routes
  */
 
-app.use('/api/v1/auth', authRoutes)
+app.use('/api/v1/auth', authRoutes);
 app.use('/api/v1/sopi', sopiRoutes)
 
 

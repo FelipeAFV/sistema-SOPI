@@ -6,11 +6,11 @@ const getSopiById =  async (id) => {
 }
 
 
-const findSopi = async ({basis}) => {
+const findSopi = async (conditions) => {
+
+
     const sopi = await  Sopi.findOne({
-        where: {
-            basis
-        },
+        where: conditions,
         include: SopiStatus
     })
     return sopi;

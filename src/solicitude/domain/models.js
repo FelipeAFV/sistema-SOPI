@@ -43,6 +43,10 @@ const SopiLog = sequelize.define('sopiLog', {
     updateDate: {
         type: DataTypes.DATE,
         field: 'fecha_actualización'
+    },
+    comment: {
+        field: 'comentario',
+        type: DataTypes.STRING
     }
 },
 {
@@ -119,8 +123,11 @@ const Financing = sequelize.define('financing', {
 Sopi.loadAssociations = () => {
     Sopi.belongsTo(CostCenter);
     Sopi.belongsTo(Financing);
-    Sopi.belongsToMany(SopiStatus, { through: SopiLog});
+    Sopi.belongsToMany(SopiStatus, { as: 'logStatus',through: SopiLog});
     Sopi.hasMany(SopiDetail);
+    Sopi.belongsTo(SopiStatus, { as: 'status'});
+
+
 
     const { User } = require("../../auth/domain/models");
     Sopi.belongsTo(User);
@@ -142,6 +149,7 @@ SopiLog.loadAssociations = () => {
 }
 SopiStatus.loadAssociations = () => {
     SopiStatus.belongsToMany(Sopi, { through: SopiLog});
+    SopiStatus.belongsTo(Sopi);
 
 }
 Supplies.loadAssociations = () => {

@@ -1,7 +1,8 @@
 const { sequelize } = require("../../database/db-init");
-const { saveSopi, updateSopi } = require("../domain/sopi-repository");
+const { SopiLog, Sopi } = require("../domain/models");
+const { saveSopi, updateSopi, findSopi } = require("../domain/sopi-repository");
 const { saveSopiDetail } = require("../domain/sopidetail-repository");
-const { addLogEntryByStatusName } = require("../domain/sopilog-repository");
+const { addLogEntryByStatusName, addLogEntryByStatusId } = require("../domain/sopilog-repository");
 
 
 const generateSopiDetails = async (items) => {
@@ -71,5 +72,15 @@ const createSopiSeqTransactional = async ({ costCenterId, financingId, basis, us
 }
 
 
+const updateSopiStatus = async ({sopiId, statusId, userId, comment}) => {
+
+    const sopiUpdated = await updateSopi(sopiId, {statusId: statusId});
+
+    await addLogEntryByStatusId(sopiId, userId, comment, statusId);
+
+    return sopiUpdated;
+}
+
 
 exports.createSopi = createSopiSeqTransactional;
+exports.updateSopiStatus = updateSopiStatus;
