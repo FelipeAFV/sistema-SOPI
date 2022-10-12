@@ -134,7 +134,7 @@ Sopi.loadAssociations = () => {
     
 }
 SopiDetail.loadAssociations = () => {
-    SopiDetail.belongsTo(Sopi, { foreignKey: {field: 'solicitid_id'}});
+    SopiDetail.belongsTo(Sopi, { foreignKey: {field: 'solicitud_id'}});
     SopiDetail.belongsTo(Supplies, { foreignKey: {field: 'insumo_id'}});
     const { PurchaseDetail } = require("../../purchases/domain/models");
     SopiDetail.hasOne(PurchaseDetail, { foreignKey: {field: 'solicitud_detalle_id'}})
