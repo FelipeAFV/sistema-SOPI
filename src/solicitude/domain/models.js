@@ -121,55 +121,55 @@ const Financing = sequelize.define('financing', {
 });
 
 Sopi.loadAssociations = () => {
-    Sopi.belongsTo(CostCenter);
-    Sopi.belongsTo(Financing);
-    Sopi.belongsToMany(SopiStatus, { as: 'logStatus',through: SopiLog});
-    Sopi.hasMany(SopiDetail);
-    Sopi.belongsTo(SopiStatus, { as: 'status'});
+    Sopi.belongsTo(CostCenter, {foreignKey: {field: 'centro_costo_id'}});
+    Sopi.belongsTo(Financing, { foreignKey: {field: 'financiamiento_id'}});
+    Sopi.belongsToMany(SopiStatus, { as: 'logStatus',through: SopiLog, foreignKey: {field: 'sopi_id', name: 'sopi'}});
+    Sopi.hasMany(SopiDetail, { foreignKey: {field: 'solicitud_id'}});
+    Sopi.belongsTo(SopiStatus, { as: 'status', foreignKey: {field: 'estado_id'}});
 
 
 
     const { User } = require("../../auth/domain/models");
-    Sopi.belongsTo(User);
+    Sopi.belongsTo(User, { foreignKey: {field: 'usuario_id'}});
     
 }
 SopiDetail.loadAssociations = () => {
-    SopiDetail.belongsTo(Sopi);
-    SopiDetail.belongsTo(Supplies);
+    SopiDetail.belongsTo(Sopi, { foreignKey: {field: 'solicitid_id'}});
+    SopiDetail.belongsTo(Supplies, { foreignKey: {field: 'insumo_id'}});
     const { PurchaseDetail } = require("../../purchases/domain/models");
-    SopiDetail.hasOne(PurchaseDetail)
+    SopiDetail.hasOne(PurchaseDetail, { foreignKey: {field: 'solicitud_detalle_id'}})
     
 }
 SopiLog.loadAssociations = () => {
     // SopiLog.belongsTo(Sopi);
     // SopiLog.belongsTo(SopiStatus);
     const { User } = require("../../auth/domain/models");
-    SopiLog.belongsTo(User);
+    SopiLog.belongsTo(User, { foreignKey: {field: 'usuario_id'}});
     
 }
 SopiStatus.loadAssociations = () => {
-    SopiStatus.belongsToMany(Sopi, { through: SopiLog});
-    SopiStatus.belongsTo(Sopi);
+    SopiStatus.belongsToMany(Sopi, { through: SopiLog, foreignKey: {field: 'estado_id', name: 'status'}});
+    SopiStatus.hasMany(Sopi, { foreignKey: {field: 'estado_id'}});
 
 }
 Supplies.loadAssociations = () => {
-    Supplies.hasMany(SopiDetail);
-    Supplies.belongsTo(SuppliesCategory);
+    Supplies.hasMany(SopiDetail, { foreignKey: {field: 'insumo_id'}});
+    Supplies.belongsTo(SuppliesCategory, { foreignKey: {field: 'categoria_id'}});
 }
 SuppliesCategory.loadAssociations = () => {
-    SuppliesCategory.hasMany(Supplies);
+    SuppliesCategory.hasMany(Supplies, { foreignKey: {field: 'categoria_id'}});
 }
 CostCenter.loadAssociations = () => {
     CostCenter.hasMany(Sopi, {
         foreignKey: {
-            allowNull: false
+            allowNull: false, field: 'centro_costo_id'
         }
     });
 }
 Financing.loadAssociations = () => {
     Financing.hasMany(Sopi, {
         foreignKey: {
-            allowNull: false
+            allowNull: false, field: 'financiamiento_id'
         }
     });
 }

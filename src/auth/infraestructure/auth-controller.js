@@ -62,6 +62,7 @@ class AuthController {
         }
             
         } catch (error) {
+            console.log(error)
             sendHttpResponse(res,'error interno de servidor')
         }
         
@@ -78,6 +79,7 @@ class AuthController {
         }
         
         const user = await userRepository.findUserByUsername(username)
+        console.log(user)
         
         if(!user) {
             sendHttpResponse(res, 'Usuario no existe',400);
@@ -116,6 +118,7 @@ class AuthController {
         }
             
         } catch (error) {
+            console.log(error)
             sendHttpResponse(res,'error interno de servidor')
         }
         

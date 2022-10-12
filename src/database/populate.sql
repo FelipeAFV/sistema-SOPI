@@ -9,12 +9,12 @@ insert into centros_costo(nombre) values('bienestar');
 insert into centros_costo(nombre) values('farmacia_municipal');
 
 
-insert into perfiles(nombre) values('admin');
-insert into perfiles(nombre) values('jefe_compra');
-insert into perfiles(nombre) values('gestor_compra');
-insert into perfiles(nombre) values('juridico');
-insert into perfiles(nombre) values('referente');
-insert into perfiles(nombre) values('solicitante');
+insert into perfiles(id, nombre) values(1, 'admin');
+insert into perfiles(id, nombre) values(2, 'jefe_compra');
+insert into perfiles(id, nombre) values(3, 'gestor_compra');
+insert into perfiles(id, nombre) values(4, 'juridico');
+insert into perfiles(id, nombre) values(5, 'referente');
+insert into perfiles(id, nombre) values(6, 'solicitante');
 
 insert into financiamientos(nombre) values('convenio');
 insert into financiamientos(nombre) values('presupuesto_das');
@@ -34,3 +34,17 @@ insert into compras_estado(nombre) values('DETENIDA');
 insert into compras_estado(nombre) values('CERRADA_CON_ERRORES');
 insert into compras_estado(nombre) values('CERRADA_SIN_ERRORES');
 insert into compras_estado(nombre) values('COMPLETADA');
+
+insert into permisos(id, nombre) values(1, 'SOPI_EDITAR_ESTADO_RECHAZADA');
+insert into permisos(id, nombre) values(2, 'SOPI_EDITAR_ESTADO_REVISION_REFERENTE');
+insert into permisos(id, nombre) values(3, 'SOPI_EDITAR_ESTADO_REVISADO_REFERENTE');
+insert into permisos(id, nombre) values(4, 'SOPI_EDITAR_ESTADO_EN_GESTION');
+
+
+insert into accesos(perfil_id, permiso_id) values(5,3);
+insert into accesos(perfil_id, permiso_id) values(1,1);
+insert into accesos(perfil_id, permiso_id) values(1,2);
+insert into accesos(perfil_id, permiso_id) values(1,3);
+insert into accesos(perfil_id, permiso_id) values(1,4);
+
+insert into usuarios(usuario, contrasena, nombre, apellido, perfil_id, creacion, ultima_actualizacion) values('admin', '$2b$05$MJLV7V5v9ZsCzytVt/ElneN16ZFnVG1/31ZJ3b4iYVrt.Wa.Rax2O', 'admin', 'admin', 1, '2022-10-10', '2022-10-10');

@@ -86,38 +86,38 @@ const Supplier = sequelize.define('supplier', {
 
 
 Purchase.loadAssociations = () => {
-    Purchase.belongsTo(PurchaseType);
-    Purchase.belongsTo(Supplier);
-    Purchase.hasMany(PurchaseLog);
-    Purchase.hasMany(PurchaseDetail);
+    Purchase.belongsTo(PurchaseType, { foreignKey: {field: 'tipo_id'}});
+    Purchase.belongsTo(Supplier, { foreignKey: { field: 'proveedor_id'}});
+    Purchase.belongsToMany(PurchaseStatus, { through: PurchaseLog, foreignKey: { field: 'compra_id', name: 'purchase'}});
+    Purchase.hasMany(PurchaseDetail, { foreignKey: { field: 'compra_id'}});
 
     const { Document, Manager } = require("../../management/domain/models");
-    Purchase.hasMany(Document);
-    Purchase.hasMany(Manager);
+    Purchase.hasMany(Document, { foreignKey: { field: 'compra_id'}});
+    Purchase.hasMany(Manager, { foreignKey: {field : 'compra_id'}});
 
     
 }
 
 PurchaseDetail.loadAssociations = () => {
-    PurchaseDetail.belongsTo(Purchase);
+    PurchaseDetail.belongsTo(Purchase, { foreignKey: { field: 'compra_id'}});
 
-    const { SopiDetail } = require("../../solicitude/domain/models");
-    PurchaseDetail.belongsTo(SopiDetail)
+    const { SopiDetail, SopiLog } = require("../../solicitude/domain/models");
+    PurchaseDetail.belongsTo(SopiDetail, { foreignKey: {field: 'solicitud_detalle_id'}})
 }
 PurchaseLog.loadAssociations = () => {
-    PurchaseLog.belongsTo(PurchaseStatus)
-    PurchaseLog.belongsTo(Purchase)
+
+
     
 }
 PurchaseType.loadAssociations = () => {
-    PurchaseType.hasMany(Purchase)
+    PurchaseType.hasMany(Purchase, { foreignKey: {field: 'tipo_id'}})
 }
 PurchaseStatus.loadAssociations = () => {
-    PurchaseStatus.hasMany(PurchaseLog);
+    PurchaseStatus.belongsToMany(Purchase, { through: PurchaseLog, foreignKey: {field: 'estado_id', name: 'status'}});
     
 }
 Supplier.loadAssociations = () => {
-    Supplier.hasMany(Purchase)
+    Supplier.hasMany(Purchase, { foreignKey: {field: 'proveedor_id'}})
 
 }
 

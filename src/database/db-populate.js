@@ -38,6 +38,7 @@ const populate = async () => {
                 subStatements.forEach(async (stat) => {
                     if (stat != '') {
                         await sequelize.query(stat);
+
                     }
                 })
 

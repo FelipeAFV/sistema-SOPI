@@ -65,30 +65,30 @@ const Manager = sequelize.define('manager',{
 Document.loadAssociations = () => {
     const { Purchase } = require("../../purchases/domain/models");
     
-    Document.belongsTo(Purchase);
+    Document.belongsTo(Purchase, { foreignKey: { field: 'compra_id'}});
     
     
 }
 
 Manager.loadAssociations = () => {
     const { User } = require("../../auth/domain/models");
-    Manager.belongsTo(User);
+    Manager.belongsTo(User, { foreignKey: { field: 'usuario_id'}});
     const { Purchase } = require("../../purchases/domain/models");
-    Manager.belongsTo(Purchase);
+    Manager.belongsTo(Purchase, { foreignKey: { field: 'compra_id'}});
 
-    Manager.hasMany(Ticket);
+    Manager.hasMany(Ticket, {foreignKey: { field: 'gestor_id'}});
 }
 
 Ticket.loadAssociations = () => {
-    Ticket.belongsTo(Manager);
-    Ticket.hasMany(Comment);
+    Ticket.belongsTo(Manager, { foreignKey: { field: 'gestor_id'}});
+    Ticket.hasMany(Comment, { foreignKey: { field: 'ticket_id'}});
 
     const { User } = require("../../auth/domain/models");
-    Ticket.belongsTo(User);
+    Ticket.belongsTo(User, { foreignKey: {field: 'responsable_id'}});
 }
 
 Comment.loadAssociations = () => {
-    Comment.belongsTo(Ticket);
+    Comment.belongsTo(Ticket, { foreignKey: { field: 'ticket_id'}});
 }
 
 

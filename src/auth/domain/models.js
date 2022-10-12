@@ -4,6 +4,7 @@ const { sequelize } = require("../../database/db-init");
 
 
 const User = sequelize.define('user', {
+
     username: {
         type: DataTypes.STRING,
         field: 'usuario'
@@ -29,10 +30,16 @@ const User = sequelize.define('user', {
         field: 'mail'
     },
 },
-    { tableName: 'usuarios' });
+    { tableName: 'usuarios' , updatedAt: 'ultima_actualizacion', createdAt: 'creacion'});
 
 
 const Profile = sequelize.define('profile', {
+    id: {
+        field: 'id',
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        autoIncrement: false
+    },
     name: {
         type: DataTypes.STRING,
         field: 'nombre'
@@ -47,10 +54,17 @@ const Access = sequelize.define('access', {
 
 },
     {
-        tableName: 'accesos'
+        tableName: 'accesos',
+        timestamps: false
     })
 
 const Permission = sequelize.define('permission', {
+    id: {
+        field: 'id',
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        autoIncrement: false
+    },
     name: {
         type: DataTypes.STRING,
         field: 'nombre'
@@ -61,11 +75,12 @@ const Permission = sequelize.define('permission', {
     }
 },
     {
-        tableName: 'permisos'
+        tableName: 'permisos',
+        timestamps: false
     })
 
 Permission.loadAssociations = () => {
-    Permission.belongsToMany(Profile, {through: Access})
+    Permission.belongsToMany(Profile, {through: Access, foreignKey: {field: 'permiso_id', name: 'permission'}})
 }
 
 Access.loadAssociations = () => {
@@ -74,20 +89,20 @@ Access.loadAssociations = () => {
 
 User.loadAssociations = () => {
 
-    User.belongsTo(Profile);
+    User.belongsTo(Profile, { foreignKey: { field: 'perfil_id'}});
 
     const { Ticket, Manager } = require("../../management/domain/models");
-    User.hasMany(Ticket);
-    User.hasMany(Manager);
+    User.hasMany(Ticket, { foreignKey: {field: 'responsable_id'}});
+    User.hasMany(Manager, { foreignKey: {field: 'usuario_id'}});
 
     const { Sopi, SopiLog } = require("../../solicitude/domain/models");
-    User.hasMany(Sopi);
-    User.hasMany(SopiLog, { foreignKey: {allowNull: false}});
+    User.hasMany(Sopi, { foreignKey: { field: 'usuario_id'}});
+    User.hasMany(SopiLog, { foreignKey: {allowNull: false, field: 'usuario_id'}});
 }
 
 Profile.loadAssociations = () => {
-    Profile.hasMany(User);
-    Profile.belongsToMany(Permission, { through: Access});
+    Profile.hasMany(User, { foreignKey: { field: 'perfil_id'}});
+    Profile.belongsToMany(Permission, { through: Access, foreignKey: {field: 'perfil_id', name: 'profile'}});
 }
 
 
