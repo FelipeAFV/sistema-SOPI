@@ -5,6 +5,11 @@ const getSopiById =  async (id) => {
     return sopi;
 }
 
+const getAllSopis = async () => {
+    const sopis = await Sopi.findAll();
+    return sopis
+}
+
 
 const findSopi = async (conditions) => {
 
@@ -31,3 +36,4 @@ exports.getSopiById = getSopiById;
 exports.findSopi = findSopi;
 exports.saveSopi = saveSopi;
 exports.updateSopi = updateSopi;
+exports.getAllSopis = getAllSopis;

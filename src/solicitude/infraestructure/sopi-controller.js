@@ -1,6 +1,6 @@
 const { request } = require("express");
 const { sendHttpResponse } = require("../../share/utils/response-parser");
-const { getSopiById } = require("../domain/sopi-repository");
+const { getSopiById, getAllSopis } = require("../domain/sopi-repository");
 
 const sopiService = require("../application/sopi-service");
 
@@ -62,6 +62,16 @@ const updateSopi = async (req, res) => {
     }
 }
 
+const getAllSopi = async (req, res) => {
+    try {
+        const sopis = await getAllSopis();
+        sendHttpResponse(res, sopis, 200);
+    } catch (e) {
+        sendHttpResponse(res, 'Error', 500, 'Error al buscar sopis');
+    }
+}
+
 exports.addNewSopi = addNewSopi;
 exports.getSopi = getSopi;
 exports.updateSopi = updateSopi;
+exports.getAllSopi = getAllSopi;
