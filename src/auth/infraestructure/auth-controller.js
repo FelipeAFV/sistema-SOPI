@@ -38,13 +38,6 @@ class AuthController {
                         sendHttpResponse(res,'error al crear usuario')
                     }else {
 
-                        const token = (jwt.sign({
-                            id: userCreated.id,
-                            username: userCreated.username
-                        },process.env.SECRET_KEY))
-            
-                        res.cookie('jwt',token,{httpOnly:true})
-                        console.log(token);
 
                         const req_response = {
                             username: userCreated.username,
