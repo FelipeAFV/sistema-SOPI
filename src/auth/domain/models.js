@@ -80,7 +80,7 @@ const Permission = sequelize.define('permission', {
     })
 
 Permission.loadAssociations = () => {
-    Permission.belongsToMany(Profile, {through: Access, foreignKey: {field: 'permiso_id', name: 'permission'}})
+    Permission.belongsToMany(Profile, {through: Access, foreignKey: {field: 'permiso_id', name: 'permissionId'}})
 }
 
 Access.loadAssociations = () => {
@@ -102,7 +102,7 @@ User.loadAssociations = () => {
 
 Profile.loadAssociations = () => {
     Profile.hasMany(User, { foreignKey: { field: 'perfil_id'}});
-    Profile.belongsToMany(Permission, { through: Access, foreignKey: {field: 'perfil_id', name: 'profile'}});
+    Profile.belongsToMany(Permission, { through: Access, foreignKey: {field: 'perfil_id', name: 'profileId'}});
 }
 
 

@@ -123,7 +123,7 @@ const Financing = sequelize.define('financing', {
 Sopi.loadAssociations = () => {
     Sopi.belongsTo(CostCenter, {foreignKey: {field: 'centro_costo_id'}});
     Sopi.belongsTo(Financing, { foreignKey: {field: 'financiamiento_id'}});
-    Sopi.belongsToMany(SopiStatus, { as: 'logStatus',through: SopiLog, foreignKey: {field: 'sopi_id', name: 'sopi'}});
+    Sopi.belongsToMany(SopiStatus, { as: 'logStatus',through: SopiLog, foreignKey: {field: 'sopi_id', name: 'sopiId'}});
     Sopi.hasMany(SopiDetail, { foreignKey: {field: 'solicitud_id'}});
     Sopi.belongsTo(SopiStatus, { as: 'status', foreignKey: {field: 'estado_id'}});
 
@@ -148,7 +148,7 @@ SopiLog.loadAssociations = () => {
     
 }
 SopiStatus.loadAssociations = () => {
-    SopiStatus.belongsToMany(Sopi, { through: SopiLog, foreignKey: {field: 'estado_id', name: 'status'}});
+    SopiStatus.belongsToMany(Sopi, { through: SopiLog, foreignKey: {field: 'estado_id', name: 'statusId'}});
     SopiStatus.hasMany(Sopi, { foreignKey: {field: 'estado_id'}});
 
 }

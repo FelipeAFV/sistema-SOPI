@@ -40,7 +40,7 @@ const createSopiSeqTransactional = async ({ costCenterId, financingId, basis, us
         if (!items || items.length == 0) {
             throw new Error('La sopi debe ser ingresada con detalles')
         }
-        const response = await sequelize.transaction(async () => {
+        const response = await sequelize.transaction(async (t) => {
 
 
             let sopiCreated = await saveSopi({ costCenterId, financingId, basis: '', userId })
@@ -48,7 +48,7 @@ const createSopiSeqTransactional = async ({ costCenterId, financingId, basis, us
             
             sopiCreated = await updateSopi( sopiCreated.id, { basis: basis || null })
             .catch(e => { throw new Error('Fundamento debe existir') });
-            
+            console.log('Sopi created id ', sopiCreated.id)
             await addLogEntryByStatusName(sopiCreated.id, userId, 'INGRESADA');
             console.log('A añadir entrada de logs')
 
