@@ -25,9 +25,14 @@ const getSopi = async  (req, res) => {
     const sopiId = req.params.sopiId;
     try {
         const sopi = await getSopiById(sopiId);
+        const statuses = await sopi.getLogStatus()
+        sopi.status = statuses
+        console.log(statuses)
+
         sendHttpResponse(res, sopi, 200);
         
     } catch (e) {
+        console.log(e)
         sendHttpResponse(res, 'Error al buscar sopi con id ' + sopiId, 400);
 
     }

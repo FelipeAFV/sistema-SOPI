@@ -3,6 +3,7 @@ const { SopiLog, Sopi } = require("../domain/models");
 const { saveSopi, updateSopi, findSopi } = require("../domain/sopi-repository");
 const { saveSopiDetail } = require("../domain/sopidetail-repository");
 const { addLogEntryByStatusName, addLogEntryByStatusId } = require("../domain/sopilog-repository");
+const { findStatusByName } = require("../domain/sopistatus-repository");
 
 
 const generateSopiDetails = async (items) => {
@@ -42,9 +43,11 @@ const createSopiSeqTransactional = async ({ costCenterId, financingId, basis, us
         }
         const response = await sequelize.transaction(async (t) => {
 
+            const status = await  findStatusByName('INGRESADA');
 
-            let sopiCreated = await saveSopi({ costCenterId, financingId, basis: '', userId })
+            let sopiCreated = await saveSopi({ costCenterId, financingId, basis: '', userId, statusId: status.id })
             .catch(e => { throw new Error('Centro de costo o financiamiento no existe') });
+
             
             sopiCreated = await updateSopi( sopiCreated.id, { basis: basis || null })
             .catch(e => { throw new Error('Fundamento debe existir') });

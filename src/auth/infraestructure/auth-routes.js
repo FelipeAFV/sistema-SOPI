@@ -7,7 +7,7 @@ const router = Router();
 router.post('/registrarse', AuthController.addUser);
 router.post('/ingresar', AuthController.loginUser);
 router.get('/logout', AuthController.logOutUser);
-router.get('/profiles', getAllProfile);
+router.get('/perfiles', getAllProfile);
 
 
 
