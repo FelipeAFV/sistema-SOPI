@@ -1,5 +1,6 @@
 const jwt = require("jsonwebtoken");
 const { sendHttpResponse } = require("../../share/utils/response-parser");
+const { findAllPermisionFromProfileId } = require("../domain/permission-repository");
 const { userRepository } = require("../domain/user-repository");
 
 const verifyToken = (req, res, next) => {
@@ -30,17 +31,41 @@ const hasProfile = (profiles) => {
         for (let acceptedProfile of profiles) {
             console.log(userProfile)
             if (userProfile.name == acceptedProfile) {
-
+                
                 next()
                 return;
             }
         }
-        sendHttpResponse(res, 'No tienes los permisos necesarios', 403);
+        sendHttpResponse(res, 'No tienes el perfil necesario', 403);
         return;
         
     }
     return middleware;
+    
+}
 
+const hasPermission = (permissionList) => {
+    const middleware = async (req, res, next) => {
+        const user = await userRepository.findUserByUsername(req.user.username);
+        const permissions = await findAllPermisionFromProfileId(user.profileId);
+        for (let requiredPermission of permissionList) {
+            let containsPermission = false;
+            for (let actualPermission of permissions) {
+                if (actualPermission.name == requiredPermission) {
+                    containsPermission = true;
+                    break;
+                }
+            }
+            if (!containsPermission) {
+                sendHttpResponse(res,'No tienes los permisos necesarios', 403)
+                return;
+            } 
+        }
+        next();
+        
+    }
+    return middleware;
 }
 exports.verifyToken = verifyToken;
 exports.hasProfile = hasProfile;
+exports.hasPermission = hasPermission;

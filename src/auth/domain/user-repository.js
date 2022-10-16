@@ -55,6 +55,11 @@ class UserRepositorySequelMySQL{
     
     }
 
+    saveUser = async (user) => {
+        const userCreated = await User.create(user)
+        return userCreated;
+    }
+
 }
 
 
