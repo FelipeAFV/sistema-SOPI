@@ -9,6 +9,7 @@ const { verifyToken, hasProfile } = require('./auth/infraestructure/check-auth-m
 const authRoutes = require('./auth/infraestructure/auth-routes');
 const { UserService } = require('./auth/domain/user-repository');
 const sopiRoutes = require('./solicitude/infraestructure/solicitudes-routes');
+const { purchaseRoutes } = require('./purchases/infraestructure/purchase-routes');
 require('dotenv').config();
 
 require('./database/db-init');
@@ -29,7 +30,10 @@ app.use('/api/v1/auth/registrarse', verifyToken, hasProfile(['admin']));
 app.use('/api/v1/auth/perfiles', verifyToken);
 app.use('/api/v1/auth/usuarios', verifyToken);
 
+
 app.use('/api/v1/sopi', verifyToken);
+app.use('/api/v1/compras', verifyToken);
+
 // app.use('\/api\/v1\/sopi$', hasProfile(['admin', 'solicitante']));
 
 /**
@@ -38,6 +42,7 @@ app.use('/api/v1/sopi', verifyToken);
 
 app.use('/api/v1/auth', authRoutes);
 app.use('/api/v1/sopi', sopiRoutes)
+app.use('/api/v1/compras', purchaseRoutes)
 
 
 if (process.env.TEST == 'true') {
