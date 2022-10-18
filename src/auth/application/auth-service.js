@@ -30,6 +30,7 @@ const login = async ({username, password}) => {
         
 
         const req_response = {
+            id: user.id,
             username: user.username,
             firstname: user.firstname,
             lastname: user.lastname,

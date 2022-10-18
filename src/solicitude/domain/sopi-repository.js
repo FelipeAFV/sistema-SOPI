@@ -16,7 +16,7 @@ const findSopi = async (conditions) => {
 
     const sopi = await  Sopi.findOne({
         where: conditions,
-        include: SopiStatus
+        include: [{model: SopiStatus, as: 'status'}, SopiDetail]
     })
     return sopi;
 }

@@ -8,8 +8,8 @@ const Router = require('express').Router;
 
 const router = Router();
 
-router.post('/', hasProfile(['admin', 'solicitante']), addNewSopi);
-router.put('/',  hasProfile(['admin', 'referente']), verifyUpdateStatusPermissions(),  updateSopi);
+router.post('/', hasProfile(['director', 'solicitante']), addNewSopi);
+router.put('/',  hasProfile(['director', 'referente']), verifyUpdateStatusPermissions(),  updateSopi);
 router.get('/', getAllSopi);
 router.get('/:sopiId', getSopi);
 router.get('/centroCosto', getAllCostCenter);
