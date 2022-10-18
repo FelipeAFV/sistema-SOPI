@@ -3,9 +3,17 @@ const { sequelize } = require("../../database/db-init");
 
 
 const Purchase = sequelize.define('purchase',{
-
+    totalAmmount: {
+        type: DataTypes.DOUBLE,
+        field: 'costo_total'
+    }
 }, {
     tableName: 'compras'
+});
+const PurchaseSopi = sequelize.define('purchaseSopi',{
+
+}, {
+    tableName: 'solicitudes_compras'
 });
 
 const PurchaseDetail = sequelize.define('purchaseDetail', {
@@ -14,7 +22,7 @@ const PurchaseDetail = sequelize.define('purchaseDetail', {
         field: 'cantidad'
     },
     price: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.DOUBLE,
         field: 'precio'
     },
 
@@ -90,6 +98,10 @@ Purchase.loadAssociations = () => {
     Purchase.belongsTo(Supplier, { foreignKey: { field: 'proveedor_id'}});
     Purchase.belongsToMany(PurchaseStatus, { through: PurchaseLog, foreignKey: { field: 'compra_id', name: 'purchaseId'}});
     Purchase.hasMany(PurchaseDetail, { foreignKey: { field: 'compra_id'}});
+    
+
+    const { Sopi } = require("../../solicitude/domain/models");
+    Purchase.belongsToMany(Sopi, { through: PurchaseSopi, foreignKey: { field: 'compra_id', name: 'purchaseId'}});
 
     const { Document, Manager } = require("../../management/domain/models");
     Purchase.hasMany(Document, { foreignKey: { field: 'compra_id'}});
@@ -98,10 +110,14 @@ Purchase.loadAssociations = () => {
     
 }
 
+PurchaseSopi.loadAssociations = () => {
+
+}
+
 PurchaseDetail.loadAssociations = () => {
     PurchaseDetail.belongsTo(Purchase, { foreignKey: { field: 'compra_id'}});
 
-    const { SopiDetail, SopiLog } = require("../../solicitude/domain/models");
+    const { SopiDetail } = require("../../solicitude/domain/models");
     PurchaseDetail.belongsTo(SopiDetail, { foreignKey: {field: 'solicitud_detalle_id'}})
 }
 PurchaseLog.loadAssociations = () => {
@@ -128,3 +144,4 @@ exports.PurchaseLog =PurchaseLog;
 exports.PurchaseType =PurchaseType;
 exports.PurchaseStatus = PurchaseStatus;
 exports.Supplier = Supplier;
+exports.PurchaseSopi = PurchaseSopi;

@@ -13,6 +13,10 @@ const Sopi = sequelize.define('sopi', {
         type: DataTypes.BOOLEAN,
         field: 'prioridad'
     },
+    totalAmmount: {
+        type: DataTypes.DOUBLE,
+        field: 'costo_total'
+    }
 },
 {
     tableName: 'solicitudes'
@@ -31,6 +35,10 @@ const SopiDetail = sequelize.define('sopiDetail', {
     quantity: {
         type: DataTypes.INTEGER,
         field: 'cantidad'
+    },
+    price: {
+        type: DataTypes.DOUBLE,
+        field: 'precio'
     }
 
 
@@ -80,7 +88,7 @@ const Supplies = sequelize.define('supply', {
         field: 'caracteristicas'
     },
     price: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.DOUBLE,
         field: 'precio'
     }
 },
@@ -126,8 +134,10 @@ Sopi.loadAssociations = () => {
     Sopi.belongsToMany(SopiStatus, { as: 'logStatus',through: SopiLog, foreignKey: {field: 'sopi_id', name: 'sopiId'}});
     Sopi.hasMany(SopiDetail, { foreignKey: {field: 'solicitud_id'}});
     Sopi.belongsTo(SopiStatus, { as: 'status', foreignKey: {field: 'estado_id'}});
-
-
+    
+    
+    const { Purchase, PurchaseSopi } = require("../../purchases/domain/models");
+    Sopi.belongsToMany(Purchase, { through: PurchaseSopi, foreignKey: {field: 'sopi_id', name: 'sopiId'}});
 
     const { User } = require("../../auth/domain/models");
     Sopi.belongsTo(User, { foreignKey: {field: 'usuario_id'}});

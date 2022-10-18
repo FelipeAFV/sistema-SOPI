@@ -7,7 +7,7 @@ const loadAllAssociations = () => {
     const { CostCenter, Financing, Sopi, SopiDetail, SopiLog, SopiStatus, Supplies, SuppliesCategory } = require('../solicitude/domain/models');
     const { Comment, Document, Manager, Ticket } = require('../management/domain/models');
     const { Department, Employee, Job} = require('../employees/domain/models');
-    const { Purchase, PurchaseDetail, PurchaseLog, PurchaseStatus, PurchaseType, Supplier } = require('../purchases/domain/models');
+    const { Purchase, PurchaseDetail, PurchaseLog, PurchaseStatus, PurchaseType, Supplier, PurchaseSopi } = require('../purchases/domain/models');
 
     /**Load associations when all models exists */
     User.loadAssociations();
@@ -34,6 +34,7 @@ const loadAllAssociations = () => {
     PurchaseLog.loadAssociations();
     PurchaseType.loadAssociations();
     PurchaseStatus.loadAssociations();
+    PurchaseSopi.loadAssociations();
     Supplier.loadAssociations();
     
 
