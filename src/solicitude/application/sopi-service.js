@@ -6,14 +6,14 @@ const { addLogEntryByStatusName, addLogEntryByStatusId } = require("../domain/so
 const { findStatusByName } = require("../domain/sopistatus-repository");
 
 
-const generateSopiDetails = async (items) => {
+const generateSopiDetails = async (items, sopiId) => {
 
 
     const sopiDetails = [];
     for (let item of items) {
 
         if (item.supplyId) {
-
+            console.log('asdasd')
             const sopiDetailCreated = await saveSopiDetail({ supplyId: item.supplyId, quantity: item.quantity })
             sopiDetails.push(sopiDetailCreated);
             return;
@@ -23,7 +23,7 @@ const generateSopiDetails = async (items) => {
         if (!name || !features || !quantity) {
             throw new Error(`Datos faltantes para item ${JSON.stringify(item)}`);
         }
-        const sopiDetailCreated = await saveSopiDetail({ name, features, quantity });
+        const sopiDetailCreated = await saveSopiDetail({ name, features, quantity, sopiId });
         sopiDetails.push(sopiDetailCreated);
     }
 
@@ -51,16 +51,16 @@ const createSopiSeqTransactional = async ({ costCenterId, financingId, basis, us
             
             sopiCreated = await updateSopi( sopiCreated.id, { basis: basis || null })
             .catch(e => { throw new Error('Fundamento debe existir') });
-            console.log('Sopi created id ', sopiCreated.id)
+
             await addLogEntryByStatusName(sopiCreated.id, userId, 'INGRESADA');
             console.log('A añadir entrada de logs')
 
-            const details = await generateSopiDetails(items);
+            const details = await generateSopiDetails(items, sopiCreated.id);
 
-            for (let detail of details) {
-
-                await sopiCreated.setSopiDetails(detail);
-            }
+            // for (let detail of details) {
+                
+            //     await sopiCreated.setSopiDetails(detail);
+            // }
 
 
             return sopiCreated;

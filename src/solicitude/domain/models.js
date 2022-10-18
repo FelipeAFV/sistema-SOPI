@@ -39,6 +39,10 @@ const SopiDetail = sequelize.define('sopiDetail', {
     price: {
         type: DataTypes.DOUBLE,
         field: 'precio'
+    },
+    sopiId: {
+        type: DataTypes.INTEGER,
+        field: 'solicitud_id'
     }
 
 

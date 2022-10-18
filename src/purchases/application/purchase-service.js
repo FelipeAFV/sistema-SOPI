@@ -1,6 +1,7 @@
 const { sequelize } = require("../../database/db-init");
 const { findSopi } = require("../../solicitude/domain/sopi-repository")
-const { savePurchase } = require("../domain/purchase-repository")
+const { savePurchase } = require("../domain/purchase-repository");
+const { savePurchaseDetail, saveAllPurchaseDatails } = require("../domain/purchasedetail-repository");
 
 
 const createPurchaseFromCompleteSopi = async ({ sopiId }) => {
@@ -19,6 +20,16 @@ const createPurchaseFromCompleteSopi = async ({ sopiId }) => {
             const purchaseSaved = await savePurchase();
 
             //STEP3: Add purchase details
+            const items = sopi.sopiDetails;
+            const purchaseDetails = items.map((item) => {
+                return {
+                    sopiDetailId: item.id,
+                    quantity: item.quantity,
+                    price: item.price,
+                }
+            })
+            const purchaseDetailsCreated = await saveAllPurchaseDatails(purchaseDetails)
+            purchaseSaved.items = purchaseDetails;
             return purchaseSaved
         })
 

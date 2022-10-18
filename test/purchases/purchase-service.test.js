@@ -32,15 +32,17 @@ test('ingreso de compra', async () => {
 
         // await sequelize.transaction(async () => {
         const sopis = await getAllSopis();
+        console.log(sopis)
+        console.log('Ultima sopi',sopis.slice(-1)[0].id)
 
-        const purchaseCreated = await createPurchaseFromCompleteSopi({ sopiId: sopis[0].id })
+        const purchaseCreated = await createPurchaseFromCompleteSopi({ sopiId: sopis.slice(-1)[0].id })
         await expect(purchaseCreated).not.toBeNull();
 
-        throw new Error('rollback')
+
         // })
 
     } catch (e) {
-
+        console.log('Error en test');
     }
 
 
