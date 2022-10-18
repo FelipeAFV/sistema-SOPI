@@ -4,118 +4,43 @@ const bcrypt = require('bcrypt');
 const { sendHttpResponse } = require('../../share/utils/response-parser');
 const jwt = require("jsonwebtoken");
 const {sequelize} = require('../../database/db-init')
+const {login} = require('../application/auth-service')
+const {add} = require('../application/auth-service')
 
 
 
 class AuthController {
 
-    addUser = async (req, res) => {
+    addUser = async (req,res) => {
         try {
-            const userData = req.body;
+            const resp = await add(req.body)
+            sendHttpResponse(res, resp,200)
 
-        if(!userData){
-            res.status(400).json({
-                message: 'body is empty'
-            })
-        }else{
-
-            const check = await userRepository.findUserByUsername(userData.username)
-            if(check) {
-                sendHttpResponse(res, 'nombre de usuario en uso')
-            }else{
-                const profile = await Profile.findOne({
-                    where: {
-                        name: userData.profile
-                    }
-                })
-        
-                if(!profile){
-                    sendHttpResponse(res, 'perfil no existe')
-                }else{
-
-                    const userCreated = await userRepository.addUser(userData)
-                    if(!userCreated){
-                        sendHttpResponse(res,'error al crear usuario')
-                    }else {
-
-
-                        const req_response = {
-                            username: userCreated.username,
-                            firstname: userCreated.firstname,
-                            lastname: userCreated.lastname,
-                            mail: userCreated.mail,
-                            profile: profile                        
-                        }
-                        
-                        sendHttpResponse(res,req_response,200)
-
-                    }
-                }  
-            }
-        }
             
         } catch (error) {
-            console.log(error)
-            sendHttpResponse(res,'error interno de servidor')
+
+            sendHttpResponse(res, 'Error al registrarse', 500, error.message || '');
+            
         }
-        
     }
 
     loginUser = async (req,res) => {
-
         try {
-            const {username, password} = req.body;
 
-        if (!username || !password) {
-            sendHttpResponse(res, 'Empty body',400);
-            return;
-        }
-        
-        const user = await userRepository.findUserByUsername(username)
-        console.log(user)
-        
-        if(!user) {
-            sendHttpResponse(res, 'Usuario no existe',400);
-            return;
-        }
-
-
-        const result = await bcrypt.compare(password ,user.password)
-
-        if(result){
-            const profile = await Profile.findOne({
-                where: {
-                    id: user.profileId
-                }
-            })
+            const resp = await login(req.body)
             const token = (jwt.sign({
-                id: user.id,
-                username: user.username
-            },process.env.SECRET_KEY, { expiresIn: '8h'}))
-    
-            const req_response = {
-                username: user.username,
-                firstname: user.firstname,
-                lastname: user.lastname,
-                mail: user.mail,
-                profile: profile
-            }
+                id: resp.id,
+                username: resp.username
+            },process.env.SECRET_KEY, { expiresIn: '8h'}))  
+            
             res.cookie('jwt',token,{httpOnly:true})
-            sendHttpResponse(res,req_response,200);
-            return
-            
-        }else {
-            sendHttpResponse(res,'Contraseña no coincide',400);
-            return;
-            
-        }
-            
+            sendHttpResponse(res, resp,200)
         } catch (error) {
-            console.log(error)
-            sendHttpResponse(res,'error interno de servidor')
+            sendHttpResponse(res, 'Error al ingresar', 500, error.message || '');
         }
-        
     }
+
+    
 
     logOutUser = (req,res) => {
 
