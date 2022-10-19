@@ -13,6 +13,10 @@ const createPurchaseFromCompleteSopi = async ({ sopiId }) => {
             // STEP 1: Find sopi with items
             const sopi = await findSopi({ id: sopiId });
 
+            if (!sopi) {
+                throw new Error(`Sopi con id ${sopiId} no existe`);
+            }
+
             // Sopi details availeble through sopiDetails list atribute
             console.log('sopi details' + sopi.sopiDetails[0].features)
 
@@ -26,18 +30,24 @@ const createPurchaseFromCompleteSopi = async ({ sopiId }) => {
                     sopiDetailId: item.id,
                     quantity: item.quantity,
                     price: item.price,
+                    purchaseId: purchaseSaved.id
                 }
             })
-            const purchaseDetailsCreated = await saveAllPurchaseDatails(purchaseDetails)
-            purchaseSaved.items = purchaseDetails;
-            return purchaseSaved
+            const purchaseDetailsCreated = await saveAllPurchaseDatails(purchaseDetails);
+            const jsonPurchaseDetail = purchaseDetailsCreated.map(item => {
+                return item.toJSON();
+            })
+            const jsonPurchase = purchaseSaved.toJSON();
+            jsonPurchase.items = jsonPurchaseDetail;
+            console.log(jsonPurchase)
+            return jsonPurchase;
         })
 
         // Response from inside transaction
         return response;
     } catch (e) {
-
         console.log(e)
+        throw new Error('Error en servicio-compras');
 
     }
 }
