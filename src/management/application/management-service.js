@@ -1,7 +1,6 @@
-const {findManagerPurchase} = require('../domain/managment-repository')
+
 const {sendHttpResponse} = require('../../share/utils/response-parser')
-const {Manager} = require('../domain/models')
-const {userRepository} = require('../../auth/domain/user-repository')
+const { findManagerPurchase } = require('../domain/manager-repository');
 
 
 const getManagerPurchase = async(req,res) => {
