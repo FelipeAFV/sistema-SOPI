@@ -15,6 +15,18 @@ class UserRepositorySequelMySQL{
         /**Retorna nulo si no existe */
         return user;
     }
+
+    findUserById = async (id) => {
+        const user = await User.findOne({
+            where: {
+                id: id
+            }, 
+            include: Profile
+        },)
+        
+        /**Retorna nulo si no existe */
+        return user;
+    }
     
     findUsersByProfile = async (profile) => {
         const users = await User.findAll(
