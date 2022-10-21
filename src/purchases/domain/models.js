@@ -11,6 +11,22 @@ const Purchase = sequelize.define('purchase',{
     tableName: 'compras'
 });
 const PurchaseSopi = sequelize.define('purchaseSopi',{
+    sopiId: {
+        type: DataTypes.INTEGER,
+        field: 'sopi_id',
+        allowNull: false,
+        validate: {
+            notNull: true
+        }
+    },
+    purchaseId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        field: 'compra_id',
+        validate: {
+            notNull: true
+        }
+    }
 
 }, {
     tableName: 'solicitudes_compras'
