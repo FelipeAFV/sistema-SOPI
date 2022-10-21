@@ -7,6 +7,6 @@ const router = Router();
 
 
 router.post('/responsables', hasProfile(['jefe_compra']), addManager);
-router.get('/', getManagerPurchase);
+router.get('/:userId', getManagerPurchase);
 
 exports.managementRoutes = router;

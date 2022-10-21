@@ -4,7 +4,7 @@ const { findManagerPurchase } = require('../domain/manager-repository');
 
 
 const getManagerPurchase = async(req,res) => {
-    const {userId} = req.body;
+    const userId = req.params.userId;
     const result = await findManagerPurchase(userId);
     sendHttpResponse(res, result, 200);
 }
