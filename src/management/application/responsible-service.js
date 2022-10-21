@@ -1,6 +1,6 @@
 const { userRepository } = require("../../auth/domain/user-repository");
 const { ApiValidationError } = require("../domain/api-errors");
-const { saveManager } = require("../domain/manage-repository");
+const { saveManager } = require("../domain/manager-repository");
 
 const addManagerForSopi = async ({managerId, purchaseId}) => {
 
