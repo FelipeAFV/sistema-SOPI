@@ -27,7 +27,9 @@ const saveSopi = async (sopi) => {
 }
 
 const updateSopi = async (id, sopi) => {
+
     const sopiToUpdate = await  Sopi.findOne({where: {id}})
+
 
     return await sopiToUpdate.update(sopi)
 }
