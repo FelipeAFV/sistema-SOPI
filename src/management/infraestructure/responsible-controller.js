@@ -13,7 +13,7 @@ const addManager = async (req, res) => {
         return;
     } catch (e) {
         if (e instanceof ApiValidationError) {
-            sendHttpResponse(res, 'Error', 500, e);
+            sendHttpResponse(res, 'Error', 400, e);
             return;
             
         }

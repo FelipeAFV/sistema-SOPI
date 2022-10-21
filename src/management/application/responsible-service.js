@@ -10,13 +10,13 @@ const addManagerForSopi = async ({managerId, purchaseId}) => {
 
     if (user.profile.name != 'gestor_compra') {
         throw new ApiValidationError('El usuario no tiene el perfil gestor_compra');
-
+        
     }
-
+    
     const existingManager = await findManager({userId, purchaseId});
     if (existingManager) {
-        sendHttpResponse(res, `El gestor ya se encuentra asociado a la compra con id ${purchaseId}`, 400);
-        return;
+
+        throw new ApiValidationError(`El gestor ya se encuentra asociado a la compra con id ${purchaseId}`);
 
     }
 
