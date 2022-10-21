@@ -47,7 +47,6 @@ const createSopiSeqTransactional = async ({ costCenterId, financingId, basis, us
 
             let sopiCreated = await saveSopi({ costCenterId, financingId, basis: '', userId, statusId: status.id })
             .catch(e => { throw new Error('Centro de costo o financiamiento no existe') });
-
             
             sopiCreated = await updateSopi( sopiCreated.id, { basis: basis || null })
             .catch(e => { throw new Error('Fundamento debe existir') });

@@ -10,7 +10,9 @@ const authRoutes = require('./auth/infraestructure/auth-routes');
 const { UserService } = require('./auth/domain/user-repository');
 const sopiRoutes = require('./solicitude/infraestructure/solicitudes-routes');
 const { purchaseRoutes } = require('./purchases/infraestructure/purchase-routes');
+
 const { managementRoutes } = require('./management/infraestructure/management-routes');
+
 require('dotenv').config();
 
 require('./database/db-init');
@@ -43,9 +45,9 @@ app.use('/api/v1/gestion', verifyToken);
  */
 
 app.use('/api/v1/auth', authRoutes);
-app.use('/api/v1/sopi', sopiRoutes)
-app.use('/api/v1/compras', purchaseRoutes)
-app.use('/api/v1/gestion', managementRoutes)
+app.use('/api/v1/sopi', sopiRoutes);
+app.use('/api/v1/compras', purchaseRoutes);
+app.use('/api/v1/gestion', managementRoutes);
 
 
 if (process.env.TEST == 'true') {
