@@ -13,7 +13,7 @@ const addManagerForSopi = async ({managerId, purchaseId}) => {
         
     }
     
-    const existingManager = await findManager({userId, purchaseId});
+    const existingManager = await findManager({managerId, purchaseId});
     if (existingManager) {
 
         throw new ApiValidationError(`El gestor ya se encuentra asociado a la compra con id ${purchaseId}`);

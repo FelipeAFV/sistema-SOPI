@@ -17,6 +17,7 @@ const addManager = async (req, res) => {
             return;
             
         }
+        console.log(e)
         sendHttpResponse(res, 'Error', 500, 'Error al ingresar gestor de compra');
         return;
     }
