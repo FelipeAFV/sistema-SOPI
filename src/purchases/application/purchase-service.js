@@ -5,6 +5,7 @@ const { savePurchase } = require("../domain/purchase-repository");
 const { savePurchaseDetail, saveAllPurchaseDatails } = require("../domain/purchasedetail-repository");
 const { savePurchaseSopi } = require("../domain/purchasesopi-repository");
 const { findStatusByName } = require("../domain/purchasestatus-repository");
+const { findManagerPurchase,findAllManager } = require('../../management/domain/manager-repository');
 
 
 const createPurchaseFromCompleteSopi = async ({ sopiId }) => {
@@ -57,5 +58,32 @@ const createPurchaseFromCompleteSopi = async ({ sopiId }) => {
 
     }
 }
+
+const findPurchasesAsignedToManager = async (userId) => {
+
+    try {
+
+        const result = await findManagerPurchase(userId);
+        
+        return result;
+        
+    } catch (error) {
+        throw new Error(error.message);
+    }
+}
+
+const findAllPurchases = async () => {
+    try {
+
+        const result = await findAllManager();
+        return result;
+        
+    } catch (error) {
+        throw new Error(error.message);
+    }
+}
+
+exports.findPurchasesAsignedToManager = findPurchasesAsignedToManager;
+exports.findAllPurchases = findAllPurchases;
 
 exports.createPurchaseFromCompleteSopi = createPurchaseFromCompleteSopi;

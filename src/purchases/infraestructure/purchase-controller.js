@@ -1,4 +1,4 @@
-const { createPurchaseFromCompleteSopi } = require("../application/purchase-service");
+const { createPurchaseFromCompleteSopi, findPurchasesAsignedToManager, findAllPurchases } = require("../application/purchase-service");
 const { sendHttpResponse } = require('../../share/utils/response-parser');
 
 const createPurchase = async (req, res) => {
@@ -26,4 +26,27 @@ const createPurchase = async (req, res) => {
 
 }
 
+const findPurchasesFromManager = async (req,res) => {
+
+    const userId = req.params.userId
+
+    try {
+        const response = await findPurchasesAsignedToManager(userId)
+        sendHttpResponse(res,response,200)    
+    } catch (error) {
+        sendHttpResponse(res,error.message,400)
+    }
+}
+
+const findPurchases = async (req,res) => {
+    try {
+        const response = await findAllPurchases()
+        sendHttpResponse(res,response,200)    
+    } catch (error) {
+        sendHttpResponse(res,error.message,400)
+    }
+}
+
 exports.createPurchase = createPurchase;
+exports.findPurchasesFromManager = findPurchasesFromManager;
+exports.findAllPurchases = findPurchases;
