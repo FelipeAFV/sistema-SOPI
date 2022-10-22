@@ -4,6 +4,7 @@ const { PurchaseSopi } = require("../domain/models");
 const { savePurchase } = require("../domain/purchase-repository");
 const { savePurchaseDetail, saveAllPurchaseDatails } = require("../domain/purchasedetail-repository");
 const { savePurchaseSopi } = require("../domain/purchasesopi-repository");
+const { findStatusByName } = require("../domain/purchasestatus-repository");
 
 
 const createPurchaseFromCompleteSopi = async ({ sopiId }) => {
@@ -22,8 +23,9 @@ const createPurchaseFromCompleteSopi = async ({ sopiId }) => {
             // Sopi details availeble through sopiDetails list atribute
             console.log('sopi details' + sopi.sopiDetails[0].features)
 
+            const purchaseFirstStatus = await findStatusByName('PREPARANDO');
             //STEP 2: Create purchase
-            const purchaseSaved = await savePurchase();
+            const purchaseSaved = await savePurchase({statusId: purchaseFirstStatus.id});
 
             //STEP3: Add purchase details
             const items = sopi.sopiDetails;
