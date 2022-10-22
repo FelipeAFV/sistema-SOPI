@@ -1,12 +1,30 @@
-
-const {sendHttpResponse} = require('../../share/utils/response-parser')
 const { findManagerPurchase } = require('../domain/manager-repository');
+const { findAllManager } = require('../domain/manager-repository');
 
 
-const getManagerPurchase = async(req,res) => {
-    const userId = req.params.userId;
-    const result = await findManagerPurchase(userId);
-    sendHttpResponse(res, result, 200);
+const getManagerPurchase = async(userId) => {
+
+    try {
+
+        const result = await findManagerPurchase(userId);
+        
+        return result;
+        
+    } catch (error) {
+        throw new Error(error.message);
+    }
+    
+}
+
+const getAllManagers = async () => {
+    try {
+
+        const result = await findAllManager();
+        return result;
+        
+    } catch (error) {
+        throw new Error(error.message);
+    }
 }
 
 // const createManager = async (req,res) => {
@@ -34,3 +52,4 @@ const getManagerPurchase = async(req,res) => {
 // }
 
 exports.getManagerPurchase = getManagerPurchase;
+exports.getAllManagers = getAllManagers;
