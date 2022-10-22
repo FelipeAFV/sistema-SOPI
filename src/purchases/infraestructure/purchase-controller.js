@@ -28,7 +28,7 @@ const createPurchase = async (req, res) => {
 
 const findPurchasesFromManager = async (req,res) => {
 
-    const userId = req.params.userId
+    const userId = req.query.userId
 
     try {
         const response = await findPurchasesAsignedToManager(userId)
@@ -47,6 +47,14 @@ const findPurchases = async (req,res) => {
     }
 }
 
+const purchaseManage = (req,res) => {
+    const opcion = req.query.userId
+    if(opcion) {
+        findPurchasesFromManager(req,res)
+    }else {
+        findPurchases(req,res)
+    }
+}
+
 exports.createPurchase = createPurchase;
-exports.findPurchasesFromManager = findPurchasesFromManager;
-exports.findAllPurchases = findPurchases;
+exports.purchaseManage = purchaseManage;
