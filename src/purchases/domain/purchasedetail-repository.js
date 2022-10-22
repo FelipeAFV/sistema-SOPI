@@ -15,6 +15,15 @@ const saveAllPurchaseDatails = async (details) => {
     return savedDetails;
 } 
 
+const getPurchaseDetailById = async(id)=> {
+    const detail = await PurchaseDetail.findOne({
+        where: {
+            purchaseId:id
+        }
+    })
+    return detail;
+}
 
 exports.savePurchaseDetail = savePurchaseDetail;
 exports.saveAllPurchaseDatails = saveAllPurchaseDatails;
+exports.getPurchaseDetailById = getPurchaseDetailById;

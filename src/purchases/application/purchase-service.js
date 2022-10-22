@@ -2,11 +2,11 @@ const { sequelize } = require("../../database/db-init");
 const { findSopi } = require("../../solicitude/domain/sopi-repository");
 const { PurchaseSopi } = require("../domain/models");
 const { savePurchase } = require("../domain/purchase-repository");
-const { savePurchaseDetail, saveAllPurchaseDatails } = require("../domain/purchasedetail-repository");
+const { savePurchaseDetail, saveAllPurchaseDatails, getPurchaseDetailById } = require("../domain/purchasedetail-repository");
 const { savePurchaseSopi } = require("../domain/purchasesopi-repository");
 const { findStatusByName } = require("../domain/purchasestatus-repository");
 const { findManagerPurchase,findAllManager } = require('../../management/domain/manager-repository');
-
+const { getSopiDetailById } = require("../../solicitude/domain/sopidetail-repository");
 
 const createPurchaseFromCompleteSopi = async ({ sopiId }) => {
 
@@ -83,7 +83,16 @@ const findAllPurchases = async () => {
     }
 }
 
+const findSopiDetailByPurchaseId = async(id) => {
+    const purchase = await getPurchaseDetailById(id);
+    const {sopiDetailId} = purchase; 
+    const sopiDetail = await getSopiDetailById(sopiDetailId);
+    return sopiDetail;
+    
+}
+
 exports.findPurchasesAsignedToManager = findPurchasesAsignedToManager;
 exports.findAllPurchases = findAllPurchases;
 
 exports.createPurchaseFromCompleteSopi = createPurchaseFromCompleteSopi;
+exports.findSopiDetailByPurchaseId = findSopiDetailByPurchaseId;

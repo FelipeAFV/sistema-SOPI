@@ -1,4 +1,4 @@
-const { createPurchaseFromCompleteSopi, findPurchasesAsignedToManager, findAllPurchases } = require("../application/purchase-service");
+const { createPurchaseFromCompleteSopi, findPurchasesAsignedToManager, findAllPurchases, findSopiDetailByPurchaseId } = require("../application/purchase-service");
 const { sendHttpResponse } = require('../../share/utils/response-parser');
 
 const createPurchase = async (req, res) => {
@@ -56,5 +56,20 @@ const purchaseManage = (req,res) => {
     }
 }
 
+const getPurchaseDetail = async(req,res) => {
+    const {compraId} = req.params;
+
+    try {
+        //const purchase = await getPurchaseById(compraId);
+        const purchase = await findSopiDetailByPurchaseId(compraId);
+        sendHttpResponse(res, purchase, 200);
+    } catch (error) {
+        console.log(error);
+        sendHttpResponse(res, 'Error al buscar detalle solicitud de compra con id: '+ compraId, 400);
+    }
+    
+}
+
 exports.createPurchase = createPurchase;
 exports.purchaseManage = purchaseManage;
+exports.getPurchaseDetail = getPurchaseDetail;

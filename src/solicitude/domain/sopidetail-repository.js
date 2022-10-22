@@ -4,5 +4,13 @@ const saveSopiDetail =  async (sopiDetail) => {
     return await SopiDetail.create(sopiDetail);
 }
 
+const getSopiDetailById = async(id) => {
+    return await SopiDetail.findOne({
+        where: {
+            id
+        }
+    })
+}
 
 exports.saveSopiDetail = saveSopiDetail;
+exports.getSopiDetailById = getSopiDetailById;
