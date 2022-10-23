@@ -1,4 +1,4 @@
-const { createPurchaseFromCompleteSopi, findPurchasesAsignedToManager, findAllPurchases, findSopiDetailByPurchaseId } = require("../application/purchase-service");
+const { createPurchaseFromCompleteSopi, findPurchasesAsignedToManager, findAllPurchases, findSopiDetailByPurchaseId, updatePurchaseStatus } = require("../application/purchase-service");
 const { sendHttpResponse } = require('../../share/utils/response-parser');
 
 const createPurchase = async (req, res) => {
@@ -70,6 +70,26 @@ const getPurchaseDetail = async(req,res) => {
     
 }
 
+const updatePurchase = async(req,res) => {
+    try {
+        const {purchaseId, statusId, typeId} = req.body;
+        if(!purchaseId || !statusId || !typeId) {
+            sendHttpResponse(res,'', 400, 'Faltan datos en la modificación');
+            return;
+        } 
+        const updatedPurchase = await updatePurchaseStatus({
+            purchaseId, statusId, typeId
+        });
+        sendHttpResponse(res, updatedPurchase, 200);
+        return;
+    } catch (error) {
+        console.log(error);
+        sendHttpResponse(res, '', 500, 'Error al actualizar proceso de compra' );
+        return;
+    }
+}
+
 exports.createPurchase = createPurchase;
 exports.purchaseManage = purchaseManage;
 exports.getPurchaseDetail = getPurchaseDetail;
+exports.updatePurchase = updatePurchase;

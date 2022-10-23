@@ -1,7 +1,7 @@
 const { sequelize } = require("../../database/db-init");
 const { findSopi } = require("../../solicitude/domain/sopi-repository");
 const { PurchaseSopi } = require("../domain/models");
-const { savePurchase } = require("../domain/purchase-repository");
+const { savePurchase, updatePurchaseById } = require("../domain/purchase-repository");
 const {
   savePurchaseDetail,
   saveAllPurchaseDatails,
@@ -16,6 +16,7 @@ const {
 const {
   getSopiDetailById,
 } = require("../../solicitude/domain/sopidetail-repository");
+const { addlogByStatusId } = require("../domain/purchaselog-repository");
 
 const createPurchaseFromCompleteSopi = async ({ sopiId }) => {
   try {
@@ -98,8 +99,21 @@ const findSopiDetailByPurchaseId = async (id) => {
   }
 };
 
+const updatePurchaseStatus = async({purchaseId, statusId, typeId}) => {
+    try {
+        const purchaseUpdated = await updatePurchaseById(purchaseId, {statusId: statusId, purchaseTypeId:typeId});
+        
+        await addlogByStatusId(purchaseId, statusId, typeId);
+
+        return purchaseUpdated;
+    } catch (error) {
+        console.log(error);
+        throw new Error(error.message);
+    }
+}
 exports.findPurchasesAsignedToManager = findPurchasesAsignedToManager;
 exports.findAllPurchases = findAllPurchases;
 
 exports.createPurchaseFromCompleteSopi = createPurchaseFromCompleteSopi;
 exports.findSopiDetailByPurchaseId = findSopiDetailByPurchaseId;
+exports.updatePurchaseStatus = updatePurchaseStatus;

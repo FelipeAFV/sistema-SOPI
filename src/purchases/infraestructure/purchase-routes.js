@@ -1,10 +1,12 @@
 const { Router } = require("express");
-const { createPurchase, purchaseManage, getPurchaseDetail } = require("./purchase-controller");
+const { hasProfile } = require("../../auth/infraestructure/check-auth-middleware");
+const { createPurchase, purchaseManage, getPurchaseDetail, updatePurchase } = require("./purchase-controller");
 
 const router = Router()
 
 router.post('/', createPurchase);
 router.get('/asignadas', purchaseManage)
 router.get('/:compraId', getPurchaseDetail);
+router.put('/',  hasProfile(['jefe_compra', 'director']),  updatePurchase);
 
 exports.purchaseRoutes = router;
