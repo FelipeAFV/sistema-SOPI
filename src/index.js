@@ -21,7 +21,7 @@ require('./database/db-associate-models').loadAllAssociations();
 
 const app = express();
 
-app.use(cors());
+app.use(cors({credentials: true, origin: '*'}));
 
 app.use(bodyParser.json());
 app.use(cookieParser());
