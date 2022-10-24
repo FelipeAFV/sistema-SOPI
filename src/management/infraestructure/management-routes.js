@@ -1,6 +1,6 @@
 const { Router } =  require('express');
 const { hasProfile } = require('../../auth/infraestructure/check-auth-middleware');
-const { addManager } = require('./responsible-controller');
+const { addManager } = require('./manager-controller');
 
 
 const router = Router();

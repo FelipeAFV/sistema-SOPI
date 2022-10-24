@@ -5,7 +5,7 @@ const { createPurchase, purchaseManage, getPurchaseDetail, updatePurchase } = re
 const router = Router()
 
 router.post('/', createPurchase);
-router.get('/asignadas', purchaseManage)
+router.get('/', purchaseManage)
 router.get('/:compraId', getPurchaseDetail);
 router.put('/',  hasProfile(['jefe_compra', 'director']),  updatePurchase);
 

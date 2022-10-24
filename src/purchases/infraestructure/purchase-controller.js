@@ -3,6 +3,7 @@ const { sendHttpResponse } = require('../../share/utils/response-parser');
 
 const createPurchase = async (req, res) => {
 
+    // TODO: Add first status
     const {sopiId, creationType } = req.body;
     let response = null;
     try {

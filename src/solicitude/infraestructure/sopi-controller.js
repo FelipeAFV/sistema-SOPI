@@ -43,7 +43,7 @@ const updateSopi = async (req, res) => {
     try {
         const {sopiId, statusId, comment } = req.body;
         
-
+        
         if (!sopiId || !statusId || !comment) {
             sendHttpResponse(res, '', 400, 'Datos faltantes en solicitud');
             return;
