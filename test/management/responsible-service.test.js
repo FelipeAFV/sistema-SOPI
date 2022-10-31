@@ -35,7 +35,7 @@ test('ingreso de responsable', async ()=> {
         
         const addM = await addManagerForSopi({managerId: 4, purchaseId:1});
 
-        await expect(addM).toBeNull();
+        await expect(addM).not.toBeNull();
        
     } catch (error) {
         console.log('Error en el test', error);
