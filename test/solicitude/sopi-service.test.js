@@ -3,6 +3,7 @@ const { sequelize } = require('../../src/database/db-init');
 
 const { createSopi } = require('../../src/solicitude/application/sopi-service');
 const { findSopi } = require('../../src/solicitude/domain/sopi-repository');
+const { findStatusById } = require('../../src/solicitude/domain/sopistatus-repository');
 
 /**
  * Provide mock sequelize and add transaction scope
@@ -28,20 +29,21 @@ afterAll(async () => {
 
 
 
-test('Servicio para ingreso de sopi', async () => {
+test('ingreso de sopi', async () => {
 
         const sopiCreated = await createSopi({
-            costCenterId: 69, financingId: 19, userId: 1, basis: 'Wena', items: [{
+            costCenterId: 1, financingId: 1 , userId: 3, basis: 'Wena', items: [{
 
                 name: 'asd', features: 'asdas', quantity: 1
             }]
         })
         await expect(sopiCreated).not.toBeNull();
 
+        const status = await  findStatusById(sopiCreated.statusId);
 
-        const statuses = await sopiCreated.getSopiStatuses();
+        await expect(status.name).toBe('INGRESADA')
 
-        console.log('Status ', statuses[0].name);
+        const statuses = await sopiCreated.getLogStatus();
 
         await expect(statuses[0].name).toBe('INGRESADA');
 

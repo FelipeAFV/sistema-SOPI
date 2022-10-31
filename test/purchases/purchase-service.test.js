@@ -32,11 +32,18 @@ test('ingreso de compra', async () => {
 
         // await sequelize.transaction(async () => {
         const sopis = await getAllSopis();
-        console.log(sopis)
-        console.log('Ultima sopi',sopis.slice(-1)[0].id)
+        const ultimaSopi = sopis.slice(-1)[0];
 
-        const purchaseCreated = await createPurchaseFromCompleteSopi({ sopiId: sopis.slice(-1)[0].id })
+        const purchaseCreated = await createPurchaseFromCompleteSopi({ sopiId: ultimaSopi.id })
         await expect(purchaseCreated).not.toBeNull();
+
+        const sopiDetails = await ultimaSopi.getSopiDetails()
+
+        purchaseCreated.items.forEach( async (item) => {
+            const detail = sopiDetails.find((detail) => detail.id = item.sopiDetailId)
+            await expect(detail).not.toBeNull();
+        })
+
 
 
         // })
