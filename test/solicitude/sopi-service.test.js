@@ -1,9 +1,11 @@
 const { loadAllAssociations } = require('../../src/database/db-associate-models');
 const { sequelize } = require('../../src/database/db-init');
 
-const { createSopi } = require('../../src/solicitude/application/sopi-service');
-const { findSopi } = require('../../src/solicitude/domain/sopi-repository');
+const { createSopi, updateSopiStatus } = require('../../src/solicitude/application/sopi-service');
+const { findSopi, getAllSopis } = require('../../src/solicitude/domain/sopi-repository');
+const { getLogEntriesBySopiId } = require('../../src/solicitude/domain/sopilog-repository');
 const { findStatusById } = require('../../src/solicitude/domain/sopistatus-repository');
+
 
 /**
  * Provide mock sequelize and add transaction scope
@@ -29,7 +31,7 @@ afterAll(async () => {
 
 
 
-test('ingreso de sopi', async () => {
+test('Ingreso de sopi', async () => {
 
         const sopiCreated = await createSopi({
             costCenterId: 1, financingId: 1 , userId: 3, basis: 'Wena', items: [{
@@ -46,5 +48,36 @@ test('ingreso de sopi', async () => {
         const statuses = await sopiCreated.getLogStatus();
 
         await expect(statuses[0].name).toBe('INGRESADA');
+
+});
+
+test('Actualizacion de sopi', async () => {
+
+    try {
+
+        const sopis = await  getAllSopis();
+        
+        const newStatusId = 5;
+        
+        if (!sopis || sopis.length == 0) {
+            throw new Error('Test no puede ser ejecutado sin sopis en BBDD');
+        }
+        const lastSopi = sopis.slice(-1)[0];
+        const currentStatus = await lastSopi.getStatus();
+        
+        const sopiUpdated = await updateSopiStatus({sopiId: lastSopi.id, statusId: newStatusId, userId: 3, comment: 'Prueba de cambio de estado' })
+        
+        expect(sopiUpdated.statusId).toBe(newStatusId);
+        
+        const logEntries = await getLogEntriesBySopiId(lastSopi.id);
+        console.log(logEntries);
+        expect(logEntries.slice(-1)[0].statusId).toBe(newStatusId);
+        
+        
+    } catch (e) {
+        console.log('Error en test ', e);
+        throw new Error('Error en test')
+    } 
+
 
 });
