@@ -1,8 +1,7 @@
-const { where } = require('sequelize');
 const { loadAllAssociations } = require('../../src/database/db-associate-models');
 const { sequelize } = require('../../src/database/db-init');
 const { addManagerForSopi } = require('../../src/management/application/responsible-service');
-const { findManager } = require('../../src/management/domain/manager-repository');
+
 
 
 
