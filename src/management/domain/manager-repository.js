@@ -8,8 +8,8 @@ const saveManager = async ({userId, purchaseId}) => {
     
 }
 
-const findManager = async ({userId, purchaseId}) => {
-    const manager = await Manager.findOne({userId, purchaseId});
+const findManager = async ({managerId, purchaseId}) => {
+    const manager = await Manager.findOne({where:{userId: managerId, purchaseId:purchaseId}});
     return manager;
 
 }

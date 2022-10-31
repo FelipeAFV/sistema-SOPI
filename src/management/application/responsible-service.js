@@ -4,7 +4,7 @@ const { ApiValidationError } = require("../domain/api-errors");
 const { saveManager, findManager } = require("../domain/manager-repository");
 
 const addManagerForSopi = async ({managerId, purchaseId}) => {
-
+    
     const user = await userRepository.findUserById(managerId);
     console.log(user);
 
