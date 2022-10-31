@@ -79,7 +79,7 @@ const updatePurchase = async(req,res) => {
             return;
         } 
         const updatedPurchase = await updatePurchaseStatus({
-            purchaseId, statusId, typeId
+            purchaseId, statusId, typeId, userId: req.user.id
         });
         sendHttpResponse(res, updatedPurchase, 200);
         return;

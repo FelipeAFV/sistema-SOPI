@@ -26,6 +26,11 @@ const updatePurchaseById = async (id, purchase) => {
     return await purchaseToUpdate.update(purchase);
 }
 
+const getAllPurchases = async () => {
+    return await Purchase.findAll();
+}
+
 exports.savePurchase = savePurchase;
 exports.getPurchaseById = getPurchaseById;
 exports.updatePurchaseById = updatePurchaseById;
+exports.getAllPurchases = getAllPurchases;

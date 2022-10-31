@@ -3,6 +3,7 @@ const { sequelize } = require("../../database/db-init");
 
 
 
+
 const User = sequelize.define('user', {
 
     username: {
@@ -98,6 +99,9 @@ User.loadAssociations = () => {
     const { Sopi, SopiLog } = require("../../solicitude/domain/models");
     User.hasMany(Sopi, { foreignKey: { field: 'usuario_id'}});
     User.hasMany(SopiLog, { foreignKey: {allowNull: false, field: 'usuario_id'}});
+
+    const { PurchaseLog } = require("../../purchases/domain/models");
+    User.hasMany(PurchaseLog, { foreignKey: {allowNull: false, field: 'usuario_id'}});
 }
 
 Profile.loadAssociations = () => {

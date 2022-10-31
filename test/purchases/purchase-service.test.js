@@ -1,6 +1,8 @@
 const { loadAllAssociations } = require('../../src/database/db-associate-models');
 const { sequelize } = require('../../src/database/db-init');
-const { createPurchaseFromCompleteSopi } = require('../../src/purchases/application/purchase-service');
+const { createPurchaseFromCompleteSopi, updatePurchaseStatus } = require('../../src/purchases/application/purchase-service');
+const { getAllPurchases } = require('../../src/purchases/domain/purchase-repository');
+const { getLogEntryByPurchaseId } = require('../../src/purchases/domain/purchaselog-repository');
 const { getAllSopis } = require('../../src/solicitude/domain/sopi-repository');
 
 /**
@@ -27,7 +29,7 @@ afterAll(async () => {
 
 
 
-test('ingreso de compra', async () => {
+test('Ingreso de compra', async () => {
     try {
 
         // await sequelize.transaction(async () => {
@@ -39,7 +41,7 @@ test('ingreso de compra', async () => {
 
         const sopiDetails = await ultimaSopi.getSopiDetails()
 
-        purchaseCreated.items.forEach( async (item) => {
+        purchaseCreated.items.forEach(async (item) => {
             const detail = sopiDetails.find((detail) => detail.id = item.sopiDetailId)
             await expect(detail).not.toBeNull();
         })
@@ -50,6 +52,42 @@ test('ingreso de compra', async () => {
 
     } catch (e) {
         console.log('Error en test');
+    }
+
+
+
+});
+
+test('Actualizacion de compra', async () => {
+    try {
+
+        // await sequelize.transaction(async () => {
+        const purchases = await getAllPurchases();
+
+        const newStatusId = 4;
+
+        if (!purchases || purchases.length == 0) {
+            throw new Error('Test no puede ser ejecutado sin sopis en BBDD');
+        }
+        const lastPurchase = purchases.slice(-1)[0];
+        const currentStatus = await lastPurchase.getStatus();
+
+        const purchaseUpdated = await updatePurchaseStatus({ userId: 3, purchaseId: lastPurchase.id, statusId: newStatusId, typeId: 1})
+
+        expect(purchaseUpdated.statusId).toBe(newStatusId);
+
+        const logEntries = await getLogEntryByPurchaseId(lastPurchase.id);
+
+        const previousLog = logEntries.find(log => log.statusId == currentStatus.id);
+        expect(previousLog).not.toBeNull();
+
+        const lastLog = logEntries.find(log => log.statusId == newStatusId);
+        expect(lastLog).not.toBeNull();
+        // })
+
+    } catch (e) {
+        console.log('Error en test ', e);
+        throw new Error('Error en test') 
     }
 
 

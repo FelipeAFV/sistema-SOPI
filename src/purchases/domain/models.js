@@ -112,7 +112,7 @@ const Supplier = sequelize.define('supplier', {
 Purchase.loadAssociations = () => {
     Purchase.belongsTo(PurchaseType, { foreignKey: {field: 'tipo_id'}});
     Purchase.belongsTo(Supplier, { foreignKey: { field: 'proveedor_id'}});
-    Purchase.belongsToMany(PurchaseStatus, { as: 'logStatus', through: PurchaseLog, foreignKey: { field: 'compra_id', name: 'purchaseId'}});
+    Purchase.belongsToMany(PurchaseStatus, { as: 'purchaseLogStatus', through: PurchaseLog, foreignKey: { field: 'compra_id', name: 'purchaseId'}});
     Purchase.hasMany(PurchaseDetail, { foreignKey: { field: 'compra_id'}});
     Purchase.belongsTo(PurchaseStatus, { as: 'status', foreignKey: { field: 'estado_id'}});
     
@@ -139,7 +139,8 @@ PurchaseDetail.loadAssociations = () => {
 }
 PurchaseLog.loadAssociations = () => {
 
-
+    const { User } = require("../../auth/domain/models");
+    PurchaseLog.belongsTo(User, { foreignKey: {field: 'usuario_id'}});
     
 }
 PurchaseType.loadAssociations = () => {
