@@ -60,7 +60,7 @@ test('Ingreso de usuario con perfil que no existe', async () => {
         /**
          * Trow error for transaction to ROLLBACK
          */
-        throw new Error();
+
 
     })
 
