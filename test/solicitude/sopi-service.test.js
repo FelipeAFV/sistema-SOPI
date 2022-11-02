@@ -45,7 +45,7 @@ test('Ingreso de sopi', async () => {
 
         await expect(status.name).toBe('INGRESADA')
 
-        const statuses = await sopiCreated.getLogStatus();
+        const statuses = await sopiCreated.getSopiLogStatus();
 
         await expect(statuses[0].name).toBe('INGRESADA');
 
@@ -57,12 +57,12 @@ test('Actualizacion de sopi', async () => {
 
         const sopis = await  getAllSopis();
         
-        const newStatusId = 6;
+        const newStatusId = 7;
         
         if (!sopis || sopis.length == 0) {
             throw new Error('Test no puede ser ejecutado sin sopis en BBDD');
         }
-        const lastSopi = sopis.slice(-1)[0];
+        const lastSopi = sopis.slice(-2)[0];
         const currentStatus = await lastSopi.getStatus();
         
         const sopiUpdated = await updateSopiStatus({sopiId: lastSopi.id, statusId: newStatusId, userId: 3, comment: 'Prueba de cambio de estado' })

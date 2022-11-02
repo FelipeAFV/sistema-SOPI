@@ -64,12 +64,12 @@ test('Actualizacion de compra', async () => {
         // await sequelize.transaction(async () => {
         const purchases = await getAllPurchases();
 
-        const newStatusId = 4;
+        const newStatusId = 5;
 
         if (!purchases || purchases.length == 0) {
             throw new Error('Test no puede ser ejecutado sin sopis en BBDD');
         }
-        const lastPurchase = purchases.slice(-1)[0];
+        const lastPurchase = purchases.slice(-2)[0];
         const currentStatus = await lastPurchase.getStatus();
 
         const purchaseUpdated = await updatePurchaseStatus({ userId: 3, purchaseId: lastPurchase.id, statusId: newStatusId, typeId: 1})

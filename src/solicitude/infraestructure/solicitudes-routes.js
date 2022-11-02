@@ -11,9 +11,9 @@ const router = Router();
 router.post('/', hasProfile(['director', 'solicitante']), addNewSopi);
 router.put('/',  hasProfile(['director', 'referente']), verifyUpdateStatusPermissions(),  updateSopi);
 router.get('/', getAllSopi);
-router.get('/:sopiId', getSopi);
 router.get('/centroCosto', getAllCostCenter);
 router.get('/financiamiento', getAllFinancing);
+router.get('/:sopiId', getSopi);
 
 
 module.exports = router;
