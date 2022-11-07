@@ -5,6 +5,11 @@ const cookieParser = require('cookie-parser');
 const express = require('express');
 const cors = require('cors');
 const { verifyToken, hasProfile } = require('./auth/infraestructure/check-auth-middleware');
+const multer  = require('multer')
+
+const upload = multer({ storage: multer.memoryStorage() })
+
+exports.uploadMiddleware = upload;
 
 const authRoutes = require('./auth/infraestructure/auth-routes');
 const { UserService } = require('./auth/domain/user-repository');
