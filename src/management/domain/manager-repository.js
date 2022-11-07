@@ -14,6 +14,12 @@ const findManager = async ({managerId, purchaseId}) => {
 
 }
 
+const findOneManager = async (managerId) => {
+    const manager = await Manager.findOne({where:{id: managerId}});
+    return manager;
+
+}
+
 const findManagerPurchase = async (userId) => {
     const result = await Manager.findAll({where:{userId},include:Purchase})
     if(result.length === 0){
@@ -37,3 +43,4 @@ exports.findAllManager = findAllManager;
 
 exports.findManager = findManager;
 exports.saveManager = saveManager;
+exports.findOneManager = findOneManager
