@@ -34,7 +34,7 @@ const Ticket = sequelize.define('ticket',{
         field: 'estado'
     },
     expirationDate: {
-        type: DataTypes.DATE,
+        type: DataTypes.DATEONLY,
         field: 'fecha_vencimiento'
     }
 
