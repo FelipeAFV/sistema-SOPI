@@ -6,7 +6,14 @@ const {Ticket} = require('./models')
 const addTicket = async ({managerId, userId, title, content, date}) => {
     const newTicket = await Ticket.create({title:title, content:content, state:null,expirationDate:date,managerId:managerId, userId:userId});
     return newTicket
+};
+
+const getTicketsFromManagerId = async(id) => {
+    const ticket = await Ticket.findAll({where:{managerId:id}});
+
+    return ticket;
 }
 
 
-exports.addTicket = addTicket
+exports.addTicket = addTicket;
+exports.getTicketsFromManagerId = getTicketsFromManagerId;

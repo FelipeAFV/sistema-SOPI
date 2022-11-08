@@ -1,6 +1,6 @@
-const { userRepository } = require('../../auth/domain/user-repository')
-const { findOneManager } = require('../domain/manager-repository')
-const {addTicket} = require('../domain/ticket-repository')
+const { userRepository } = require('../../auth/domain/user-repository');
+const { findOneManager, findAllManagers } = require('../domain/manager-repository')
+const {addTicket, getTicketFromManagerId, getTicketsFromManagerId} = require('../domain/ticket-repository')
 
 
 const createTicket = async (ticketData) => {
@@ -24,7 +24,37 @@ const createTicket = async (ticketData) => {
     } catch (error) {
         throw new Error(error.message)
     }
+};
+ 
+const getTicketsFromPurchaseId = async(compraId) => {
+    let ids = [];
+    let m;
+    var allTickets = [];
+
+    try {
+        const managers = await findAllManagers(compraId);
+        m = JSON.parse(JSON.stringify(managers));
+        m.map((e)=> {
+            ids.push(e.id);
+        });
+        //Get tickets asociate to a purchase by manager id
+        for (let i of ids) {
+            var ticket = await getTicketsFromManagerId(i);
+            if(ticket.length !== 0) {
+                allTickets.push(ticket);
+            } 
+            
+        }
+
+        console.log(JSON.stringify(allTickets))
+        
+        return allTickets; 
+
+    } catch (error) {
+        throw new Error("Error en ticket service",error.message);
+    }
 }
 
 
 exports.createTicket = createTicket;
+exports.getTicketsFromPurchaseId = getTicketsFromPurchaseId;
