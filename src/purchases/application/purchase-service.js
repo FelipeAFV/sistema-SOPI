@@ -1,9 +1,7 @@
 const { sequelize } = require("../../database/db-init");
 const { findSopi } = require("../../solicitude/domain/sopi-repository");
-const { PurchaseSopi } = require("../domain/models");
-const { savePurchase, updatePurchaseById } = require("../domain/purchase-repository");
+const { savePurchase, updatePurchaseById, getAllPurchases } = require("../domain/purchase-repository");
 const {
-  savePurchaseDetail,
   saveAllPurchaseDatails,
   getPurchaseDetailById,
 } = require("../domain/purchasedetail-repository");
@@ -17,6 +15,8 @@ const {
   getSopiDetailById,
 } = require("../../solicitude/domain/sopidetail-repository");
 const { addlogByStatusId } = require("../domain/purchaselog-repository");
+const { findAllPermisionFromProfileId } = require("../../auth/domain/permission-repository");
+const { getTicketsFromUserId } = require("../../management/domain/ticket-repository");
 
 const createPurchaseFromCompleteSopi = async ({ sopiId }) => {
   try {
@@ -99,21 +99,65 @@ const findSopiDetailByPurchaseId = async (id) => {
   }
 };
 
-const updatePurchaseStatus = async({purchaseId, statusId, typeId, userId}) => {
-    try {
-        const purchaseUpdated = await updatePurchaseById(purchaseId, {statusId: statusId, purchaseTypeId:typeId});
-        
-        await addlogByStatusId(purchaseId, statusId,userId);
+const updatePurchaseStatus = async ({ purchaseId, statusId, typeId, userId }) => {
+  try {
+    const purchaseUpdated = await updatePurchaseById(purchaseId, { statusId: statusId, purchaseTypeId: typeId });
 
-        return purchaseUpdated;
-    } catch (error) {
-        console.log(error);
-        throw new Error(error.message);
-    }
+    await addlogByStatusId(purchaseId, statusId, userId);
+
+    return purchaseUpdated;
+  } catch (error) {
+    console.log(error);
+    throw new Error(error.message);
+  }
 }
+
+
+const findPurchasesFilteredByPermissions = async (profileId, userId) => {
+  let purchases = [];
+
+  const permissions = await findAllPermisionFromProfileId(profileId);
+
+  const purchasesPermissions = permissions.filter(permission => permission.name.includes('COMPRA'))
+  purchasesPermissions.forEach(e => console.log(e.name))
+
+  const onlyManagerPermission = await purchasesPermissions.find(p => p.name.includes('VER_GESTOR'));
+  const onlyTicketPermission = await purchasesPermissions.find(p => p.name.includes('VER_TICKET'));
+  console.log(onlyManagerPermission)
+  
+  if (onlyManagerPermission && !onlyTicketPermission) {
+    purchases = await findPurchasesAsignedToManager(userId);
+  } else if (onlyTicketPermission && !onlyManagerPermission) {
+    purchases = await findPurchasesWithTicketFromUser(userId);
+  } else {
+    purchases = await getAllPurchases();
+  }
+  
+  const filteredPurchasesByStatus = purchases.filter(purchase => {
+    let permitted = false;
+    for (let access of purchasesPermissions) {
+      if (access.name.includes(purchase.status.name)) {
+        permitted = true;
+        break;
+      }
+
+    }
+    return permitted;
+  });;
+  return filteredPurchasesByStatus;
+
+}
+
+const findPurchasesWithTicketFromUser = async (userId)  => {
+  const ticketFromUser = await  getTicketsFromUserId(userId);
+  const purchases = ticketFromUser.map(ticket => ticket.purchase)
+  return purchases;
+}
+
 exports.findPurchasesAsignedToManager = findPurchasesAsignedToManager;
 exports.findAllPurchases = findAllPurchases;
 
 exports.createPurchaseFromCompleteSopi = createPurchaseFromCompleteSopi;
 exports.findSopiDetailByPurchaseId = findSopiDetailByPurchaseId;
 exports.updatePurchaseStatus = updatePurchaseStatus;
+exports.findPurchasesFilteredByPermissions = findPurchasesFilteredByPermissions;

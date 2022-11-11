@@ -1,6 +1,7 @@
 const { Manager } = require("./models")
 const { User } = require("../../auth/domain/models");
-const {Ticket} = require('./models')
+const {Ticket} = require('./models');
+const { Purchase } = require("../../purchases/domain/models");
 
 
 const addTicket = async ({managerId, userId, title, content, date}) => {
@@ -13,7 +14,13 @@ const getTicketsFromManagerId = async(id) => {
 
     return ticket;
 }
+const getTicketsFromUserId = async(id) => {
+    const ticket = await Ticket.findAll({where:{userId:id}, include: [Purchase]});
+
+    return ticket;
+}
 
 
 exports.addTicket = addTicket;
 exports.getTicketsFromManagerId = getTicketsFromManagerId;
+exports.getTicketsFromUserId = getTicketsFromUserId;

@@ -3,6 +3,7 @@ const { sendHttpResponse } = require("../../share/utils/response-parser");
 const { getSopiById, getAllSopis } = require("../domain/sopi-repository");
 
 const sopiService = require("../application/sopi-service");
+const { findAllPermisionFromProfileId } = require("../../auth/domain/permission-repository");
 
 
 const addNewSopi = async (req, res) => {
@@ -64,9 +65,13 @@ const updateSopi = async (req, res) => {
 
 const getAllSopi = async (req, res) => {
     try {
-        const sopis = await getAllSopis();
-        sendHttpResponse(res, sopis, 200);
+        const user = req.user;
+
+        const sopisFiltered = await sopiService.getSopisFilteredByUserPermissions(user.profileId);
+
+        sendHttpResponse(res, sopisFiltered, 200);
     } catch (e) {
+        console.log(e)
         sendHttpResponse(res, 'Error', 500, 'Error al buscar sopis');
     }
 }

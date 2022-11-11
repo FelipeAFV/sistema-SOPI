@@ -30,6 +30,11 @@ const User = sequelize.define('user', {
         type: DataTypes.STRING,
         field: 'mail'
     },
+    active: {
+        type: DataTypes.BOOLEAN,
+        field: 'activo'
+        
+    }
 },
     { tableName: 'usuarios' , updatedAt: 'ultima_actualizacion', createdAt: 'creacion'});
 

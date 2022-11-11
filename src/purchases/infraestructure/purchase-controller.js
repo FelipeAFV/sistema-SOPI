@@ -1,4 +1,4 @@
-const { createPurchaseFromCompleteSopi, findPurchasesAsignedToManager, findAllPurchases, findSopiDetailByPurchaseId, updatePurchaseStatus } = require("../application/purchase-service");
+const { createPurchaseFromCompleteSopi, findPurchasesAsignedToManager, findAllPurchases, findSopiDetailByPurchaseId, updatePurchaseStatus, findPurchasesFilteredByPermissions } = require("../application/purchase-service");
 const { sendHttpResponse } = require('../../share/utils/response-parser');
 
 const createPurchase = async (req, res) => {
@@ -23,6 +23,23 @@ const createPurchase = async (req, res) => {
         console.log(e)
         sendHttpResponse(res, 'Error', 500, 'Error al procesar la creación de orden de compra');
         return;
+    }
+
+}
+
+const getAllPurchases = async (req, res) => {
+
+    try {
+        const purchasesAllowed = await findPurchasesFilteredByPermissions(req.user.profileId, req.user.id);
+    
+        sendHttpResponse(res, purchasesAllowed, 200);
+        return;
+
+    } catch (e) {
+        console.log(e)
+        sendHttpResponse(res, 'Error', 500);
+        return;
+
     }
 
 }
@@ -94,3 +111,4 @@ exports.createPurchase = createPurchase;
 exports.purchaseManage = purchaseManage;
 exports.getPurchaseDetail = getPurchaseDetail;
 exports.updatePurchase = updatePurchase;
+exports.getAllPurchases = getAllPurchases;

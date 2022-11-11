@@ -14,6 +14,7 @@ const router = Router();
 router.post('/responsables', hasProfile(['jefe_compra','director']), addManager);
 router.post('/documentos', uploadMiddleware.single('doc'), addDocument);
 router.post('/ticket', ticketCreation);
+//TODO: cambiar parametro a query
 router.get('/ticket/:compraId', getAllTickets);
 
 

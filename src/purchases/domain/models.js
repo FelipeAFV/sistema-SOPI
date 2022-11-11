@@ -110,17 +110,19 @@ const Supplier = sequelize.define('supplier', {
 
 
 Purchase.loadAssociations = () => {
+    const { Document, Manager, Ticket } = require("../../management/domain/models");
+    
     Purchase.belongsTo(PurchaseType, { foreignKey: {field: 'tipo_id'}});
     Purchase.belongsTo(Supplier, { foreignKey: { field: 'proveedor_id'}});
     Purchase.belongsToMany(PurchaseStatus, { as: 'purchaseLogStatus', through: PurchaseLog, foreignKey: { field: 'compra_id', name: 'purchaseId'}});
     Purchase.hasMany(PurchaseDetail, { foreignKey: { field: 'compra_id'}});
+    Purchase.hasMany(Ticket, { foreignKey: { field: 'compra_id'}});
     Purchase.belongsTo(PurchaseStatus, { as: 'status', foreignKey: { field: 'estado_id'}});
     
 
     const { Sopi } = require("../../solicitude/domain/models");
     Purchase.belongsToMany(Sopi, { through: PurchaseSopi, foreignKey: { field: 'compra_id', name: 'purchaseId'}});
 
-    const { Document, Manager } = require("../../management/domain/models");
     Purchase.hasMany(Document, { foreignKey: { field: 'compra_id'}});
     Purchase.hasMany(Manager, { foreignKey: {field : 'compra_id'}});
 

@@ -1,4 +1,4 @@
-const { Purchase, PurchaseDetail } = require("./models")
+const { Purchase, PurchaseDetail, PurchaseStatus } = require("./models")
 
 
 const savePurchase = async (purchase) => {
@@ -27,7 +27,7 @@ const updatePurchaseById = async (id, purchase) => {
 }
 
 const getAllPurchases = async () => {
-    return await Purchase.findAll();
+    return await Purchase.findAll({ include: [{model: PurchaseStatus, as: 'status'}]});
 }
 
 exports.savePurchase = savePurchase;

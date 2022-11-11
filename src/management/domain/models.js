@@ -75,12 +75,15 @@ Manager.loadAssociations = () => {
     Manager.belongsTo(User, { foreignKey: { field: 'usuario_id'}});
     const { Purchase } = require("../../purchases/domain/models");
     Manager.belongsTo(Purchase, { foreignKey: { field: 'compra_id'}});
-
+    
     Manager.hasMany(Ticket, {foreignKey: { field: 'gestor_id'}});
 }
 
 Ticket.loadAssociations = () => {
+    const { Purchase } = require("../../purchases/domain/models");
+
     Ticket.belongsTo(Manager, { foreignKey: { field: 'gestor_id'}});
+    Ticket.belongsTo(Purchase, { foreignKey: { field: 'compra_id'}});
     Ticket.hasMany(Comment, { foreignKey: { field: 'ticket_id'}});
 
     const { User } = require("../../auth/domain/models");

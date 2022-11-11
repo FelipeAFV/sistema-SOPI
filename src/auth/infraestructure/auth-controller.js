@@ -30,7 +30,8 @@ class AuthController {
             const resp = await login(req.body)
             const token = (jwt.sign({
                 id: resp.id,
-                username: resp.username
+                username: resp.username,
+                profileId: resp.profile.id
             },process.env.SECRET_KEY, { expiresIn: '8h'}))  
             
             res.cookie('jwt',token,{httpOnly:true})

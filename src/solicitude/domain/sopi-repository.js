@@ -6,7 +6,7 @@ const getSopiById =  async (id) => {
 }
 
 const getAllSopis = async () => {
-    const sopis = await Sopi.findAll();
+    const sopis = await Sopi.findAll({include: [{model: SopiStatus, as: 'status'}]});
     return sopis
 }
 
