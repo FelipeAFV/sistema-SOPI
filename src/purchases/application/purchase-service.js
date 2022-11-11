@@ -69,25 +69,6 @@ const createPurchaseFromCompleteSopi = async ({ sopiId }) => {
   }
 };
 
-const findPurchasesAsignedToManager = async (userId) => {
-  try {
-    const result = await findManagerPurchase(userId);
-
-    return result;
-  } catch (error) {
-    throw new Error(error.message);
-  }
-};
-
-const findAllPurchases = async () => {
-  try {
-    const result = await findAllManager();
-    return result;
-  } catch (error) {
-    throw new Error(error.message);
-  }
-};
-
 const findSopiDetailByPurchaseId = async (id) => {
   try {
     const purchase = await getPurchaseDetailById(id);
@@ -119,15 +100,13 @@ const findPurchasesFilteredByPermissions = async (profileId, userId) => {
   const permissions = await findAllPermisionFromProfileId(profileId);
 
   const purchasesPermissions = permissions.filter(permission => permission.name.includes('COMPRA'))
-  purchasesPermissions.forEach(e => console.log(e.name))
 
-  const onlyManagerPermission = await purchasesPermissions.find(p => p.name.includes('VER_GESTOR'));
-  const onlyTicketPermission = await purchasesPermissions.find(p => p.name.includes('VER_TICKET'));
-  console.log(onlyManagerPermission)
+  const managerPermission = await purchasesPermissions.find(p => p.name.includes('VER_GESTOR'));
+  const ticketPermission = await purchasesPermissions.find(p => p.name.includes('VER_TICKET'));
   
-  if (onlyManagerPermission && !onlyTicketPermission) {
+  if (managerPermission && !ticketPermission) {
     purchases = await findPurchasesAsignedToManager(userId);
-  } else if (onlyTicketPermission && !onlyManagerPermission) {
+  } else if (ticketPermission && !managerPermission) {
     purchases = await findPurchasesWithTicketFromUser(userId);
   } else {
     purchases = await getAllPurchases();
@@ -148,14 +127,22 @@ const findPurchasesFilteredByPermissions = async (profileId, userId) => {
 
 }
 
+const findPurchasesAsignedToManager = async (userId) => {
+  try {
+    const result = await findManagerPurchase(userId);
+
+    return result;
+  } catch (error) {
+    throw new Error(error.message);
+  }
+};
+
+
 const findPurchasesWithTicketFromUser = async (userId)  => {
   const ticketFromUser = await  getTicketsFromUserId(userId);
   const purchases = ticketFromUser.map(ticket => ticket.purchase)
   return purchases;
 }
-
-exports.findPurchasesAsignedToManager = findPurchasesAsignedToManager;
-exports.findAllPurchases = findAllPurchases;
 
 exports.createPurchaseFromCompleteSopi = createPurchaseFromCompleteSopi;
 exports.findSopiDetailByPurchaseId = findSopiDetailByPurchaseId;

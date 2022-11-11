@@ -10,12 +10,12 @@ const addTicket = async ({managerId, userId, title, content, date}) => {
 };
 
 const getTicketsFromManagerId = async(id) => {
-    const ticket = await Ticket.findAll({where:{managerId:id}});
+    const ticket = await Ticket.findAll({ where: {managerId: id}});
 
     return ticket;
 }
 const getTicketsFromUserId = async(id) => {
-    const ticket = await Ticket.findAll({where:{userId:id}, include: [Purchase]});
+    const ticket = await Ticket.findAll({ where: {userId:id}, include: [Purchase]});
 
     return ticket;
 }

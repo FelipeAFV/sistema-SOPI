@@ -1,4 +1,4 @@
-const { createPurchaseFromCompleteSopi, findPurchasesAsignedToManager, findAllPurchases, findSopiDetailByPurchaseId, updatePurchaseStatus, findPurchasesFilteredByPermissions } = require("../application/purchase-service");
+const { createPurchaseFromCompleteSopi, findSopiDetailByPurchaseId, updatePurchaseStatus, findPurchasesFilteredByPermissions } = require("../application/purchase-service");
 const { sendHttpResponse } = require('../../share/utils/response-parser');
 
 const createPurchase = async (req, res) => {
@@ -44,41 +44,11 @@ const getAllPurchases = async (req, res) => {
 
 }
 
-const findPurchasesFromManager = async (req,res) => {
-
-    const userId = req.query.userId
-
-    try {
-        const response = await findPurchasesAsignedToManager(userId)
-        sendHttpResponse(res,response,200)    
-    } catch (error) {
-        sendHttpResponse(res,error.message,400)
-    }
-}
-
-const findPurchases = async (req,res) => {
-    try {
-        const response = await findAllPurchases()
-        sendHttpResponse(res,response,200)    
-    } catch (error) {
-        sendHttpResponse(res,error.message,400)
-    }
-}
-
-const purchaseManage = (req,res) => {
-    const opcion = req.query.userId
-    if(opcion) {
-        findPurchasesFromManager(req,res)
-    }else {
-        findPurchases(req,res)
-    }
-}
-
 const getPurchaseDetail = async(req,res) => {
     const {compraId} = req.params;
 
     try {
-        //const purchase = await getPurchaseById(compraId);
+
         const purchase = await findSopiDetailByPurchaseId(compraId);
         sendHttpResponse(res, purchase, 200);
     } catch (error) {
@@ -108,7 +78,6 @@ const updatePurchase = async(req,res) => {
 }
 
 exports.createPurchase = createPurchase;
-exports.purchaseManage = purchaseManage;
 exports.getPurchaseDetail = getPurchaseDetail;
 exports.updatePurchase = updatePurchase;
 exports.getAllPurchases = getAllPurchases;
