@@ -2,7 +2,7 @@ const { hasProfile } = require('../../auth/infraestructure/check-auth-middleware
 const { getAllCostCenter } = require('./costcenter-controller');
 const { getAllFinancing } = require('./financing-controller');
 const { addNewSopi, getSopi, updateSopi, getAllSopi } = require('./sopi-controller');
-const { verifyUpdateStatusPermissions } = require('./updatesopi-middleware');
+const { verifyUpdateStatusPermissions, sopiDetailPermission } = require('./sopi-middleware');
 
 const Router = require('express').Router;
 
@@ -13,7 +13,7 @@ router.put('/',  hasProfile(['director', 'referente']), verifyUpdateStatusPermis
 router.get('/', getAllSopi);
 router.get('/centroCosto', getAllCostCenter);
 router.get('/financiamiento', getAllFinancing);
-router.get('/:sopiId', getSopi);
+router.get('/:sopiId', sopiDetailPermission() ,getSopi);
 
 
 module.exports = router;

@@ -36,14 +36,15 @@ insert into permisos(id, nombre) values(2, 'USUARIO_EDITAR');
 insert into permisos(id, nombre) values(3, 'USUARIO_ACTUALIZAR');
 insert into permisos(id, nombre) values(4, 'USUARIO_ELIMINAR');
 
-insert into permisos(id, nombre) values(5,'SOPI_CREAR');
-insert into permisos(id, nombre) values(6,'SOPI_EDITAR');
+insert into permisos(id, nombre) values(5, 'SOPI_CREAR');
+insert into permisos(id, nombre) values(6, 'SOPI_EDITAR');
 insert into permisos(id, nombre) values(7, 'SOPI_EDITAR_ESTADO_RECHAZADA');
 insert into permisos(id, nombre) values(8, 'SOPI_EDITAR_ESTADO_REVISION_REFERENTE');
 insert into permisos(id, nombre) values(9, 'SOPI_EDITAR_ESTADO_REVISADO_REFERENTE');
 insert into permisos(id, nombre) values(10, 'SOPI_EDITAR_ESTADO_EN_GESTION');
 insert into permisos(id, nombre) values(11,'SOPI_ELIMINAR');
 insert into permisos(id, nombre) values(12,'SOPI_VER');
+insert into permisos(id, nombre) values(45,'SOPI_VER_CREADOR');
 insert into permisos(id, nombre) values(13,'SOPI_VER_ESTADO_INGRESADA');
 insert into permisos(id, nombre) values(14,'SOPI_VER_ESTADO_APROBADA');
 insert into permisos(id, nombre) values(15,'SOPI_VER_ESTADO_RECHAZADA');

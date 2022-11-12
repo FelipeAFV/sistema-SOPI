@@ -99,7 +99,16 @@ const findPurchasesFilteredByPermissions = async (profileId, userId) => {
 
   const permissions = await findAllPermisionFromProfileId(profileId);
 
+  
   const purchasesPermissions = permissions.filter(permission => permission.name.includes('COMPRA'))
+  
+
+  const viewAll = purchasesPermissions.find((permission) => permission == 'COMPRA_VER');
+  if (viewAll) {
+    return await getAllPurchases();
+  }
+
+  
 
   const managerPermission = await purchasesPermissions.find(p => p.name.includes('VER_GESTOR'));
   const ticketPermission = await purchasesPermissions.find(p => p.name.includes('VER_TICKET'));
@@ -111,7 +120,8 @@ const findPurchasesFilteredByPermissions = async (profileId, userId) => {
   } else {
     purchases = await getAllPurchases();
   }
-  
+
+  // Status filter
   const filteredPurchasesByStatus = purchases.filter(purchase => {
     let permitted = false;
     for (let access of purchasesPermissions) {
@@ -122,7 +132,7 @@ const findPurchasesFilteredByPermissions = async (profileId, userId) => {
 
     }
     return permitted;
-  });;
+  });
   return filteredPurchasesByStatus;
 
 }
