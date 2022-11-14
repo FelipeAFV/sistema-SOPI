@@ -1,6 +1,6 @@
 const jwt = require("jsonwebtoken");
 const { sendHttpResponse } = require("../../share/utils/response-parser");
-const { findAllPermisionFromProfileId } = require("../domain/permission-repository");
+const { findAllPermisionFromProfileId, findAllPermissionsFromUserAndProfile } = require("../domain/permission-repository");
 const { userRepository } = require("../domain/user-repository");
 
 const verifyToken = (req, res, next) => {
@@ -47,7 +47,7 @@ const hasProfile = (profiles) => {
 const hasPermission = (permissionList) => {
     const middleware = async (req, res, next) => {
         const user = await userRepository.findUserByUsername(req.user.username);
-        const permissions = await findAllPermisionFromProfileId(user.profileId);
+        const permissions = await findAllPermissionsFromUserAndProfile(user.id, user.profileId);
         for (let requiredPermission of permissionList) {
             let containsPermission = false;
             for (let actualPermission of permissions) {
