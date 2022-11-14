@@ -1,4 +1,4 @@
-const {Profile} = require('./models')
+const {Profile, User} = require('./models')
 
 
 const findAllProfile = async () => {
@@ -11,4 +11,9 @@ const findAllProfile = async () => {
     
 }
 
+const findProfileFromUser = async (userId) => {
+    return await Profile.findOne({ include: [{model: User, where: { id: userId}}]});
+} 
+
 exports.findAllProfile = findAllProfile;
+exports.findProfileFromUser = findProfileFromUser;
