@@ -1,3 +1,4 @@
+const { Manager } = require("../../management/domain/models");
 const { Purchase, PurchaseDetail, PurchaseStatus } = require("./models")
 
 
@@ -30,7 +31,12 @@ const getAllPurchases = async () => {
     return await Purchase.findAll({ include: [{model: PurchaseStatus, as: 'status'}]});
 }
 
+const getAllPurchasesWithManager = async (managerId) => {
+    return await Purchase.findAll({ include: [{model: Manager, where: {userId: managerId}}]});
+}
+
 exports.savePurchase = savePurchase;
 exports.getPurchaseById = getPurchaseById;
 exports.updatePurchaseById = updatePurchaseById;
 exports.getAllPurchases = getAllPurchases;
+exports.getAllPurchasesWithManager = getAllPurchasesWithManager;

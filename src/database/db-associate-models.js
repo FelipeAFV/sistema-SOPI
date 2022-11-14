@@ -3,7 +3,7 @@ const loadAllAssociations = () => {
      * When connections is ready, create models
      */
     // const { Workflow, Documento, EstadoWorkflow, Responsable, WorkflowLog } = require('../workflow/models/models');
-    const { User, Permission, Profile, Access } = require('../auth/domain/models');
+    const { User, Permission, Profile, Access, UserAccess } = require('../auth/domain/models');
     const { CostCenter, Financing, Sopi, SopiDetail, SopiLog, SopiStatus, Supplies, SuppliesCategory } = require('../solicitude/domain/models');
     const { Comment, Document, Manager, Ticket } = require('../management/domain/models');
     const { Department, Employee, Job} = require('../employees/domain/models');
@@ -13,6 +13,7 @@ const loadAllAssociations = () => {
     User.loadAssociations();
     Profile.loadAssociations();
     Access.loadAssociations();
+    UserAccess.loadAssociations();
     Permission.loadAssociations();
     CostCenter.loadAssociations();
     Financing.loadAssociations();

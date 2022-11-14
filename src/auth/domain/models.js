@@ -64,6 +64,13 @@ const Access = sequelize.define('access', {
         timestamps: false
     })
 
+const UserAccess = sequelize.define('userAccess', {
+
+}, {
+    tableName: 'accesos_usuario',
+    timestamps: false
+})
+
 const Permission = sequelize.define('permission', {
     id: {
         field: 'id',
@@ -87,26 +94,33 @@ const Permission = sequelize.define('permission', {
 
 Permission.loadAssociations = () => {
     Permission.belongsToMany(Profile, {through: Access, foreignKey: {field: 'permiso_id', name: 'permissionId'}})
+    Permission.belongsToMany(User, {through: UserAccess, foreignKey: {field: 'permiso_id', name: 'permissionId'}})
 }
 
 Access.loadAssociations = () => {
     
 }
 
+UserAccess.loadAssociations = () => {
+    
+    
+}
+
 User.loadAssociations = () => {
-
+    
     User.belongsTo(Profile, { foreignKey: { field: 'perfil_id'}});
-
+    
     const { Ticket, Manager } = require("../../management/domain/models");
     User.hasMany(Ticket, { foreignKey: {field: 'responsable_id'}});
     User.hasMany(Manager, { foreignKey: {field: 'usuario_id'}});
-
+    
     const { Sopi, SopiLog } = require("../../solicitude/domain/models");
     User.hasMany(Sopi, { foreignKey: { field: 'usuario_id'}});
     User.hasMany(SopiLog, { foreignKey: {allowNull: false, field: 'usuario_id'}});
-
+    
     const { PurchaseLog } = require("../../purchases/domain/models");
     User.hasMany(PurchaseLog, { foreignKey: {allowNull: false, field: 'usuario_id'}});
+    User.belongsToMany(Permission, { through: UserAccess, foreignKey: {field: 'usuario_id', name: 'userId'}});
 }
 
 Profile.loadAssociations = () => {
@@ -120,4 +134,5 @@ exports.User = User;
 exports.Profile = Profile;
 exports.Access = Access;
 exports.Permission = Permission;
+exports.UserAccess = UserAccess;
 

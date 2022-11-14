@@ -1,7 +1,8 @@
-const { findAllPermisionFromProfileId } = require("../../auth/domain/permission-repository");
+const { findAllPermisionFromProfileId, findAllPermissionsFromUserAndProfile } = require("../../auth/domain/permission-repository");
 const { sequelize } = require("../../database/db-init");
+const { getAllPurchasesWithManager } = require("../../purchases/domain/purchase-repository");
 const { SopiLog, Sopi } = require("../domain/models");
-const { saveSopi, updateSopi, findSopi, getAllSopis } = require("../domain/sopi-repository");
+const { saveSopi, updateSopi, findSopi, getAllSopis, getAllSopisByConditions } = require("../domain/sopi-repository");
 const { saveSopiDetail } = require("../domain/sopidetail-repository");
 const { addLogEntryByStatusName, addLogEntryByStatusId } = require("../domain/sopilog-repository");
 const { findStatusByName } = require("../domain/sopistatus-repository");
@@ -85,16 +86,45 @@ const updateSopiStatus = async ({ sopiId, statusId, userId, comment }) => {
 }
 
 
-const getSopisFilteredByUserPermissions = async (profileId) => {
-    const access = await findAllPermisionFromProfileId(profileId);
-    const sopis = await getAllSopis();
-    const sopiAccess = access.filter((access) => access.name.includes('SOPI_VER_ESTADO'));
-    console.log(sopiAccess)
+const getSopisFilteredByUserPermissions = async (profileId, userId) => {
+
+    const access = await findAllPermissionsFromUserAndProfile(userId, profileId);
+    let sopis = [];
+
+    // Tiene permiso para ver todo
+    if (access.find(a => a.name == 'SOPI_VER')) {
+        sopis = await getAllSopis();
+        return sopis;
+    }
+    
+    //TODO: Chequear permiso de creador 'SOPI_VER_CREADOR'
+    
+    const ownerAccess = access.find(a => a.name == 'SOPI_VER_CREADOR');
+    const managerAccess = access.find(a => a.name == 'SOPI_VER_COMPRA_GESTOR');
+    if (ownerAccess && !managerAccess) {
+        sopis = await getAllSopisByConditions({userId: userId})
+    }
+    
+    //TODO: Chequear permiso de gestor 'SOPI_VER_COMPRA_GESTOR
+    else if (!ownerAccess && managerAccess) {
+        sopis = await getAllPurchasesWithManager(userId);
+    } else if (ownerAccess && managerAccess) {
+        
+        ownerSopis = await getAllSopisByConditions({userId: userId})
+        managerSopis = await getAllPurchasesWithManager(userId);
+        sopis = [...ownerSopis, ...managerSopis];
+    } else {
+        sopis = await getAllSopis();
+
+    }
+
+    const sopiStatusAccess = access.filter((access) => access.name.includes('SOPI_VER_ESTADO'));
+
 
     const sopisFiltered = sopis.filter(sopi => {
         let permitted = false;
-        console.log(sopi)
-        for (let access of sopiAccess) {
+
+        for (let access of sopiStatusAccess) {
             if (access.name.includes(sopi.status.name)) {
                 permitted = true;
                 break;

@@ -1,4 +1,4 @@
-const { findAllPermisionFromProfileId } = require("../../auth/domain/permission-repository");
+const { findAllPermisionFromProfileId, findAllPermissionsFromUserAndProfile } = require("../../auth/domain/permission-repository");
 const { userRepository } = require("../../auth/domain/user-repository");
 const { sendHttpResponse } = require("../../share/utils/response-parser");
 const { findSopi } = require("../domain/sopi-repository");
@@ -36,7 +36,7 @@ const verifyUpdateStatusPermissions = () => {
 
 const sopiDetailPermission = () => {
     return async (req, res, next) => {
-        const permissions = await findAllPermisionFromProfileId(req.user.profileId);
+        const permissions = await findAllPermissionsFromUserAndProfile(req.user.profileId);
         const viewAll = permissions.find((permission) => permission == 'SOPI_VER');
 
         if (viewAll) {
@@ -46,7 +46,7 @@ const sopiDetailPermission = () => {
         const sopi = await findSopi({id: req.params.sopiId});
 
         if (ownerPermission) {
-            console.log('Cheasdasdkhj')
+
             if (!req.params.sopiId) {
                 sendHttpResponse(res, 'Error',400, 'Debes enviar el {sopiId}')
                 return;

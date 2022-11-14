@@ -10,6 +10,11 @@ const getAllSopis = async () => {
     return sopis
 }
 
+const getAllSopisByConditions = async (conditions) => {
+    const sopis = await Sopi.findAll({include: [{model: SopiStatus, as: 'status'}], where: conditions});
+    return sopis
+    
+}
 
 const findSopi = async (conditions) => {
 
@@ -39,3 +44,4 @@ exports.findSopi = findSopi;
 exports.saveSopi = saveSopi;
 exports.updateSopi = updateSopi;
 exports.getAllSopis = getAllSopis;
+exports.getAllSopisByConditions = getAllSopisByConditions;
