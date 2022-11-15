@@ -22,7 +22,7 @@ router.post('/insumos', SupplyController.createSupply);
 router.get('/insumos', SupplyController.getSupplies);
 //routes for classification
 router.post('/insumos/clasificacion', CategoryController.createCategory); 
-router.get('/:sopiId', sopiDetailPermission() ,getSopi);
+router.get('/:sopiId', sopiDetailPermission() , getSopi);
 
 
 

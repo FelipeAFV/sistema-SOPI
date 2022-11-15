@@ -2,8 +2,8 @@ const { findAllPermisionFromProfileId, findAllPermissionsFromUserAndProfile } = 
 const { sequelize } = require("../../database/db-init");
 const { getAllPurchasesWithManager } = require("../../purchases/domain/purchase-repository");
 const { SopiLog, Sopi } = require("../domain/models");
-const { saveSopi, updateSopi, findSopi, getAllSopis, getAllSopisByConditions } = require("../domain/sopi-repository");
-const { saveSopiDetail } = require("../domain/sopidetail-repository");
+const { saveSopi, updateSopi, findSopi, getAllSopis, getAllSopisByConditions, getSopiById } = require("../domain/sopi-repository");
+const { saveSopiDetail, getSopiDetailsById } = require("../domain/sopidetail-repository");
 const { addLogEntryByStatusName, addLogEntryByStatusId } = require("../domain/sopilog-repository");
 const { findStatusByName } = require("../domain/sopistatus-repository");
 
@@ -83,6 +83,18 @@ const updateSopiStatus = async ({ sopiId, statusId, userId, comment }) => {
     await addLogEntryByStatusId(sopiId, userId, comment, statusId);
 
     return sopiUpdated;
+};
+
+const getSopiByIdWithDetails = async(sopiId) => {
+    const sopi = await getSopiById(sopiId);
+    const status = await sopi.getSopiLogStatus();
+    sopi.status = status.map((status)=>status.name);
+    const details = await getSopiDetailsById(sopiId);
+    const sopiWithDetails = {
+        sopi: sopi,
+        details: details 
+    }
+    return sopiWithDetails;
 }
 
 
@@ -138,4 +150,5 @@ const getSopisFilteredByUserPermissions = async (profileId, userId) => {
 
 exports.createSopi = createSopiSeqTransactional;
 exports.updateSopiStatus = updateSopiStatus;
+exports.getSopiByIdWithDetails = getSopiByIdWithDetails;
 exports.getSopisFilteredByUserPermissions = getSopisFilteredByUserPermissions;
