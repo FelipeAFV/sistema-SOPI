@@ -6,9 +6,12 @@ const { createTicket, getTicketsFromPurchaseId } = require("../application/ticke
 const ticketCreation = async (req,res) => {
     try {
         const ticketData = req.body;
-        if(!ticketData){
-            throw new Error('body vacio')
+        const purchaseId = req.query.compraId;
+        if(!ticketData || !purchaseId){
+            throw new Error('campos faltantes')
         }else {
+            ticketData.purchaseId = purchaseId;
+            console.log(ticketData.purchaseId);
             const ticket = await createTicket(ticketData)
             sendHttpResponse(res,ticket,200)
         }

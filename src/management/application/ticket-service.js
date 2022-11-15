@@ -10,6 +10,7 @@ const createTicket = async (ticketData) => {
             throw new Error('manager no existe')
         } else {
             const user = await userRepository.findUserById(ticketData.userId)
+            
             if(!user) {
                 throw new Error('usuario no existe')
             } else {
