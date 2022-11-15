@@ -1,6 +1,6 @@
 const { userRepository } = require('../../auth/domain/user-repository');
 const { findOneManager, findAllManagers } = require('../domain/manager-repository')
-const {addTicket, getTicketFromManagerId, getTicketsFromManagerId} = require('../domain/ticket-repository')
+const {addTicket, getTicketFromManagerId, getTicketsFromManagerId, getTicketFromId} = require('../domain/ticket-repository')
 
 
 const createTicket = async (ticketData) => {
@@ -10,6 +10,7 @@ const createTicket = async (ticketData) => {
             throw new Error('manager no existe')
         } else {
             const user = await userRepository.findUserById(ticketData.userId)
+            
             if(!user) {
                 throw new Error('usuario no existe')
             } else {
@@ -56,5 +57,19 @@ const getTicketsFromPurchaseId = async(compraId) => {
 }
 
 
+const findTicketFromTicketId = async(ticketId) => {
+    
+
+    try {
+        
+        const ticket = await getTicketFromId(ticketId)
+        return ticket; 
+
+    } catch (error) {
+        throw new Error("Error en ticket service",error.message);
+    }
+}
+
+exports.findTicketFromTicketId = findTicketFromTicketId;
 exports.createTicket = createTicket;
 exports.getTicketsFromPurchaseId = getTicketsFromPurchaseId;

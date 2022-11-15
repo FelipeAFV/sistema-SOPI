@@ -4,8 +4,8 @@ const {Ticket} = require('./models');
 const { Purchase } = require("../../purchases/domain/models");
 
 
-const addTicket = async ({managerId, userId, title, content, date}) => {
-    const newTicket = await Ticket.create({title:title, content:content, state:null,expirationDate:date,managerId:managerId, userId:userId});
+const addTicket = async ({managerId, userId, title, content, date, purchaseId}) => {
+    const newTicket = await Ticket.create({title:title, content:content, state:null,expirationDate:date,managerId:managerId, userId:userId, purchaseId:purchaseId});
     return newTicket
 };
 
@@ -20,7 +20,13 @@ const getTicketsFromUserId = async(id) => {
     return ticket;
 }
 
+const getTicketFromId = async (id) => {
+    const ticket = await Ticket.findOne({ where: {id:id}})
 
+    return ticket;
+}
+
+exports.getTicketFromId = getTicketFromId;
 exports.addTicket = addTicket;
 exports.getTicketsFromManagerId = getTicketsFromManagerId;
 exports.getTicketsFromUserId = getTicketsFromUserId;
