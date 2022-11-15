@@ -215,3 +215,12 @@ commit;
 insert into compras_tipo(id, nombre, valor_minimo, valor_maximo) values(1, 'L1', 1, 99);
 insert into compras_tipo(id, nombre, valor_minimo, valor_maximo) values(2, 'LE', 101, 999);
 insert into compras_tipo(id, nombre,  valor_minimo, valor_maximo) values(3, 'LP', 1000, 999999999);
+
+insert into categorias(nombre, createdAt, updatedAt) values ('Físico', '2022-10-10', '2022-10-10');
+insert into categorias(nombre, createdAt, updatedAt) values ('Natural', '2022-10-10', '2022-10-10');
+insert into categorias(nombre, createdAt, updatedAt) values ('Servicio', '2022-10-10', '2022-10-10');
+
+insert into insumos(nombre, caracteristicas, precio,createdAt, updatedAt, categoria_id) values('Mesa','Mueble de una o más patas que puede ser de madera u otro material',1900,'2022-10-10', '2022-10-10', 1);
+insert into insumos(nombre, caracteristicas, precio,createdAt, updatedAt, categoria_id) values('Lápiz','Implemento para escribir, es un tubo hueco con tinta viscosa que sale por la punta',600,'2022-10-10', '2022-10-10', 1);
+insert into insumos(nombre, caracteristicas, precio,createdAt, updatedAt, categoria_id) values('Papel higiénico','Papel higiénico ',600,'2022-10-10', '2022-10-10', 1);
+insert into insumos(nombre, caracteristicas, precio,createdAt, updatedAt, categoria_id) values('Traslado de insumos','Servicio para trasladar insumos',15000,'2022-10-10', '2022-10-10', 3);
