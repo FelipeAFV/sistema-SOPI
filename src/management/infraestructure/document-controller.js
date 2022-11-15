@@ -19,7 +19,7 @@ const getDocument = async (req, res) => {
     const {docId} = req.params;
 
     try {
-        const doc = await findDocument(docId)
+        const doc = await docService.findDocumentWithPermissions(docId, req.user.id, req.user.profileId);
     
         if (!doc) {
             sendHttpResponse(res, 'Documento no encontrado', 400)
@@ -30,13 +30,14 @@ const getDocument = async (req, res) => {
                 res.end(data)
                 return
             }
-            res.end(data)
+            res.status(200).end(data)
             return;
             // sendHttpResponse(res, data, 200)
         })
         
     } catch (e) {
-        sendHttpResponse(res, 'Error', 500, 'Error al buscar documento');
+        console.log(e.permissionFailed)
+        sendHttpResponse(res, 'Error', 400, e);
         return;
         
     }
