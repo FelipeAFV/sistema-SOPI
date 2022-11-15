@@ -48,8 +48,10 @@ insert into permisos(id, nombre) values(41,'TICKET_VER_CREADOR');
 
 insert into permisos(id, nombre) values(42,'DOC_CREAR');
 insert into permisos(id, nombre) values(43,'DOC_ELIMINAR');
+insert into permisos(id, nombre) values(53,'DOC_ELIMINAR_COMPRA_GESTOR');
 insert into permisos(id, nombre) values(44,'DOC_VER');
 insert into permisos(id, nombre) values(49,'DOC_VER_COMPRA_TICKET');
+insert into permisos(id, nombre) values(52,'DOC_VER_COMPRA_GESTOR');
 insert into permisos(id, nombre) values(50,'DOC_DESCARGAR_COMPRA_TICKET');
 insert into permisos(id, nombre) values(45,'DOC_DESCARGAR');
 
@@ -133,12 +135,14 @@ insert into accesos(perfil_id, permiso_id) values(3,38);
 insert into accesos(perfil_id, permiso_id) values(3,39);
 
 insert into accesos(perfil_id, permiso_id) values(3,42);
-insert into accesos(perfil_id, permiso_id) values(3,43);
-insert into accesos(perfil_id, permiso_id) values(3,44);
-insert into accesos(perfil_id, permiso_id) values(3,45);
+
+
+
 insert into accesos(perfil_id, permiso_id) values(3,46);
 insert into accesos(perfil_id, permiso_id) values(3,47);
 insert into accesos(perfil_id, permiso_id) values(3,48);
+insert into accesos(perfil_id, permiso_id) values(3,52);
+insert into accesos(perfil_id, permiso_id) values(3,53);
 
 
 
