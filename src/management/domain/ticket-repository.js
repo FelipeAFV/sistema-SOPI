@@ -20,7 +20,13 @@ const getTicketsFromUserId = async(id) => {
     return ticket;
 }
 
+const getTicketFromId = async (id) => {
+    const ticket = await Ticket.findOne({ where: {id:id}})
 
+    return ticket;
+}
+
+exports.getTicketFromId = getTicketFromId;
 exports.addTicket = addTicket;
 exports.getTicketsFromManagerId = getTicketsFromManagerId;
 exports.getTicketsFromUserId = getTicketsFromUserId;
