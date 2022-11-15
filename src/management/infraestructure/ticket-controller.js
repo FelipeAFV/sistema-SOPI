@@ -20,12 +20,9 @@ const ticketCreation = async (req,res) => {
     }
 };
 
-const getAllTickets = async (req,res) => {
-    const {compraId} = req.params;
-
+const getTickets = async (req,res) => {
     try {
-        
-        const tickets = await getTicketsFromPurchaseId(compraId);
+        const tickets = await getTicketsFromPurchaseId(req.query);
 
         if(tickets.length !== 0) {
             sendHttpResponse(res, tickets, 200);
@@ -34,7 +31,7 @@ const getAllTickets = async (req,res) => {
         }
         
     } catch (e) {
-        sendHttpResponse(res, 'Error', 500, 'Error al obtener tickets');
+        sendHttpResponse(res, 'Error', 500, 'Error al obtener tickets, controlador');
     }
 }
 
@@ -58,4 +55,4 @@ const getTicket = async (req,res) => {
 
 exports.getTicket = getTicket;
 exports.ticketCreation = ticketCreation;
-exports.getAllTickets = getAllTickets;
+exports.getTickets = getTickets;

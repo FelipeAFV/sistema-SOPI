@@ -24,9 +24,16 @@ const getTicketFromId = async (id) => {
     const ticket = await Ticket.findOne({ where: {id:id}})
 
     return ticket;
+};
+
+const getAllTickets = async(condition, page ,perPage) => {
+    const tickets = await Ticket.findAndCountAll({condition, offset: (page-1)*page, limit:perPage, distinct:true});
+
+    return tickets;
 }
 
 exports.getTicketFromId = getTicketFromId;
 exports.addTicket = addTicket;
 exports.getTicketsFromManagerId = getTicketsFromManagerId;
 exports.getTicketsFromUserId = getTicketsFromUserId;
+exports.getAllTickets = getAllTickets;

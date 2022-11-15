@@ -1,6 +1,8 @@
 const { userRepository } = require('../../auth/domain/user-repository');
-const { findOneManager, findAllManagers } = require('../domain/manager-repository')
-const {addTicket, getTicketFromManagerId, getTicketsFromManagerId, getTicketFromId} = require('../domain/ticket-repository')
+const {pagination} = require('../../share/utils/api-feature');
+const {Op} = require("sequelize");
+const { findOneManager, findAllManagers } = require('../domain/manager-repository');
+const {addTicket, getTicketFromManagerId, getTicketsFromManagerId, getTicketFromId, getAllTickets} = require('../domain/ticket-repository')
 
 
 const createTicket = async (ticketData) => {
@@ -27,33 +29,31 @@ const createTicket = async (ticketData) => {
     }
 };
  
-const getTicketsFromPurchaseId = async(compraId) => {
-    let ids = [];
-    let m;
-    var allTickets = [];
+const getTicketsFromPurchaseId = async(query) => {
+    
+    const where = {};
+    const {compraId} = query;
+    const page = query.page ? parseInt(query.page) : 1;
+    const perPage = query.per_page ? parseInt(query.per_page) : 1;
 
-    try {
-        const managers = await findAllManagers(compraId);
-        m = JSON.parse(JSON.stringify(managers));
-        m.map((e)=> {
-            ids.push(e.id);
-        });
-        //Get tickets asociate to a purchase by manager id
-        for (let i of ids) {
-            var ticket = await getTicketsFromManagerId(i);
-            if(ticket.length !== 0) {
-                allTickets.push(ticket);
-            } 
-            
-        }
-
-        console.log(JSON.stringify(allTickets))
-        
-        return allTickets; 
-
-    } catch (error) {
-        throw new Error("Error en ticket service",error.message);
+    //Filtros
+    if(compraId) where.purchaseId = {[Op.eq]:`%${compraId}`}
+    //if... or switch
+    const {count, rows} = await getAllTickets(where, page, perPage); 
+    if(count <= 0) {
+        throw new Error('No hay tickets con id:'+ compraId)
     }
+
+    const ticketsFiltered = pagination({
+        data: rows,
+        count,
+        page,
+        perPage
+    })
+
+    return ticketsFiltered;
+
+
 }
 
 

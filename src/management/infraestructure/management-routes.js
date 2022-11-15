@@ -3,7 +3,7 @@ const { uploadMiddleware } = require('../..');
 const { hasProfile } = require('../../auth/infraestructure/check-auth-middleware');
 const { addDocument, getDocument } = require('./document-controller');
 const { addManager } = require('./manager-controller');
-const { ticketCreation, getAllTickets, getTicket } = require('./ticket-controller');
+const { ticketCreation, getTickets, getTicket } = require('./ticket-controller');
 
 
 
@@ -16,7 +16,7 @@ router.post('/documentos', uploadMiddleware.single('doc'), addDocument);
 router.get('/documentos/:docId',  getDocument);
 router.post('/ticket', ticketCreation);
 //TODO: cambiar parametro a query
-//router.get('/ticket/:compraId', getAllTickets);
+router.get('/ticket', getTickets);
 router.get('/ticket/:ticketId', getTicket);
 
 
