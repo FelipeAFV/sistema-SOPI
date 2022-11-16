@@ -8,6 +8,14 @@ const savePurchase = async (purchase) => {
 
 };
 
+const getPurchase = async(conditions) => {
+    const purchase = await Purchase.findOne({
+        where:conditions,
+        include: [{model: PurchaseStatus, as: 'status'}]
+    });
+    return purchase;
+};
+
 const getPurchaseById = async(purchaseId) => {
     const purchase = await Purchase.findOne({
         where: {
@@ -40,3 +48,4 @@ exports.getPurchaseById = getPurchaseById;
 exports.updatePurchaseById = updatePurchaseById;
 exports.getAllPurchases = getAllPurchases;
 exports.getAllPurchasesWithManager = getAllPurchasesWithManager;
+exports.getPurchase = getPurchase;

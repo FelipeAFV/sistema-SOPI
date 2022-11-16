@@ -3,7 +3,7 @@ const { Purchase } = require("../../purchases/domain/models");
 const { Sopi, SopiDetail, SopiStatus } = require("./models")
 
 const getSopiById =  async (id) => {
-    const sopi = await Sopi.findOne({where: { id: id}, include: [{model: SopiDetail}, {model: SopiStatus, as: 'status'}]})
+    const sopi = await Sopi.findOne({where: { id: id} , include: [{model: SopiStatus, as: 'status'}]})
     return sopi;
 }
 

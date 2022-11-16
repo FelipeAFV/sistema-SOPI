@@ -12,5 +12,10 @@ const getSopiDetailById = async(id) => {
     })
 }
 
+const getSopiDetailsById= async(id) => {
+    return await SopiDetail.findAll({where:{id}});
+}
+
 exports.saveSopiDetail = saveSopiDetail;
 exports.getSopiDetailById = getSopiDetailById;
+exports.getSopiDetailsById = getSopiDetailsById;

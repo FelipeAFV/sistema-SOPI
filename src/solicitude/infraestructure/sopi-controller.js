@@ -25,13 +25,9 @@ const addNewSopi = async (req, res) => {
 const getSopi = async  (req, res) => {
     const sopiId = req.params.sopiId;
     try {
-        const sopi = await getSopiById(sopiId);
-        const statuses = await sopi.getSopiLogStatus()
-        sopi.status = statuses.map((status)=> status.name);
-        
-        console.log(sopi.status)
+        const sopiWithDetails = await sopiService.getSopiByIdWithDetails(sopiId);
 
-        sendHttpResponse(res, sopi, 200);
+        sendHttpResponse(res, sopiWithDetails, 200);
         
     } catch (e) {
         console.log(e)
