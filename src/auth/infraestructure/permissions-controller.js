@@ -16,7 +16,8 @@ const getUserPermissions = async (req, res) => {
 
             const permissions = await findAllPermissionsFromUserAndProfile(user.id, user.profile.id);
             
-            return permissions;
+
+            sendHttpResponse(res, permissions, 200);
             
         } else {
             
