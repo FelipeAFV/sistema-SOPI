@@ -46,6 +46,10 @@ const findAllManagers = async (id) => {
     return managers;
 }
 
+const findManagersWithConditions = async (conditions) => {
+    return await  Manager.findAll({ where: conditions})
+}
+
 exports.findManagerPurchase = findManagerPurchase;
 exports.findAllManager = findAllManager;
 exports.findAllManagers = findAllManagers;
@@ -53,3 +57,4 @@ exports.findAllManagers = findAllManagers;
 exports.findManager = findManager;
 exports.saveManager = saveManager;
 exports.findOneManager = findOneManager;
+exports.findManagersWithConditions = findManagersWithConditions;

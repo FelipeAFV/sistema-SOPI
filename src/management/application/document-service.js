@@ -1,10 +1,11 @@
 const fs = require('fs');
-const { saveDocument, findDocument } = require('../domain/document-repository');
+const { saveDocument, findDocument, findDocsWithCondition } = require('../domain/document-repository');
 const uuid = require('uuid');
 const { findAllPermissionsFromUserAndProfile } = require('../../auth/domain/permission-repository');
-const { getTicketsFromUserId } = require('../domain/ticket-repository');
+const { getTicketsFromUserId, getTicketFromId, getTicketFromPurchase } = require('../domain/ticket-repository');
 const { getAllPurchasesWithManager } = require('../../purchases/domain/purchase-repository');
 const { PermissionError } = require('../../share/models/errors');
+const { findManagerPurchase, findManagersWithConditions } = require('../domain/manager-repository');
 
 
 const addDocument = async ({file, purchaseId, userId}) => {
@@ -59,8 +60,38 @@ const findDocumentWithPermissions = async (docId, userId, profileId) => {
     }
     
     throw new PermissionError('No tienes ningun permiso para poder ver documentos');
+    
+}
 
+const findDocsFromCompraWithPermissions = async (purchaseId, userId, profileId) => {
+
+    
+    const docs = await findDocsWithCondition({purchaseId});
+    
+    const permissions = await findAllPermissionsFromUserAndProfile(userId, profileId);
+    const docPermissions = permissions.filter(p => p.name.includes('DOC'))
+    
+    if (docPermissions.find(p => p.name == 'DOC_VER')) {
+        return docs;
+    }
+
+    // Puede ver si tiene tickets asociados a la compra
+    const ticketFromCompra = await getTicketFromPurchase(purchaseId);
+
+    if (ticketFromCompra.find( t => t.userId == userId)) {
+        return docs;
+    }
+    // Puede ver si es gestor de la compra
+    
+    const purchaseManagers = await findManagersWithConditions({ purchaseId: purchaseId});
+    if (purchaseManagers.find( m => m.userId == userId)) {
+        
+        return docs;
+    }
+    
+    throw new PermissionError('No tienes ningun permiso para poder ver documentos');
 }
 
 exports.addDocument = addDocument;
 exports.findDocumentWithPermissions = findDocumentWithPermissions;
+exports.findDocsFromCompraWithPermissions = findDocsFromCompraWithPermissions;

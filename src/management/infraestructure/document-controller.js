@@ -1,13 +1,16 @@
 const docService = require('../application/document-service')
 const { sendHttpResponse } = require("../../share/utils/response-parser");
 const { findDocument } = require('../domain/document-repository');
-const fs = require('fs')
+const fs = require('fs');
+const { PermissionError } = require('../../share/models/errors');
+const { findPurchasesFilteredByPermissions } = require('../../purchases/application/purchase-service');
+const { getPurchaseById } = require('../../purchases/domain/purchase-repository');
 
 const addDocument = async (req, res) => {
     console.log(req.file);
 
-    const {purchaseId} = req.body;
-    const docStored = await docService.addDocument({file: req.file, purchaseId})
+    const { purchaseId } = req.body;
+    const docStored = await docService.addDocument({ file: req.file, purchaseId })
     // console.log(req.files[0]);
     // console.log(req.files[0].name);
     // console.log(req.files[0].type);
@@ -16,11 +19,11 @@ const addDocument = async (req, res) => {
 }
 
 const getDocument = async (req, res) => {
-    const {docId} = req.params;
+    const { docId } = req.params;
 
     try {
         const doc = await docService.findDocumentWithPermissions(docId, req.user.id, req.user.profileId);
-    
+
         if (!doc) {
             sendHttpResponse(res, 'Documento no encontrado', 400)
             return;
@@ -34,14 +37,45 @@ const getDocument = async (req, res) => {
             return;
             // sendHttpResponse(res, data, 200)
         })
-        
+
     } catch (e) {
         console.log(e.permissionFailed)
         sendHttpResponse(res, 'Error', 400, e);
         return;
+
+    }
+}
+
+const getDocuments = async (req, res) => {
+    const { compraId } = req.query;
+    if (!compraId) {
+        sendHttpResponse(res, 'Error', 400, 'Los documentos deben ser buscados por id de compra');
+        console.log('aksjdjalkd')
+        return;
         
     }
+    if (!await getPurchaseById(compraId)) {
+        sendHttpResponse(res, 'Error', 400, `No existe la compra con id ${compraId}`);
+        return;
+        
+    }
+
+    try {
+        const docs = await docService.findDocsFromCompraWithPermissions(compraId, req.user.id, req.user.profileId);
+        sendHttpResponse(res, docs, 200)
+
+    } catch (e) {
+        if (e instanceof PermissionError) {
+
+            sendHttpResponse(res, 'Error', 403, e.message)
+            return;
+        }
+        sendHttpResponse(res, 'Error', 500);
+        console.log(e)
+    }
+
 }
 
 exports.addDocument = addDocument;
 exports.getDocument = getDocument;
+exports.getDocuments = getDocuments;

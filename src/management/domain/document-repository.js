@@ -1,3 +1,4 @@
+const { where } = require("sequelize");
 const { Document } = require("./models");
 
 
@@ -13,5 +14,11 @@ const findDocument = async (docId) => {
 
 }
 
+const findDocsWithCondition = async (conditions) => {
+
+    return await Document.findAll({ where: conditions})
+}
+
 exports.saveDocument = saveDocument;
 exports.findDocument = findDocument;
+exports.findDocsWithCondition = findDocsWithCondition;
