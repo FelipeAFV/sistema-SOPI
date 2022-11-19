@@ -11,6 +11,8 @@ class SupplyController {
             if(isCreated) {
                 sendHttpResponse(res, 'El item ya existe, por favor vuelva a intentarlo');
             } else {
+                let name = supplyData.name.toLowerCase().charAt(0).toUpperCase() +supplyData.name.slice(1) ;
+                supplyData.name = name;
                 const supplyCreated = await saveSupply(supplyData);
                 sendHttpResponse(res,supplyCreated,200);
             }

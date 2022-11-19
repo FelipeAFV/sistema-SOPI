@@ -10,6 +10,8 @@ class CategoryController {
             if(isCreated) {
                 sendHttpResponse(res, 'La categoría ya existe en el sistema, vuelva a intentarlo');
             } else {
+                let name = categoryData.name.toLowerCase().charAt(0).toUpperCase() +categoryData.name.slice(1) ;
+                categoryData.name = name;
                 const categoryCreated = await saveCategory(categoryData);
                 sendHttpResponse(res, categoryCreated, 200);
             }
@@ -20,9 +22,9 @@ class CategoryController {
     };
     
     getCategories = async (req,res) => {
-        const categories = await getAllCategories();
+        
         try {
-            
+            const categories = await getAllCategories();
             if(!categories) {
                 sendHttpResponse(res, 'Error en classification controlador',500);
             }
