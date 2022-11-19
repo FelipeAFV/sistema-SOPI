@@ -1,5 +1,5 @@
 const { sendHttpResponse } = require("../../share/utils/response-parser");
-const { getCategoryByName, saveCategory } = require("../domain/category-repository");
+const { getCategoryByName, saveCategory, getAllCategories } = require("../domain/category-repository");
 
 
 class CategoryController {
@@ -20,7 +20,16 @@ class CategoryController {
     };
     
     getCategories = async (req,res) => {
-    
+        const categories = await getAllCategories();
+        try {
+            
+            if(!categories) {
+                sendHttpResponse(res, 'Error en classification controlador',500);
+            }
+            sendHttpResponse(res, categories, 200);
+        } catch (error) {
+            sendHttpResponse(res, 'Error');
+        }
     };
     
     getCategory = async (req,res) => {
