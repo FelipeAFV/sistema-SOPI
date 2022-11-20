@@ -1,9 +1,9 @@
 const { request } = require("express");
 const { sendHttpResponse } = require("../../share/utils/response-parser");
-const { getSopiById, getAllSopis } = require("../domain/sopi-repository");
+const sopiRepo = require("../domain/sopi-repository");
 
 const sopiService = require("../application/sopi-service");
-const { findAllPermisionFromProfileId } = require("../../auth/domain/permission-repository");
+const { findAllPermisionFromProfileId, findAllPermissionsFromUserAndProfile } = require("../../auth/domain/permission-repository");
 
 
 const addNewSopi = async (req, res) => {
@@ -39,15 +39,27 @@ const getSopi = async  (req, res) => {
 const updateSopi = async (req, res) => {
 
     try {
-        const {sopiId, statusId, comment } = req.body;
+        const {sopiId, statusId, comment, financingId, costCenterId} = req.body;
         
         
-        if (!sopiId || !statusId || !comment) {
+        if (!sopiId) {
             sendHttpResponse(res, '', 400, 'Datos faltantes en solicitud');
             return;
         }
-    
-        const updatedSopi = await sopiService.updateSopiStatus({sopiId, statusId, userId: req.user.id, comment});
+
+        let updatedSopi = '';
+        if (statusId) {
+
+            updatedSopi = await sopiService.updateSopiStatus({sopiId, statusId, userId: req.user.id, comment});
+        }
+        if (financingId || costCenterId) {
+            const permissions = await findAllPermissionsFromUserAndProfile(req.user.id, req.user.profileId);
+            if (!permissions.find(p => p.name == 'SOPI_EDITAR')) {
+                sendHttpResponse(res, 'Error', 403, 'No tienes permisos para editar');
+                return;
+            }
+            updatedSopi = await sopiRepo.updateSopi(sopiId, {financingId, costCenterId});
+        }
     
         sendHttpResponse(res, updatedSopi,200);
         return;

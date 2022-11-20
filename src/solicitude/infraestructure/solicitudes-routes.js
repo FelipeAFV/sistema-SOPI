@@ -13,7 +13,7 @@ const router = Router();
 // SOPI
 router.get('/', getAllSopi);
 router.post('/', hasProfile(['director', 'solicitante']), addNewSopi);
-router.put('/',  hasProfile(['director', 'referente']), verifyUpdateStatusPermissions(),  updateSopi);
+router.put('/', verifyUpdateStatusPermissions(),  updateSopi);
 router.get('/', getAllSopi);
 router.get('/centroCosto', getAllCostCenter);
 router.get('/financiamiento', getAllFinancing);
