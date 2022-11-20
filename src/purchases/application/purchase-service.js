@@ -80,9 +80,9 @@ const findSopiDetailByPurchaseId = async (id) => {
   }
 };
 
-const updatePurchaseStatus = async ({ purchaseId, statusId, typeId, userId }) => {
+const updatePurchaseStatus = async ({ purchaseId, statusId, userId }) => {
   try {
-    const purchaseUpdated = await updatePurchaseById(purchaseId, { statusId: statusId, purchaseTypeId: typeId });
+    const purchaseUpdated = await updatePurchaseById(purchaseId, { statusId: statusId});
 
     await addlogByStatusId(purchaseId, statusId, userId);
 

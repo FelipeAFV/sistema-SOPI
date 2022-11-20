@@ -1,5 +1,7 @@
 const { createPurchaseFromCompleteSopi, findSopiDetailByPurchaseId, updatePurchaseStatus, findPurchasesFilteredByPermissions } = require("../application/purchase-service");
 const { sendHttpResponse } = require('../../share/utils/response-parser');
+const { updatePurchaseById, getAllPurchasesWithManager, getPurchaseById } = require("../domain/purchase-repository");
+const { findAllPermissionsFromUserAndProfile } = require("../../auth/domain/permission-repository");
 
 const createPurchase = async (req, res) => {
 
@@ -60,14 +62,40 @@ const getPurchaseDetail = async(req,res) => {
 
 const updatePurchase = async(req,res) => {
     try {
-        const {purchaseId, statusId, typeId} = req.body;
-        if(!purchaseId || !statusId || !typeId) {
-            sendHttpResponse(res,'', 400, 'Faltan datos en la modificación');
+
+        const permissions = await findAllPermissionsFromUserAndProfile(req.user.id, req.user.profileId);
+        const editPermission = permissions.find((permission) => permission == 'COMPRA_EDITAR');
+
+        const managedPurchases = await getAllPurchasesWithManager(req.user.id);
+
+        const purchase = req.body;
+        if (!editPermission && !managedPurchases.find( p => p.id == purchase.purchaseId)) {
+            sendHttpResponse(res, 403, 'Error', 'No tienes permisos de editar');
+            return;
+        }
+
+
+
+        if(!purchase.purchaseId) {
+            sendHttpResponse(res,'', 400, 'Debes indicar el id de la compra');
             return;
         } 
-        const updatedPurchase = await updatePurchaseStatus({
-            purchaseId, statusId, typeId, userId: req.user.id
-        });
+
+        const purchaseToUpdate = await getPurchaseById(purchase.purchaseId);
+
+        let updatedPurchase = '';
+        if (purchase.statusId && (purchaseToUpdate.statusId != purchase.statusId)) {
+            updatedPurchase = await updatePurchaseStatus({
+                purchaseId: purchase.purchaseId, statusId: purchase.statusId, userId: req.user.id
+            });
+
+        }
+
+        if (purchase.purchaseTypeId  || purchase.supplierId) {
+            updatedPurchase = await updatePurchaseById(purchase.purchaseId, {purchaseTypeId: purchase.purchaseTypeId,
+                 supplierId: purchase.supplierId});
+
+        }
         sendHttpResponse(res, updatedPurchase, 200);
         return;
     } catch (error) {
