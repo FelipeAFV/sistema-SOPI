@@ -5,7 +5,7 @@ const loadAllAssociations = () => {
     // const { Workflow, Documento, EstadoWorkflow, Responsable, WorkflowLog } = require('../workflow/models/models');
     const { User, Permission, Profile, Access, UserAccess } = require('../auth/domain/models');
     const { CostCenter, Financing, Sopi, SopiDetail, SopiLog, SopiStatus, Supplies, SuppliesCategory } = require('../solicitude/domain/models');
-    const { Comment, Document, Manager, Ticket } = require('../management/domain/models');
+    const { Comment, Document, Manager, Ticket, TicketStatus } = require('../management/domain/models');
     const { Department, Employee, Job} = require('../employees/domain/models');
     const { Purchase, PurchaseDetail, PurchaseLog, PurchaseStatus, PurchaseType, Supplier, PurchaseSopi } = require('../purchases/domain/models');
 
@@ -23,6 +23,7 @@ const loadAllAssociations = () => {
     SopiStatus.loadAssociations();
     Supplies.loadAssociations();
     SuppliesCategory.loadAssociations();
+    TicketStatus.loadAssociations();
     Ticket.loadAssociations();
     Comment.loadAssociations();
     Document.loadAssociations();

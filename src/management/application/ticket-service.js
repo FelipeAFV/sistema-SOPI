@@ -109,6 +109,19 @@ const findTicketFromTicketId = async(ticketId) => {
     }
 }
 
+const updateTicketFromId = async (ticket, content) => {
+    
+    try {
+        ticket.update(content)
+        return ticket;
+    } catch (error) {
+        throw new Error("Error al actualizar ticket",error.message);
+    }
+    
+}
+
+
+exports.updateTicketFromId = updateTicketFromId;
 exports.findTicketFromTicketId = findTicketFromTicketId;
 exports.createTicket = createTicket;
 exports.getTicketsFromPurchaseId = getTicketsFromPurchaseId;
