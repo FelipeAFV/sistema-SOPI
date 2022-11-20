@@ -1,5 +1,7 @@
-const { createPurchaseFromCompleteSopi, findSopiDetailByPurchaseId, updatePurchaseStatus, findPurchasesFilteredByPermissions } = require("../application/purchase-service");
+const { createPurchaseFromCompleteSopi, findPurchaseDetailByPurchaseId, updatePurchaseStatus, findPurchasesFilteredByPermissions } = require("../application/purchase-service");
 const { sendHttpResponse } = require('../../share/utils/response-parser');
+const { updatePurchaseById, getAllPurchasesWithManager, getPurchaseById } = require("../domain/purchase-repository");
+const { findAllPermissionsFromUserAndProfile } = require("../../auth/domain/permission-repository");
 
 const createPurchase = async (req, res) => {
 
@@ -31,7 +33,6 @@ const getAllPurchases = async (req, res) => {
 
     try {
         const purchasesAllowed = await findPurchasesFilteredByPermissions(req.user.profileId, req.user.id);
-    
         sendHttpResponse(res, purchasesAllowed, 200);
         return;
 
@@ -48,9 +49,14 @@ const getPurchaseDetail = async(req,res) => {
     const {compraId} = req.params;
 
     try {
-
-        const purchase = await findSopiDetailByPurchaseId(compraId);
-        sendHttpResponse(res, purchase, 200);
+        const purchase = await findPurchaseDetailByPurchaseId(compraId);
+        console.log(purchase)
+        if (!purchase) {
+            sendHttpResponse(res, 'Error',404)
+        } else {
+            sendHttpResponse(res, purchase, 200);
+        }
+        
     } catch (error) {
         console.log(error);
         sendHttpResponse(res, 'Error al buscar detalle solicitud de compra con id: '+ compraId, 400);
@@ -60,14 +66,40 @@ const getPurchaseDetail = async(req,res) => {
 
 const updatePurchase = async(req,res) => {
     try {
-        const {purchaseId, statusId, typeId} = req.body;
-        if(!purchaseId || !statusId || !typeId) {
-            sendHttpResponse(res,'', 400, 'Faltan datos en la modificación');
+
+        const permissions = await findAllPermissionsFromUserAndProfile(req.user.id, req.user.profileId);
+        const editPermission = permissions.find((permission) => permission == 'COMPRA_EDITAR');
+
+        const managedPurchases = await getAllPurchasesWithManager(req.user.id);
+
+        const purchase = req.body;
+        if (!editPermission && !managedPurchases.find( p => p.id == purchase.purchaseId)) {
+            sendHttpResponse(res, 403, 'Error', 'No tienes permisos de editar');
+            return;
+        }
+
+
+
+        if(!purchase.purchaseId) {
+            sendHttpResponse(res,'', 400, 'Debes indicar el id de la compra');
             return;
         } 
-        const updatedPurchase = await updatePurchaseStatus({
-            purchaseId, statusId, typeId, userId: req.user.id
-        });
+
+        const purchaseToUpdate = await getPurchaseById(purchase.purchaseId);
+
+        let updatedPurchase = '';
+        if (purchase.statusId && (purchaseToUpdate.statusId != purchase.statusId)) {
+            updatedPurchase = await updatePurchaseStatus({
+                purchaseId: purchase.purchaseId, statusId: purchase.statusId, userId: req.user.id
+            });
+
+        }
+
+        if (purchase.purchaseTypeId  || purchase.supplierId) {
+            updatedPurchase = await updatePurchaseById(purchase.purchaseId, {purchaseTypeId: purchase.purchaseTypeId,
+                 supplierId: purchase.supplierId});
+
+        }
         sendHttpResponse(res, updatedPurchase, 200);
         return;
     } catch (error) {
