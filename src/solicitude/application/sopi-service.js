@@ -148,7 +148,27 @@ const getSopisFilteredByUserPermissions = async (profileId, userId) => {
     return sopisFiltered;
 }
 
+const getSopisFilteredByUserPermissions2 = async (profileId, userId) => {
+
+    const access = await findAllPermissionsFromUserAndProfile(userId, profileId);
+    let sopis = [];
+
+    // Tiene permiso para ver todo
+    if (access.find(a => a.name == 'SOPI_VER')) {
+        sopis = await getAllSopis();
+        // TODO: PAginacion
+        return sopis;
+    }
+    
+    //TODO: Buscar sopis que el user haya creado
+
+    const createdSopis = await getAllSopisByConditions({ userId });
+
+    return createdSopis;
+   
+}
+
 exports.createSopi = createSopiSeqTransactional;
 exports.updateSopiStatus = updateSopiStatus;
 exports.getSopiByIdWithDetails = getSopiByIdWithDetails;
-exports.getSopisFilteredByUserPermissions = getSopisFilteredByUserPermissions;
+exports.getSopisFilteredByUserPermissions = getSopisFilteredByUserPermissions2;

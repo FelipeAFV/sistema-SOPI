@@ -3,7 +3,7 @@ const { uploadMiddleware } = require('../..');
 const { hasProfile } = require('../../auth/infraestructure/check-auth-middleware');
 const { addDocument, getDocument, getDocuments } = require('./document-controller');
 const { addManager } = require('./manager-controller');
-const { ticketCreation, getTickets, getTicket } = require('./ticket-controller');
+const { ticketCreation, getTickets, getTicket, updateTicket } = require('./ticket-controller');
 
 
 
@@ -19,6 +19,7 @@ router.post('/ticket', ticketCreation);
 router.get('/ticket', getTickets);
 router.get('/ticket/:ticketId', getTicket);
 router.get('/documentos/:docId',  getDocument);
+router.put('/ticket', updateTicket);
 
 
 exports.managementRoutes = router;

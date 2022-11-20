@@ -5,7 +5,7 @@ const { Purchase } = require("../../purchases/domain/models");
 
 
 const addTicket = async ({managerId, userId, title, content, date, purchaseId}) => {
-    const newTicket = await Ticket.create({title:title, content:content, state:null,expirationDate:date,managerId:managerId, userId:userId, purchaseId:purchaseId});
+    const newTicket = await Ticket.create({title:title, content:content, state:null,expirationDate:date,managerId:managerId, ticketStatusId:1,userId:userId, purchaseId:purchaseId});
     return newTicket
 };
 

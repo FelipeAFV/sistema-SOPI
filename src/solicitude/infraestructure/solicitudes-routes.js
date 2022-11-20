@@ -1,4 +1,4 @@
-const { hasProfile } = require('../../auth/infraestructure/check-auth-middleware');
+const { hasProfile, hasPermission } = require('../../auth/infraestructure/check-auth-middleware');
 const { CategoryController} = require('./classification-controller');
 const { getAllCostCenter } = require('./costcenter-controller');
 const { getAllFinancing } = require('./financing-controller');
@@ -12,8 +12,8 @@ const router = Router();
 
 // SOPI
 router.get('/', getAllSopi);
-router.post('/', hasProfile(['director', 'solicitante']), addNewSopi);
-router.put('/',  hasProfile(['director', 'referente']), verifyUpdateStatusPermissions(),  updateSopi);
+router.post('/', hasPermission(['SOPI_CREAR']), addNewSopi);
+router.put('/', hasPermission(['SOPI_EDITAR']), updateSopi);
 router.get('/', getAllSopi);
 router.get('/centroCosto', getAllCostCenter);
 router.get('/financiamiento', getAllFinancing);
