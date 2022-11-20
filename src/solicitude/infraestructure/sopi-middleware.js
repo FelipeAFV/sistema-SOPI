@@ -133,11 +133,8 @@ const sopiDetailPermission2 = () => {
             sendHttpResponse(res, 'Error', 400, 'Sopi no existe')
             return;
         }
-        
-        const sopisManager = await getSopiFromPurchaseManager(req.user.id);
-
-
-        if (!sopisManager.find(s => s.id == requestedSopi.id) && requestedSopi.userId != req.user.id) {
+    
+        if (requestedSopi.userId != req.user.id) {
             sendHttpResponse(res, 'Error', 403, 'No tienes los permisos necesarios')
             return;
         }

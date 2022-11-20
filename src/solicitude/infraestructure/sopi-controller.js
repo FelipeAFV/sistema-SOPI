@@ -39,6 +39,11 @@ const getSopi = async  (req, res) => {
 const updateSopi = async (req, res) => {
 
     try {
+        const permissions = await findAllPermissionsFromUserAndProfile(req.user.id, req.user.profileId);
+        // if (!permissions.find(p => p.name == 'SOPI_EDITAR')) {
+        //     sendHttpResponse(res, 'Error', 403, 'No tienes permisos para editar');
+        //     return;
+        // }
         const {sopiId, statusId, comment, financingId, costCenterId} = req.body;
         
         
@@ -53,11 +58,6 @@ const updateSopi = async (req, res) => {
             updatedSopi = await sopiService.updateSopiStatus({sopiId, statusId, userId: req.user.id, comment});
         }
         if (financingId || costCenterId) {
-            const permissions = await findAllPermissionsFromUserAndProfile(req.user.id, req.user.profileId);
-            if (!permissions.find(p => p.name == 'SOPI_EDITAR')) {
-                sendHttpResponse(res, 'Error', 403, 'No tienes permisos para editar');
-                return;
-            }
             updatedSopi = await sopiRepo.updateSopi(sopiId, {financingId, costCenterId});
         }
     

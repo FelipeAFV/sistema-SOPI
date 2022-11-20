@@ -164,11 +164,7 @@ const getSopisFilteredByUserPermissions2 = async (profileId, userId) => {
 
     const createdSopis = await getAllSopisByConditions({ userId });
 
-    // Buscar sopis asociadas a compras que el user esté gestionando
-
-    const managedSopis = await getAllPurchasesWithManager(userId);
-
-    return [...createdSopis, ...managedSopis];
+    return createdSopis;
    
 }
 
