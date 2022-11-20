@@ -1,4 +1,4 @@
-const { createPurchaseFromCompleteSopi, findSopiDetailByPurchaseId, updatePurchaseStatus, findPurchasesFilteredByPermissions } = require("../application/purchase-service");
+const { createPurchaseFromCompleteSopi, findPurchaseDetailByPurchaseId, updatePurchaseStatus, findPurchasesFilteredByPermissions } = require("../application/purchase-service");
 const { sendHttpResponse } = require('../../share/utils/response-parser');
 const { updatePurchaseById, getAllPurchasesWithManager, getPurchaseById } = require("../domain/purchase-repository");
 const { findAllPermissionsFromUserAndProfile } = require("../../auth/domain/permission-repository");
@@ -33,7 +33,6 @@ const getAllPurchases = async (req, res) => {
 
     try {
         const purchasesAllowed = await findPurchasesFilteredByPermissions(req.user.profileId, req.user.id);
-    
         sendHttpResponse(res, purchasesAllowed, 200);
         return;
 
@@ -50,9 +49,14 @@ const getPurchaseDetail = async(req,res) => {
     const {compraId} = req.params;
 
     try {
-
-        const purchase = await findSopiDetailByPurchaseId(compraId);
-        sendHttpResponse(res, purchase, 200);
+        const purchase = await findPurchaseDetailByPurchaseId(compraId);
+        console.log(purchase)
+        if (!purchase) {
+            sendHttpResponse(res, 'Error',404)
+        } else {
+            sendHttpResponse(res, purchase, 200);
+        }
+        
     } catch (error) {
         console.log(error);
         sendHttpResponse(res, 'Error al buscar detalle solicitud de compra con id: '+ compraId, 400);
