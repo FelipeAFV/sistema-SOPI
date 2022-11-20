@@ -192,6 +192,9 @@ insert into usuarios(usuario, contrasena, nombre, apellido, perfil_id, creacion,
 insert into usuarios(usuario, contrasena, nombre, apellido, perfil_id, creacion, ultima_actualizacion) values('jefe_compra', '$2b$05$KEGVhafRLScLkhyLgKLKXOY/CAyW7PjGFgAmRDOSsRaaipXIshZUW', 'jefe_compra', 'jefe_compra', 2, '2022-10-10', '2022-10-10');
 insert into usuarios(usuario, contrasena, nombre, apellido, perfil_id, creacion, ultima_actualizacion) values('gestor_compra', '$2b$05$qBX3zQtU/CLPbS5iHJ/Sn.WwCknICfR.zCl8S0ZXbTzB9.ZwEqdDy', 'gestor_compra', 'gestor_compra', 3, '2022-10-10', '2022-10-10');
 
+insert into ticket_status (estado) values ('PENDIENTE');
+insert into ticket_status (estado) values ('COMPLETADO');
+insert into ticket_status (estado) values ('CANCELADO');
 
 begin;
 alter table compras_tipo drop column createdAt;

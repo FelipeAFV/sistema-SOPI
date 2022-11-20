@@ -41,6 +41,18 @@ const Ticket = sequelize.define('ticket',{
 }, {
     tableName: 'tickets'
 });
+
+const TicketStatus = sequelize.define('ticketStatus',{
+    name: {
+        type: DataTypes.STRING,
+        field: 'estado'
+    },
+    
+
+}, {
+    tableName: 'ticket_status', timestamps:false
+});
+
 const Comment = sequelize.define('comment',{
     response: {
         type: DataTypes.STRING,
@@ -88,6 +100,11 @@ Ticket.loadAssociations = () => {
 
     const { User } = require("../../auth/domain/models");
     Ticket.belongsTo(User, { foreignKey: {field: 'responsable_id'}});
+    Ticket.belongsTo(TicketStatus, { foreignKey: {field: 'status_id'}})
+}
+
+TicketStatus.loadAssociations = () => {
+    TicketStatus.hasMany(Ticket, { foreignKey: {field: 'status_id'}})
 }
 
 Comment.loadAssociations = () => {
@@ -95,7 +112,7 @@ Comment.loadAssociations = () => {
 }
 
 
-
+exports.TicketStatus = TicketStatus;
 exports.Manager = Manager;
 exports.Document = Document;
 exports.Comment = Comment;

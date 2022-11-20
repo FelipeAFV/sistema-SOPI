@@ -111,9 +111,13 @@ const findTicketFromTicketId = async(ticketId) => {
 
 const updateTicketFromId = async (ticket, content) => {
     
-    const plastic = {title:content.title}
-    ticket.update(plastic)
-    return ticket;
+    try {
+        ticket.update(content)
+        return ticket;
+    } catch (error) {
+        throw new Error("Error al actualizar ticket",error.message);
+    }
+    
 }
 
 
