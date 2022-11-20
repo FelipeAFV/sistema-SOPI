@@ -21,11 +21,7 @@ const getPurchaseById = async(purchaseId) => {
         where: {
             id:purchaseId
         },
-<<<<<<< HEAD
         include: [{model:PurchaseDetail}, {model:PurchaseStatus, as: 'status'}]
-=======
-        include: [PurchaseDetail, { model: PurchaseStatus, as: 'status'}]
->>>>>>> b1d3140a70df8b525fe22a7ee1ca9f7527580a64
     })
     return purchase;
 };
