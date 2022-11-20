@@ -19,6 +19,11 @@ const getFinancingByName = async(name) => {
 
 const saveFinancing = async(financing) => {
     return await Financing.create(financing);
+};
+
+const updateFinancing = async(id , financing) => {
+    const financingToUpdate = await Financing.findOne({where:id});
+    return await financingToUpdate.update(financing);
 }
 
 
@@ -26,3 +31,4 @@ const saveFinancing = async(financing) => {
 exports.findAllFinancing = findAllFinancing;
 exports.saveFinancing = saveFinancing;
 exports.getFinancingByName = getFinancingByName;
+exports.updateFinancing = updateFinancing;

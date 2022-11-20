@@ -1,7 +1,7 @@
 const { hasProfile, hasPermission } = require('../../auth/infraestructure/check-auth-middleware');
 const { CategoryController} = require('./classification-controller');
 const { getAllCostCenter, createCostCenter } = require('./costcenter-controller');
-const { getAllFinancing, createFinancing } = require('./financing-controller');
+const { getAllFinancing, createFinancing, updateFinancing } = require('./financing-controller');
 const { addNewSopi, getSopi, updateSopi, getAllSopi } = require('./sopi-controller');
 const { verifyUpdateStatusPermissions, sopiDetailPermission } = require('./sopi-middleware');
 const {SupplyController} = require('./supply-controller');

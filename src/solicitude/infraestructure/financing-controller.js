@@ -29,13 +29,14 @@ const createFinancing = async (req, res) => {
 const updateFinancing = async (req,res) => {
     try {
         const {financingId, name} = req.body;
+        console.log(req.body)
         if(!financingId) {
             sendHttpResponse(res, '', 403, 'No existe financiamiento');
         }
         const updatedFinancing = await updateFinancing(financingId, {name});
         sendHttpResponse(res, updatedFinancing, 200)
     } catch (error) {
-        console.log(e.message);
+        console.log(error.message);
         sendHttpResponse(res, '', 500, 'Error al actualizar');
         return;
     }
