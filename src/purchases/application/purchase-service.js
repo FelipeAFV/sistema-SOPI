@@ -91,7 +91,7 @@ const updatePurchaseStatus = async ({ purchaseId, statusId, userId }) => {
 
 
 const findPurchasesFilteredByPermissions = async (profileId, userId) => {
-  let purchases = [];
+  // let purchases = [];
 
   const permissions = await findAllPermisionFromProfileId(profileId);
 
@@ -106,30 +106,32 @@ const findPurchasesFilteredByPermissions = async (profileId, userId) => {
 
   
 
-  const managerPermission = await purchasesPermissions.find(p => p.name.includes('VER_GESTOR'));
-  const ticketPermission = await purchasesPermissions.find(p => p.name.includes('VER_TICKET'));
+  // const managerPermission = await purchasesPermissions.find(p => p.name.includes('VER_GESTOR'));
+  // const ticketPermission = await purchasesPermissions.find(p => p.name.includes('VER_TICKET'));
   
-  if (managerPermission && !ticketPermission) {
-    purchases = await findPurchasesAsignedToManager(userId);
-  } else if (ticketPermission && !managerPermission) {
-    purchases = await findPurchasesWithTicketFromUser(userId);
-  } else {
-    purchases = await getAllPurchases();
-  }
+  // if (managerPermission && !ticketPermission) {
+  // } else if (ticketPermission && !managerPermission) {
+  // } else {
+  //   purchases = await getAllPurchases();
+  // }
+  const purchasesManager = await findPurchasesAsignedToManager(userId);
+  const purchasesTicket = await findPurchasesWithTicketFromUser(userId);
+
+  const finalPurchases = [...purchasesManager, purchasesTicket]
 
   // Status filter
-  const filteredPurchasesByStatus = purchases.filter(purchase => {
-    let permitted = false;
-    for (let access of purchasesPermissions) {
-      if (access.name.includes(purchase.status.name)) {
-        permitted = true;
-        break;
-      }
+  // const filteredPurchasesByStatus = purchases.filter(purchase => {
+  //   let permitted = false;
+  //   for (let access of purchasesPermissions) {
+  //     if (access.name.includes(purchase.status.name)) {
+  //       permitted = true;
+  //       break;
+  //     }
 
-    }
-    return permitted;
-  });
-  return filteredPurchasesByStatus;
+  //   }
+  //   return permitted;
+  // });
+  return finalPurchases;
 
 }
 

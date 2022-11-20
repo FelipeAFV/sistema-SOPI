@@ -46,6 +46,8 @@ const getDocument = async (req, res) => {
 
         const isDocAssignedToUser = await findDocFromManagerPurchaseAndDocId(req.user.id, docId);
 
+        //TODO: chequear por usuario que tiene ticket asociado a la compra
+
         if (!permissions.find(p => p.name == 'DOC_VER') && !isDocAssignedToUser) {
             sendHttpResponse(res, 'Error', 403, 'No tienes permisos para buscar documento')
             return;
@@ -91,6 +93,8 @@ const getDocuments = async (req, res) => {
     }
 
     const permissions = await findAllPermissionsFromUserAndProfile(req.user.id, req.user.profileId);
+
+    //TODO: chequear por usuario que tiene ticket asociado a la compra
 
     const purchaseManaged = await getPurchaseWithManager(req.user.id, compraId);
 

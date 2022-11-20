@@ -9,7 +9,7 @@ const { findAllPermissionsFromUserAndProfile } = require('../../auth/domain/perm
 const createTicket = async (ticketData) => {
     try {
 
-
+        //TODO: revisar permiso TICKET_CREAR
         const manager = await findOneManagerForPurchase({creatorId:ticketData.creator, purchaseId:ticketData.purchaseId})
         if(!manager) {
             throw new Error('manager no asignado a proceso de compra seleccionado')
