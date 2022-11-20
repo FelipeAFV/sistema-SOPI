@@ -8,6 +8,10 @@ const findStatusById = async (id) => {
 
     return await SopiStatus.findOne({where: {id}});
 }
+const findAllStatus = async () => {
+    return await SopiStatus.findAll();
+}
 
 exports.findStatusByName = findStatusByName;
 exports.findStatusById = findStatusById;
+exports.findAllStatus = findAllStatus;

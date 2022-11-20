@@ -4,6 +4,7 @@ const { getAllCostCenter, createCostCenter } = require('./costcenter-controller'
 const { getAllFinancing, createFinancing, updateFinancing } = require('./financing-controller');
 const { addNewSopi, getSopi, updateSopi, getAllSopi } = require('./sopi-controller');
 const { verifyUpdateStatusPermissions, sopiDetailPermission } = require('./sopi-middleware');
+const { getStatuses } = require('./sopistatus-controller');
 const {SupplyController} = require('./supply-controller');
 
 const Router = require('express').Router;
@@ -37,6 +38,10 @@ router.post('/insumos/clasificacion', CategoryController.createCategory);
 router.get('/insumos/clasificacion', CategoryController.getCategories);
 router.put('/insumos/clasificacion', CategoryController.updateCategory);
 router.delete('/insumos/clasificacion', CategoryController.deleteCategory);
+
+// status
+router.get('/estados', getStatuses);
+
 router.get('/:sopiId', sopiDetailPermission() , getSopi);
 
 
