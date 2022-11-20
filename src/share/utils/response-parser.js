@@ -16,7 +16,7 @@ const sendHttpResponse = (res, data='Respuesta genérica', status=400, err=null 
         res.status(status).json({
             data: data, 
             err: {
-                message: err.message,
+                message: err.message || err,
 
             }
         })

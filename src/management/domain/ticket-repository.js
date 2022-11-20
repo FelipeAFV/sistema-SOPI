@@ -32,8 +32,13 @@ const getAllTickets = async(condition, page ,perPage) => {
     return tickets;
 }
 
+const getTicketFromPurchase = async (purchaseId) => {
+    return await Ticket.findAll({ where: { purchaseId }});
+}
+
 exports.getTicketFromId = getTicketFromId;
 exports.addTicket = addTicket;
 exports.getTicketsFromManagerId = getTicketsFromManagerId;
 exports.getTicketsFromUserId = getTicketsFromUserId;
 exports.getAllTickets = getAllTickets;
+exports.getTicketFromPurchase = getTicketFromPurchase;

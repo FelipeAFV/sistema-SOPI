@@ -13,7 +13,7 @@ const router = Router();
 // SOPI
 router.get('/', getAllSopi);
 router.post('/', hasProfile(['director', 'solicitante']), addNewSopi);
-router.put('/',  hasProfile(['director', 'referente']), verifyUpdateStatusPermissions(),  updateSopi);
+router.put('/', verifyUpdateStatusPermissions(),  updateSopi);
 router.get('/', getAllSopi);
 router.get('/centroCosto', getAllCostCenter);
 router.get('/financiamiento', getAllFinancing);
@@ -22,6 +22,7 @@ router.post('/insumos', SupplyController.createSupply);
 router.get('/insumos', SupplyController.getSupplies);
 //routes for classification
 router.post('/insumos/clasificacion', CategoryController.createCategory); 
+router.get('/insumos/clasificacion', CategoryController.getCategories);
 router.get('/:sopiId', sopiDetailPermission() , getSopi);
 
 

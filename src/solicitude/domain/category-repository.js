@@ -8,7 +8,17 @@ const saveCategory = async (data) => {
 const getCategoryByName = async(name) => {
     const category = await SuppliesCategory.findOne({where:{name}});
     return category;
-}
+};
+
+const getAllCategories = async () => {
+    try {
+        const categories =  await SuppliesCategory.findAll();
+        return categories;
+    } catch (e) {
+        return null;
+    }
+};
 
 exports.saveCategory = saveCategory;
 exports.getCategoryByName = getCategoryByName;
+exports.getAllCategories = getAllCategories;

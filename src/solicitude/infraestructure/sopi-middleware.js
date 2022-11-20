@@ -7,6 +7,8 @@ const { findStatusById } = require("../domain/sopistatus-repository");
 const verifyUpdateStatusPermissions = () => {
     return async (req, res, next) => {
 
+
+
         const { statusId } = req.body;
 
         if (!statusId) {
@@ -16,6 +18,11 @@ const verifyUpdateStatusPermissions = () => {
 
 
         const status = await findStatusById(statusId);
+        if (!status) {
+            sendHttpResponse(res, `No existe el estado con id ${statusId}`, 400);
+            return;
+
+        }
         const user = await userRepository.findUserByUsername(req.user.username);
 
         const profile = await user.profile;
@@ -38,20 +45,24 @@ const verifyUpdateStatusPermissions = () => {
             return;
         }
         next();
+        return;
     }
 }
 
 const sopiDetailPermission = () => {
     return async (req, res, next) => {
         const permissions = await findAllPermissionsFromUserAndProfile(req.user.id, req.user.profileId);
-        const viewAll = permissions.find((permission) => permission == 'SOPI_VER');
+        const viewAll = permissions.find((permission) => permission.name == 'SOPI_VER');
 
         if (!req.params.sopiId) {
             sendHttpResponse(res, 'Error', 400, 'Debes enviar el {sopiId}')
             return;
         }
         if (viewAll) {
+            console.log('View all ', viewAll)
             next();
+            return;
+
         }
         const ownerPermission = permissions.find((permission) => permission.name == 'SOPI_VER_CREADOR');
         const managerPermission = permissions.find((permission) => permission.name == 'SOPI_VER_COMPRA_GESTOR');
@@ -100,5 +111,41 @@ const sopiDetailPermission = () => {
     }
 }
 
+
+const sopiDetailPermission2 = () => {
+    return async (req, res, next) => {
+        const permissions = await findAllPermissionsFromUserAndProfile(req.user.id, req.user.profileId);
+        const viewAll = permissions.find((permission) => permission.name == 'SOPI_VER');
+
+        if (!req.params.sopiId) {
+            sendHttpResponse(res, 'Error', 400, 'Debes enviar el {sopiId}')
+            return;
+        }
+        if (viewAll) {
+            console.log('View all ', viewAll)
+            next();
+            return;
+
+        }
+        const requestedSopi = await findSopi({ id: req.params.sopiId });
+
+        if (!requestedSopi) {
+            sendHttpResponse(res, 'Error', 400, 'Sopi no existe')
+            return;
+        }
+        
+        const sopisManager = await getSopiFromPurchaseManager(req.user.id);
+
+
+        if (!sopisManager.find(s => s.id == requestedSopi.id) && requestedSopi.userId != req.user.id) {
+            sendHttpResponse(res, 'Error', 403, 'No tienes los permisos necesarios')
+            return;
+        }
+        next();
+
+       
+
+    }
+}
 exports.verifyUpdateStatusPermissions = verifyUpdateStatusPermissions;
-exports.sopiDetailPermission = sopiDetailPermission;
+exports.sopiDetailPermission = sopiDetailPermission2;
