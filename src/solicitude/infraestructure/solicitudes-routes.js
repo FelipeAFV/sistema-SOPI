@@ -1,7 +1,7 @@
 const { hasProfile, hasPermission } = require('../../auth/infraestructure/check-auth-middleware');
 const { CategoryController} = require('./classification-controller');
-const { getAllCostCenter } = require('./costcenter-controller');
-const { getAllFinancing } = require('./financing-controller');
+const { getAllCostCenter, createCostCenter } = require('./costcenter-controller');
+const { getAllFinancing, createFinancing } = require('./financing-controller');
 const { addNewSopi, getSopi, updateSopi, getAllSopi } = require('./sopi-controller');
 const { verifyUpdateStatusPermissions, sopiDetailPermission } = require('./sopi-middleware');
 const {SupplyController} = require('./supply-controller');
@@ -15,8 +15,18 @@ router.get('/', getAllSopi);
 router.post('/', hasPermission(['SOPI_CREAR']), addNewSopi);
 router.put('/', hasPermission(['SOPI_EDITAR']), updateSopi);
 router.get('/', getAllSopi);
+//routes for cost center
+router.post('/centroCosto', createCostCenter );
+//router.put('/centroCosto', updateCostCenter);
 router.get('/centroCosto', getAllCostCenter);
+//router.delete()
+
+
+//router for financing
+router.post('/financiamiento', createFinancing);
+//router.put('/financiamiento', updateFinancing);
 router.get('/financiamiento', getAllFinancing);
+//router.delete();
 //routes for supplies
 router.post('/insumos', SupplyController.createSupply);
 router.get('/insumos', SupplyController.getSupplies);
