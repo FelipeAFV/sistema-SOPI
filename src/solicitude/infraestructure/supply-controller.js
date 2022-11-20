@@ -1,5 +1,5 @@
 const { sendHttpResponse } = require("../../share/utils/response-parser");
-const { saveSupply, getSupplyByName, getAllSupplies } = require("../domain/supply-repository");
+const { saveSupply, getSupplyByName, getAllSupplies, updateSupplyBydId, deleteSupplyBydId } = require("../domain/supply-repository");
 
 class SupplyController {
     createSupply = async (req, res) => {
@@ -40,11 +40,26 @@ class SupplyController {
     };
     
     updateSupply = async (req,res) => {
+        try {
+            const {supplyId, ...data} = req.body
+            if(!supplyId || !data) throw new Error('body incompleto')
+            const supply = await updateSupplyBydId(supplyId, data)
+            sendHttpResponse(res,supply,200)
+        } catch (error) {
+            sendHttpResponse(res,error.message, 400)
+        }
     
     };
     
     deleteSupply = async (req,res) => {
-    
+        try {
+            const {supplyId} = req.body
+            if(!supplyId) throw new Error('body incompleto')
+            const resp = await deleteSupplyBydId(supplyId)
+            sendHttpResponse(res,resp,200)
+        } catch (error) {
+            sendHttpResponse(res,error.message, 400)
+        }
     };
 }
 

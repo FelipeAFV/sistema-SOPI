@@ -1,5 +1,5 @@
 const { sendHttpResponse } = require("../../share/utils/response-parser");
-const { getCategoryByName, saveCategory, getAllCategories } = require("../domain/category-repository");
+const { getCategoryByName, saveCategory, getAllCategories, updateCategoryBydId, deleteCategoryBydId } = require("../domain/category-repository");
 
 
 class CategoryController {
@@ -39,11 +39,28 @@ class CategoryController {
     };
     
     updateCategory = async (req,res) => {
-    
+     
+        try {
+            const {categoryId, ...data} = req.body
+            if(!categoryId || !data) throw new Error('body incompleto')
+            const category = await updateCategoryBydId(categoryId, data)
+            sendHttpResponse(res,category,200)
+        } catch (error) {
+            sendHttpResponse(res,error.message, 400)
+        }
+        
+        
     };
     
     deleteCategory = async (req,res) => {
-    
+        try {
+            const {categoryId} = req.body
+            if(!categoryId) throw new Error('body incompleto')
+            const category = await deleteCategoryBydId(categoryId)
+            sendHttpResponse(res,category,200)
+        } catch (error) {
+            sendHttpResponse(res,error.message, 400)
+        }
     };
 }
 

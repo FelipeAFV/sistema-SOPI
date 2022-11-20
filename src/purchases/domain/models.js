@@ -65,7 +65,7 @@ const PurchaseType = sequelize.define('purchaseType', {
         field: 'valor_maximo'
     },
 }, {
-    tableName: 'compras_tipo'
+    tableName: 'compras_tipo', timestamps:false
 });
 
 const PurchaseStatus = sequelize.define('purchaseStatus', {
