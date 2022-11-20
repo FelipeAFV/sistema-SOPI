@@ -1,6 +1,6 @@
 const { sequelize } = require("../../database/db-init");
 const { findSopi } = require("../../solicitude/domain/sopi-repository");
-const { savePurchase, updatePurchaseById, getAllPurchases } = require("../domain/purchase-repository");
+const { savePurchase, updatePurchaseById, getAllPurchases, getPurchaseById, getPurchaseFromManagerId, getAllPurchasesWithManager } = require("../domain/purchase-repository");
 const {
   saveAllPurchaseDatails,
   getPurchaseDetailById,
@@ -11,12 +11,10 @@ const {
   findManagerPurchase,
   findAllManager,
 } = require("../../management/domain/manager-repository");
-const {
-  getSopiDetailById,
-} = require("../../solicitude/domain/sopidetail-repository");
 const { addlogByStatusId } = require("../domain/purchaselog-repository");
-const { findAllPermisionFromProfileId } = require("../../auth/domain/permission-repository");
+const { findAllPermisionFromProfileId, findAllPermissionsFromUserAndProfile } = require("../../auth/domain/permission-repository");
 const { getTicketsFromUserId } = require("../../management/domain/ticket-repository");
+const { sendHttpResponse } = require("../../share/utils/response-parser");
 
 const createPurchaseFromCompleteSopi = async ({ sopiId }) => {
   try {
@@ -69,15 +67,13 @@ const createPurchaseFromCompleteSopi = async ({ sopiId }) => {
   }
 };
 
-const findSopiDetailByPurchaseId = async (id) => {
-  try {
-    const purchase = await getPurchaseDetailById(id);
-    const { sopiDetailId } = purchase;
-    const sopiDetail = await getSopiDetailById(sopiDetailId);
-    return sopiDetail;
-  } catch (error) {
-    throw new Error(error.message);
-  }
+const findPurchaseDetailByPurchaseId = async (id) => {
+
+      const purchase = await getPurchaseById(id);
+      const status = await purchase.getPurchaseLogStatus();
+      purchase.status = status.map((status)=>status.name);
+      
+      return purchase;
 };
 
 const updatePurchaseStatus = async ({ purchaseId, statusId, typeId, userId }) => {
@@ -155,6 +151,6 @@ const findPurchasesWithTicketFromUser = async (userId)  => {
 }
 
 exports.createPurchaseFromCompleteSopi = createPurchaseFromCompleteSopi;
-exports.findSopiDetailByPurchaseId = findSopiDetailByPurchaseId;
+exports.findPurchaseDetailByPurchaseId = findPurchaseDetailByPurchaseId;
 exports.updatePurchaseStatus = updatePurchaseStatus;
 exports.findPurchasesFilteredByPermissions = findPurchasesFilteredByPermissions;

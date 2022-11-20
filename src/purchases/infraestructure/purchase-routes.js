@@ -16,6 +16,6 @@ router.post('/proveedor', SupplierController.createSupplier);
 router.get('/proveedor', SupplierController.getSuppliers);
 
 router.put('/',  hasProfile(['jefe_compra', 'director']),  updatePurchase);
-router.get('/:compraId', purchaseDetailPermission(),getPurchaseDetail);
+router.get('/:compraId', purchaseDetailPermission(), getPurchaseDetail);
 
 exports.purchaseRoutes = router;
