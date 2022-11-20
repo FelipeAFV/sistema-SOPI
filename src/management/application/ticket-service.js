@@ -109,6 +109,15 @@ const findTicketFromTicketId = async(ticketId) => {
     }
 }
 
+const updateTicketFromId = async (ticket, content) => {
+    
+    const plastic = {title:content.title}
+    ticket.update(plastic)
+    return ticket;
+}
+
+
+exports.updateTicketFromId = updateTicketFromId;
 exports.findTicketFromTicketId = findTicketFromTicketId;
 exports.createTicket = createTicket;
 exports.getTicketsFromPurchaseId = getTicketsFromPurchaseId;
