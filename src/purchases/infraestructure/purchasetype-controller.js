@@ -1,5 +1,4 @@
 const { sendHttpResponse } = require("../../share/utils/response-parser");
-<<<<<<< HEAD
 const { getAllPurchaseTypes, insertPurchaseType, updatePurchaseType, deletePurchaseType } = require("../domain/purchasetype-service")
 
 
@@ -48,7 +47,6 @@ exports.deleteTypePurchase = deleteTypePurchase;
 exports.updateTypePurchase = updateTypePurchase;
 exports.createPurchaseType = createPurchaseType;
 exports.getPurchaseTypes = getPurchaseTypes;
-=======
 const { getAllPurchaseType } = require("../domain/purchasetype-repository");
 
 
@@ -67,4 +65,3 @@ const getAll = async (req, res) => {
 }
 
 exports.getAll = getAll;
->>>>>>> 721b123fcf52dcbd5bbe61f950b4042470e34443
