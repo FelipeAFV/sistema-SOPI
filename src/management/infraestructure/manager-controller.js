@@ -1,7 +1,9 @@
+const { Purchase } = require("../../purchases/domain/models");
 const { sendHttpResponse } = require("../../share/utils/response-parser");
 const { addManagerForSopi } = require("../application/responsible-service");
 const { ApiValidationError } = require("../domain/api-errors");
 const { saveManager } = require("../domain/manager-repository");
+const { Manager } = require("../domain/models");
 
 
 

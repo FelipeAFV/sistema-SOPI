@@ -1,5 +1,5 @@
 const fs = require('fs');
-const { saveDocument, findDocument, findDocsWithCondition } = require('../domain/document-repository');
+const { saveDocument, findDocument, findDocsWithCondition, removeDocument } = require('../domain/document-repository');
 const uuid = require('uuid');
 const { findAllPermissionsFromUserAndProfile } = require('../../auth/domain/permission-repository');
 const { getTicketsFromUserId, getTicketFromId, getTicketFromPurchase } = require('../domain/ticket-repository');
@@ -17,7 +17,7 @@ const addDocument = async ({file, purchaseId, userId}) => {
     console.log(fileName)
 
     /* Create directory for files of purchase order*/
-    fs.mkdir(process.env.STATIC_ROOT + '/' + purchaseId, {}, (err) => {console.log(err)});
+    if (!fs.existsSync(process.env.STATIC_ROOT + '/' + purchaseId)) fs.mkdirSync(process.env.STATIC_ROOT + '/' + purchaseId, {});
     fs.writeFileSync(filePath, file.buffer);
 
     const docStored = await saveDocument({purchaseId, type: fileExt, name: fileName+ '.' + fileExt, path: filePath });
@@ -92,6 +92,20 @@ const findDocsFromCompraWithPermissions = async (purchaseId, userId, profileId) 
     throw new PermissionError('No tienes ningun permiso para poder ver documentos');
 }
 
+
+const removeDoc = async (docId) => {
+    try {
+        const doc = await findDocument(docId);
+        fs.rmSync(doc.path)
+        const deletedRows = await  removeDocument(docId)
+        return deletedRows;
+
+    } catch (e) {
+        return null;
+    }
+}
+
 exports.addDocument = addDocument;
 exports.findDocumentWithPermissions = findDocumentWithPermissions;
 exports.findDocsFromCompraWithPermissions = findDocsFromCompraWithPermissions;
+exports.removeDoc = removeDoc;

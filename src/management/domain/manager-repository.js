@@ -1,6 +1,6 @@
 const { User } = require("../../auth/domain/models");
 const { Purchase } = require("../../purchases/domain/models");
-const { Manager } = require("./models")
+const { Manager, Document } = require("./models")
 
 const saveManager = async ({userId, purchaseId}) => {
     const manager = await Manager.create({userId, purchaseId});
@@ -57,6 +57,15 @@ const findManagersWithConditions = async (conditions) => {
     return await  Manager.findAll({ where: conditions})
 }
 
+const findManagerFromPurchaseDocument = async (docId) => {
+    return await Manager.findAll({ include: [{ model: Purchase, 
+        include: [{ model: Document, where: {id: docId} }]}]});
+}
+
+
+
+
+exports.findManagerFromPurchaseDocument = findManagerFromPurchaseDocument;
 exports.findManagerPurchase = findManagerPurchase;
 exports.findAllManager = findAllManager;
 exports.findOneManagerForPurchase = findOneManagerForPurchase;

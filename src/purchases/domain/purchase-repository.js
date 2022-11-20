@@ -42,6 +42,9 @@ const getAllPurchases = async () => {
 const getAllPurchasesWithManager = async (managerId) => {
     return await Purchase.findAll({ include: [{model: Manager, where: {userId: managerId}}]});
 }
+const getPurchaseWithManager = async (managerId, purchaseId) => {
+    return await Purchase.findOne({ where: {id: purchaseId} ,include: [{model: Manager, where: {userId: managerId}}]});
+}
 
 exports.savePurchase = savePurchase;
 exports.getPurchaseById = getPurchaseById;
@@ -49,3 +52,4 @@ exports.updatePurchaseById = updatePurchaseById;
 exports.getAllPurchases = getAllPurchases;
 exports.getAllPurchasesWithManager = getAllPurchasesWithManager;
 exports.getPurchase = getPurchase;
+exports.getPurchaseWithManager = getPurchaseWithManager;
