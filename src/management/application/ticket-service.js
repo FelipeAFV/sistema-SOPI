@@ -1,15 +1,18 @@
 const { userRepository } = require('../../auth/domain/user-repository');
 const {pagination} = require('../../share/utils/api-feature');
 const {Op} = require("sequelize");
-const { findOneManager, findAllManagers } = require('../domain/manager-repository');
-const {addTicket, getTicketFromManagerId, getTicketsFromManagerId, getTicketFromId, getAllTickets} = require('../domain/ticket-repository')
+const { findOneManager, findAllManagers, findManager, findOneManagerForPurchase, findManagerPurchase } = require('../domain/manager-repository');
+const {addTicket, getTicketFromManagerId, getTicketsFromManagerId, getTicketFromId, getAllTickets} = require('../domain/ticket-repository');
+const { findAllPermissionsFromUserAndProfile } = require('../../auth/domain/permission-repository');
 
 
 const createTicket = async (ticketData) => {
     try {
-        const manager = await findOneManager(ticketData.managerId)
+
+
+        const manager = await findOneManagerForPurchase({creatorId:ticketData.creator, purchaseId:ticketData.purchaseId})
         if(!manager) {
-            throw new Error('manager no existe')
+            throw new Error('manager no asignado a proceso de compra seleccionado')
         } else {
             const user = await userRepository.findUserById(ticketData.userId)
             
@@ -29,7 +32,7 @@ const createTicket = async (ticketData) => {
     }
 };
  
-const getTicketsFromPurchaseId = async(query) => {
+const getTicketsFromPurchaseId = async(query, userId, profileId) => {
     
     const where = {};
     const {compraId} = query;
@@ -43,15 +46,51 @@ const getTicketsFromPurchaseId = async(query) => {
     if(count <= 0) {
         throw new Error('No hay tickets con id:'+ compraId)
     }
+    //console.log(userId, profileId);
+    const permissions = await findAllPermissionsFromUserAndProfile(userId,profileId)
+    //console.log(permissions);
+    const auth = permissions.find(a => a.name == 'TICKET_VER')
+    //console.log(userId);
+    const test = await findManagerPurchase(userId)
+    const managerIds = [];
+    if(test) {
+        test.forEach(e => {
+            managerIds.push(e.id)
+        })
+    }
+    console.log(count);
+    
+    if(auth){
+        const ticketsFiltered = pagination({
+            data: rows,
+            count,
+            page,
+            perPage
+        })
+    
+        return ticketsFiltered;
+    }else{
+        //console.log('adsdasds');
+        const newRows = rows.filter(a => {
+            if(a.userId == userId || managerIds.find(i => i == a.managerId)){
+                return true;
+            }
+            return false;
+        })
+        const ticketsFiltered = pagination({
+            data: newRows,
+            count: newRows.length,
+            page,
+            perPage
+        })
 
-    const ticketsFiltered = pagination({
-        data: rows,
-        count,
-        page,
-        perPage
-    })
+        return ticketsFiltered
+    }
 
-    return ticketsFiltered;
+    
+
+
+    
 
 
 }

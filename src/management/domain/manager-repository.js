@@ -14,18 +14,25 @@ const findManager = async ({managerId, purchaseId}) => {
 
 }
 
-const findOneManager = async (managerId) => {
+const findOneManager = async ({managerId}) => {
     const manager = await Manager.findOne({where:{id: managerId}});
+    return manager;
+
+}
+
+const findOneManagerForPurchase = async ({creatorId, purchaseId}) => {
+    const manager = await Manager.findOne({where:{userId: creatorId, purchaseId:purchaseId}});
     return manager;
 
 }
 
 const findManagerPurchase = async (userId) => {
     const result = await Manager.findAll({where:{userId},include:Purchase})
-    if(result.length === 0){
+    //console.log(result);
+    /*if(result.length === 0){
         
         throw new Error('usuario no tiene asignado ningun proceso de compra')
-    }
+    }*/
     
     return result;
 }
@@ -38,18 +45,9 @@ const findAllManager = async () => {
     return result;
 }
 
-const findAllManagers = async (id) => {
-    const managers = await Manager.findAll({where:{purchaseId:id}});
-    if(!managers){
-        throw new Error('No hay managers asociados a la compra')
-    }
-    return managers;
-}
-
 exports.findManagerPurchase = findManagerPurchase;
 exports.findAllManager = findAllManager;
-exports.findAllManagers = findAllManagers;
-
+exports.findOneManagerForPurchase = findOneManagerForPurchase;
 exports.findManager = findManager;
 exports.saveManager = saveManager;
 exports.findOneManager = findOneManager;
