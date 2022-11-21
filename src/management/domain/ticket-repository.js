@@ -5,7 +5,7 @@ const { Purchase } = require("../../purchases/domain/models");
 
 
 const addTicket = async ({managerId, userId, title, content, date, purchaseId}) => {
-    const newTicket = await Ticket.create({title:title, content:content, state:null,expirationDate:date,managerId:managerId, ticketStatusId:1,userId:userId, purchaseId:purchaseId});
+    const newTicket = await Ticket.create({title:title, content:content,expirationDate:date,managerId:managerId, ticketStatusId:1,userId:userId, purchaseId:purchaseId});
     return newTicket
 };
 
@@ -26,6 +26,18 @@ const getTicketFromId = async (id) => {
     return ticket;
 };
 
+const updateFromIdTicket = async (id, updateValues) => {
+    try {
+        const ticket = await getTicketFromId(id)
+        await ticket.update(updateValues)
+        return ticket
+        
+    } catch (error) {
+        throw new Error('error al actualizar Ticket')
+    }
+    
+}
+
 const getAllTickets = async(condition, page ,perPage) => {
     const tickets = await Ticket.findAndCountAll({condition, offset: (page-1)*page, limit:perPage, distinct:true});
 
@@ -36,6 +48,7 @@ const getTicketFromPurchase = async (purchaseId) => {
     return await Ticket.findAll({ where: { purchaseId }});
 }
 
+exports.updateFromIdTicket = updateFromIdTicket;
 exports.getTicketFromId = getTicketFromId;
 exports.addTicket = addTicket;
 exports.getTicketsFromManagerId = getTicketsFromManagerId;
