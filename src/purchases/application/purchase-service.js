@@ -117,7 +117,7 @@ const findPurchasesFilteredByPermissions = async (profileId, userId) => {
   const purchasesManager = await findPurchasesAsignedToManager(userId);
   const purchasesTicket = await findPurchasesWithTicketFromUser(userId);
 
-  const finalPurchases = [...purchasesManager, purchasesTicket]
+  const finalPurchases = [...purchasesManager, ...purchasesTicket]
 
   // Status filter
   // const filteredPurchasesByStatus = purchases.filter(purchase => {

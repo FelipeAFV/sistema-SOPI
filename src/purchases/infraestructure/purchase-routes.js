@@ -1,5 +1,5 @@
 const { Router } = require("express");
-const { hasProfile, hasPermission } = require("../../auth/infraestructure/check-auth-middleware");
+const { hasProfile, hasPermission, hasAnyPermission } = require("../../auth/infraestructure/check-auth-middleware");
 const { createPurchase, getPurchaseDetail, updatePurchase, getAllPurchases } = require("./purchase-controller");
 const { purchaseDetailPermission } = require("./purchase-middleware");
 const { getPurchaseTypes, createPurchaseType, updateTypePurchase, deleteTypePurchase } = require("./purchasetype-controller");
@@ -11,7 +11,7 @@ const { SupplierController } = require("./Supplier-controller");
 const router = Router()
 
 router.post('/', createPurchase);
-router.get('/', getAllPurchases);
+router.get('/', hasAnyPermission(['COMPRA_VER', 'COMPRA_VER_RELACIONADO']), getAllPurchases);
 
 //Proveedores
 router.post('/proveedor', SupplierController.createSupplier);
