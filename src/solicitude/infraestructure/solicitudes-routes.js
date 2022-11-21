@@ -1,4 +1,4 @@
-const { hasProfile, hasPermission } = require('../../auth/infraestructure/check-auth-middleware');
+const { hasProfile, hasPermission, hasAnyPermission } = require('../../auth/infraestructure/check-auth-middleware');
 const { CategoryController} = require('./classification-controller');
 const { getAllCostCenter, createCostCenter } = require('./costcenter-controller');
 const { getAllFinancing, createFinancing, updateFinancing } = require('./financing-controller');
@@ -12,7 +12,7 @@ const Router = require('express').Router;
 const router = Router();
 
 // SOPI
-router.get('/', getAllSopi);
+router.get('/', hasAnyPermission(['SOPI_VER', 'SOPI_VER_CREADAS']),getAllSopi);
 router.post('/', hasPermission(['SOPI_CREAR']), addNewSopi);
 router.put('/', hasPermission(['SOPI_EDITAR']), updateSopi);
 router.get('/', getAllSopi);

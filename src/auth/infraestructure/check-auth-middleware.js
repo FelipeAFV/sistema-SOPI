@@ -14,12 +14,12 @@ const verifyToken = (req, res, next) => {
         next();
     } catch (e) {
         if (e instanceof jwt.JsonWebTokenError) {
-            sendHttpResponse(res,'Token no válido o no existe', 401);
+            sendHttpResponse(res, 'Token no válido o no existe', 401);
             return;
         }
-        sendHttpResponse(res,'Error al verificar token', 500);
+        sendHttpResponse(res, 'Error al verificar token', 500);
         return;
-        
+
     }
 }
 
@@ -31,17 +31,17 @@ const hasProfile = (profiles) => {
         for (let acceptedProfile of profiles) {
             console.log(userProfile)
             if (userProfile.name == acceptedProfile) {
-                
+
                 next()
                 return;
             }
         }
         sendHttpResponse(res, 'No tienes el perfil necesario', 403);
         return;
-        
+
     }
     return middleware;
-    
+
 }
 
 const hasPermission = (permissionList) => {
@@ -57,15 +57,41 @@ const hasPermission = (permissionList) => {
                 }
             }
             if (!containsPermission) {
-                sendHttpResponse(res,'No tienes los permisos necesarios', 403)
+                sendHttpResponse(res, 'No tienes los permisos necesarios', 403)
                 return;
-            } 
+            }
         }
         next();
-        
+
     }
     return middleware;
 }
+
+
+const hasAnyPermission = (permissionList) => {
+    const middleware = async (req, res, next) => {
+        const user = await userRepository.findUserByUsername(req.user.username);
+        const permissions = await findAllPermissionsFromUserAndProfile(user.id, user.profileId);
+        let containsPermission = false;
+        for (let requiredPermission of permissionList) {
+            if (permissions.find(p => p.name == requiredPermission)) {
+                containsPermission = true;
+                break;
+            }
+        }
+        if (!containsPermission) {
+
+            sendHttpResponse(res, 'No tienes los permisos necesarios', 403)
+            return;
+        }
+
+        next();
+
+    }
+    return middleware;
+}
+
 exports.verifyToken = verifyToken;
 exports.hasProfile = hasProfile;
 exports.hasPermission = hasPermission;
+exports.hasAnyPermission = hasAnyPermission;
