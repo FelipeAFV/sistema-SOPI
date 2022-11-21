@@ -153,9 +153,10 @@ insert into usuarios(usuario, contrasena, nombre, apellido, perfil_id, creacion,
 insert into usuarios(usuario, contrasena, nombre, apellido, perfil_id, creacion, ultima_actualizacion) values('juridico', '$2b$10$cHDUjwS7SfMco.GJR9SMueba45vqYBFxSji6tEKYKCibizbPYzMTS', 'juridico', 'juridico', 4, '2022-10-10', '2022-10-10');
 insert into usuarios(usuario, contrasena, nombre, apellido, perfil_id, creacion, ultima_actualizacion) values('solicitante', '$2b$10$n/drnSboPaK6Gmwww79fveeS8w8BSRZ0X4u1ttUTirFxj7/j9GylW', 'solicitante', 'solicitante', 6, '2022-10-10', '2022-10-10');
 
-insert into ticket_status (estado) values ('PENDIENTE');
-insert into ticket_status (estado) values ('COMPLETADO');
-insert into ticket_status (estado) values ('CANCELADO');
+insert into ticket_status (id,estado) values (1,'PENDIENTE');
+insert into ticket_status (id,estado) values (2,'COMPLETADO');
+insert into ticket_status (id,estado) values (3,'CANCELADO');
+insert into ticket_status (id,estado) values (4,'ATRASADO');
 
 
 insert into compras_tipo(id, nombre, valor_minimo, valor_maximo) values(1, 'L1', 1, 99);

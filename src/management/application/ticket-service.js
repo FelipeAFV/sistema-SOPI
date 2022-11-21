@@ -2,18 +2,19 @@ const { userRepository } = require('../../auth/domain/user-repository');
 const {pagination} = require('../../share/utils/api-feature');
 const {Op} = require("sequelize");
 const { findOneManager, findAllManagers, findManager, findOneManagerForPurchase, findManagerPurchase } = require('../domain/manager-repository');
-const {addTicket, getTicketFromManagerId, getTicketsFromManagerId, getTicketFromId, getAllTickets} = require('../domain/ticket-repository');
+const {addTicket, getTicketFromManagerId, getTicketsFromManagerId, getTicketFromId, getAllTickets, updateFromIdTicket} = require('../domain/ticket-repository');
 const { findAllPermissionsFromUserAndProfile } = require('../../auth/domain/permission-repository');
 
 
-const createTicket = async (ticketData) => {
+const createTicket = async (ticketData, idUser, idProfile) => {
     try {
 
         //TODO: revisar permiso TICKET_CREAR
-        const manager = await findOneManagerForPurchase({creatorId:ticketData.creator, purchaseId:ticketData.purchaseId})
-        if(!manager) {
-            throw new Error('manager no asignado a proceso de compra seleccionado')
-        } else {
+        const permissions = await findAllPermissionsFromUserAndProfile(idUser,idProfile)
+        //console.log(permissions);
+        const auth = permissions.find(a => a.name == 'TICKET_CREAR')
+        if(auth) {
+
             const user = await userRepository.findUserById(ticketData.userId)
             
             if(!user) {
@@ -26,7 +27,28 @@ const createTicket = async (ticketData) => {
                     return ticket
                 }
             }
+
+        }else {
+
+            const manager = await findOneManagerForPurchase({creatorId:ticketData.creator, purchaseId:ticketData.purchaseId})
+            if(!manager) {
+                throw new Error('manager no asignado a proceso de compra seleccionado')
+            } else {
+                const user = await userRepository.findUserById(ticketData.userId)
+            
+                if(!user) {
+                    throw new Error('usuario no existe')
+                } else {
+                    if(!ticketData.title || !ticketData.content || !ticketData.date){
+                        throw new Error('ticket con campos faltantes')
+                    }else {
+                        const ticket = await addTicket(ticketData)
+                        return ticket
+                }
+            }
         }
+        }
+        
     } catch (error) {
         throw new Error(error.message)
     }
@@ -112,8 +134,9 @@ const findTicketFromTicketId = async(ticketId) => {
 const updateTicketFromId = async (ticket, content) => {
     
     try {
-        ticket.update(content)
-        return ticket;
+        const newTicket = await updateFromIdTicket(ticket.id, content)
+        //ticket.update(content)
+        return newTicket;
     } catch (error) {
         throw new Error("Error al actualizar ticket",error.message);
     }

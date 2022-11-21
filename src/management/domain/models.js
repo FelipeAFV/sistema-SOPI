@@ -29,17 +29,13 @@ const Ticket = sequelize.define('ticket',{
         type: DataTypes.STRING,
         field: 'contenido'
     },
-    state: {
-        type: DataTypes.INTEGER,
-        field: 'estado'
-    },
     expirationDate: {
         type: DataTypes.DATEONLY,
         field: 'fecha_vencimiento'
     }
 
 }, {
-    tableName: 'tickets'
+    tableName: 'tickets', updatedAt:false, createdAt:'fecha_creacion'
 });
 
 const TicketStatus = sequelize.define('ticketStatus',{
