@@ -1,4 +1,4 @@
-const { SopiDetail } = require("./models")
+const { SopiDetail, Supplies } = require("./models")
 
 const saveSopiDetail =  async (sopiDetail) => {
     return await SopiDetail.create(sopiDetail);
@@ -13,7 +13,7 @@ const getSopiDetailById = async(id) => {
 }
 
 const getSopiDetailsById= async(id) => {
-    return await SopiDetail.findAll({where:{id}});
+    return await SopiDetail.findAll({where:{sopiId: id}, include: [Supplies]});
 }
 
 exports.saveSopiDetail = saveSopiDetail;

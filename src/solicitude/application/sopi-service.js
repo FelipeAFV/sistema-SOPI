@@ -16,7 +16,7 @@ const generateSopiDetails = async (items, sopiId) => {
 
         if (item.supplyId) {
             console.log('asdasd')
-            const sopiDetailCreated = await saveSopiDetail({ supplyId: item.supplyId, quantity: item.quantity })
+            const sopiDetailCreated = await saveSopiDetail({ supplyId: item.supplyId, quantity: item.quantity, sopiId })
             sopiDetails.push(sopiDetailCreated);
             return;
         }

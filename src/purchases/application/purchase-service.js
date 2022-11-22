@@ -98,8 +98,9 @@ const findPurchasesFilteredByPermissions = async (profileId, userId) => {
   
   const purchasesPermissions = permissions.filter(permission => permission.name.includes('COMPRA'))
   
+  console.log('Consultando todas las compras', permissions)
 
-  const viewAll = purchasesPermissions.find((permission) => permission == 'COMPRA_VER');
+  const viewAll = purchasesPermissions.find((permission) => permission.name == 'COMPRA_VER');
   if (viewAll) {
     return await getAllPurchases();
   }
