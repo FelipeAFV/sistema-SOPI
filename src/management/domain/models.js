@@ -57,7 +57,7 @@ const Comment = sequelize.define('comment',{
     
 
 }, {
-    tableName: 'commentarios'
+    tableName: 'comentarios'
 });
 const Manager = sequelize.define('manager',{
     name: {
@@ -96,15 +96,17 @@ Ticket.loadAssociations = () => {
 
     const { User } = require("../../auth/domain/models");
     Ticket.belongsTo(User, { foreignKey: {field: 'responsable_id'}});
-    Ticket.belongsTo(TicketStatus, { foreignKey: {field: 'status_id'}})
+    Ticket.belongsTo(TicketStatus, { foreignKey: {field: 'estado_id'}})
 }
 
 TicketStatus.loadAssociations = () => {
-    TicketStatus.hasMany(Ticket, { foreignKey: {field: 'status_id'}})
+    TicketStatus.hasMany(Ticket, { foreignKey: {field: 'estado_id'}})
 }
 
 Comment.loadAssociations = () => {
     Comment.belongsTo(Ticket, { foreignKey: { field: 'ticket_id'}});
+    const { User } = require("../../auth/domain/models");
+    Comment.belongsTo(User, {foreignKey: {field: 'creador_id', name:'creatorId'}});
 }
 
 

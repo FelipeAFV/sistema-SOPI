@@ -20,7 +20,7 @@ const createTicket = async (ticketData, idUser, idProfile) => {
             if(!user) {
                 throw new Error('usuario no existe')
             } else {
-                if(!ticketData.title || !ticketData.content || !ticketData.date){
+                if(!ticketData.title || !ticketData.content || !ticketData.date || !ticketData.purchaseId){
                     throw new Error('ticket con campos faltantes')
                 }else {
                     const ticket = await addTicket(ticketData)
@@ -39,7 +39,7 @@ const createTicket = async (ticketData, idUser, idProfile) => {
                 if(!user) {
                     throw new Error('usuario no existe')
                 } else {
-                    if(!ticketData.title || !ticketData.content || !ticketData.date){
+                    if(!ticketData.title || !ticketData.content || !ticketData.date || !ticketData.purchaseId){
                         throw new Error('ticket con campos faltantes')
                     }else {
                         const ticket = await addTicket(ticketData)

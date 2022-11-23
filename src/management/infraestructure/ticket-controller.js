@@ -1,6 +1,7 @@
 const { findAllPermissionsFromUserAndProfile } = require("../../auth/domain/permission-repository");
 const { sendHttpResponse } = require("../../share/utils/response-parser");
 const { createTicket, getTicketsFromPurchaseId, findTicketFromTicketId, updateTicketFromId } = require("../application/ticket-service");
+const { getCommentFromTicketId } = require("../domain/comment-repository");
 const { findManagerPurchase } = require("../domain/manager-repository");
 const { getTicketFromId } = require("../domain/ticket-repository");
 
@@ -9,13 +10,11 @@ const { getTicketFromId } = require("../domain/ticket-repository");
 const ticketCreation = async (req, res) => {
     try {
         const ticketData = req.body;
-        const purchaseId = req.query.compraId;
-        if (!ticketData || !purchaseId) {
+
+        if (!ticketData) {
             throw new Error('campos faltantes')
         } else {
-            ticketData.purchaseId = purchaseId;
             ticketData.creator = req.user.id;
-            console.log(ticketData.purchaseId);
             const ticket = await createTicket(ticketData, req.user.id, req.user.profileId)
             sendHttpResponse(res, ticket, 200)
         }
@@ -43,10 +42,10 @@ const getTickets = async (req, res) => {
 const getTicket = async (req, res) => {
     const { ticketId } = req.params;
 
-
     try {
 
         var ticket = await findTicketFromTicketId(ticketId);
+        const {rows} = await getCommentFromTicketId(ticketId);
 
 
 
@@ -71,9 +70,13 @@ const getTicket = async (req, res) => {
 
             }
             const permissions = await findAllPermissionsFromUserAndProfile(req.user.id, req.user.profileId)
-            const auth = permissions.find(a => a.name == 'TICKET_VER')
+            const auth = permissions.find(a => a.name == 'TICKET_VER');
+            const data = {
+                ticket,
+                comments:rows
+            }
             if (auth) {
-                sendHttpResponse(res, ticket, 200);
+                sendHttpResponse(res, data, 200);
             } else {
                 const test = await findManagerPurchase(req.user.id)
                 const managerIds = [];
