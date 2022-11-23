@@ -12,6 +12,7 @@ const purchaseDetailPermission = () => {
             return;
         };
         if (viewAll) {
+
             next();
             return;
         };

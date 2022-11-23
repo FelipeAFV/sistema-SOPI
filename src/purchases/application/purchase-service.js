@@ -139,8 +139,9 @@ const findPurchasesFilteredByPermissions = async (profileId, userId) => {
 const findPurchasesAsignedToManager = async (userId) => {
   try {
     const result = await findManagerPurchase(userId);
+    const purchases = result.map((manager) => manager.purchase)
 
-    return result;
+    return purchases;
   } catch (error) {
     throw new Error(error.message);
   }

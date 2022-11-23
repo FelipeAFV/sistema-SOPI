@@ -33,6 +33,7 @@ const updateFromIdTicket = async (id, updateValues) => {
         return ticket
         
     } catch (error) {
+        console.log(error)
         throw new Error('error al actualizar Ticket')
     }
     
