@@ -7,13 +7,14 @@ const verifyToken = (req, res, next) => {
     try {
         const token = req.cookies['jwt'];
 
+
         // const token = (cookie.split(' ').length > 1) ? cookie.split(' ')[1] : cookie;
         const payload = jwt.verify(token, process.env.SECRET_KEY);
         req.user = payload;
-        console.log(payload);
         next();
     } catch (e) {
         if (e instanceof jwt.JsonWebTokenError) {
+            console.log(e)
             sendHttpResponse(res, 'Token no válido o no existe', 401);
             return;
         }

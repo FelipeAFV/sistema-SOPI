@@ -36,6 +36,7 @@ app.use(cookieParser());
 
 app.use('/api/v1/auth/registrarse', verifyToken, hasProfile(['admin']));
 app.use('/api/v1/auth/perfiles', verifyToken);
+app.use('/api/v1/auth/verify', verifyToken);
 app.use('/api/v1/auth/usuarios', verifyToken);
 
 
