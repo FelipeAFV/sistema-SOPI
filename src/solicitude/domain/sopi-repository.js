@@ -1,6 +1,7 @@
+const { User } = require("../../auth/domain/models");
 const { Manager } = require("../../management/domain/models");
 const { Purchase } = require("../../purchases/domain/models");
-const { Sopi, SopiDetail, SopiStatus } = require("./models")
+const { Sopi, SopiDetail, SopiStatus, Financing, CostCenter } = require("./models")
 
 const getSopiById =  async (id) => {
     const sopi = await Sopi.findOne({where: { id: id} , include: [{model: SopiStatus, as: 'status'}]})
@@ -8,12 +9,14 @@ const getSopiById =  async (id) => {
 }
 
 const getAllSopis = async () => {
-    const sopis = await Sopi.findAll({include: [{model: SopiStatus, as: 'status'}]});
+    const sopis = await Sopi.findAll({include: [{model: SopiStatus, as: 'status'}, { model: Financing}, {model: CostCenter}
+    , { model: User}]});
     return sopis
 }
 
 const getAllSopisByConditions = async (conditions) => {
-    const sopis = await Sopi.findAll({include: [{model: SopiStatus, as: 'status'}], where: conditions});
+    const sopis = await Sopi.findAll({include: [{model: SopiStatus, as: 'status'}, { model: Financing}, {model: CostCenter}
+, { model: User}], where: conditions});
     return sopis
     
 }

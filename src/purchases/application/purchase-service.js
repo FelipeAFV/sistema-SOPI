@@ -27,7 +27,7 @@ const createPurchaseFromCompleteSopi = async ({ sopiId }) => {
       }
 
       // Sopi details availeble through sopiDetails list atribute
-      console.log("sopi details" + sopi.sopiDetails[0].features);
+
 
       const purchaseFirstStatus = await findStatusByName("PREPARANDO");
       //STEP 2: Create purchase

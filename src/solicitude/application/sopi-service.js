@@ -12,13 +12,14 @@ const generateSopiDetails = async (items, sopiId) => {
 
 
     const sopiDetails = [];
+    console.log(items)
     for (let item of items) {
 
         if (item.supplyId) {
-            console.log('asdasd')
+            console.log('Añadiendo item')
             const sopiDetailCreated = await saveSopiDetail({ supplyId: item.supplyId, quantity: item.quantity, sopiId })
             sopiDetails.push(sopiDetailCreated);
-            return;
+            continue;
         }
         const { name, features, quantity } = item;
 

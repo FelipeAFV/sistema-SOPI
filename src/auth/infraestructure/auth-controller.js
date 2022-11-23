@@ -74,6 +74,11 @@ class AuthController {
         }
     }
 
+    userData = async (req, res) => {
+        sendHttpResponse(res,'Authenticated', 200)
+        return
+    }
+
 
 
 
