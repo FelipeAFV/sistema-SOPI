@@ -22,7 +22,7 @@ router.get('/ticket', getTickets);
 router.get('/ticket/:ticketId', getTicket);
 router.get('/documentos/:docId',  getDocument);
 router.put('/ticket', updateTicket);
-router.post('/comentario', addComment);
+router.post('/ticket/comentario', addComment);
 
 
 exports.managementRoutes = router;
