@@ -1,6 +1,7 @@
 const { Router } =  require('express');
 const { uploadMiddleware } = require('../..');
 const { hasProfile } = require('../../auth/infraestructure/check-auth-middleware');
+const { addComment } = require('./comment-controller');
 const { addDocument, getDocument, getDocuments, deleteDoc } = require('./document-controller');
 const { addManager } = require('./manager-controller');
 const { ticketCreation, getTickets, getTicket, updateTicket } = require('./ticket-controller');
@@ -21,6 +22,7 @@ router.get('/ticket', getTickets);
 router.get('/ticket/:ticketId', getTicket);
 router.get('/documentos/:docId',  getDocument);
 router.put('/ticket', updateTicket);
+router.post('/ticket/comentario', addComment);
 
 
 exports.managementRoutes = router;
