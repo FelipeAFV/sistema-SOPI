@@ -110,9 +110,10 @@ User.loadAssociations = () => {
     
     User.belongsTo(Profile, { foreignKey: { field: 'perfil_id'}});
     
-    const { Ticket, Manager } = require("../../management/domain/models");
+    const { Ticket, Manager, Comment } = require("../../management/domain/models");
     User.hasMany(Ticket, { foreignKey: {field: 'responsable_id'}});
     User.hasMany(Manager, { foreignKey: {field: 'usuario_id'}});
+    User.hasMany(Comment, {foreignKey: {field: 'creador_id', name: 'creatorId'}})
     
     const { Sopi, SopiLog } = require("../../solicitude/domain/models");
     User.hasMany(Sopi, { foreignKey: { field: 'usuario_id'}});
@@ -121,6 +122,9 @@ User.loadAssociations = () => {
     const { PurchaseLog } = require("../../purchases/domain/models");
     User.hasMany(PurchaseLog, { foreignKey: {allowNull: false, field: 'usuario_id'}});
     User.belongsToMany(Permission, { through: UserAccess, foreignKey: {field: 'usuario_id', name: 'userId'}});
+
+    
+    
 }
 
 Profile.loadAssociations = () => {
