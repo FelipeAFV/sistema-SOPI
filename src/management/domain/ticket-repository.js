@@ -21,6 +21,7 @@ const getTicketsFromUserId = async(id) => {
 }
 
 const getTicketFromId = async (id) => {
+
     const ticket = await Ticket.findOne({ where: {id:id}})
 
     return ticket;

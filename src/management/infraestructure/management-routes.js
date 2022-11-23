@@ -17,7 +17,6 @@ router.post('/documentos', uploadMiddleware.single('doc'), addDocument);
 router.get('/documentos',  getDocuments);
 router.delete('/documentos', deleteDoc);
 router.post('/ticket', ticketCreation);
-//TODO: cambiar parametro a query
 router.get('/ticket', getTickets);
 router.get('/ticket/:ticketId', getTicket);
 router.get('/documentos/:docId',  getDocument);
