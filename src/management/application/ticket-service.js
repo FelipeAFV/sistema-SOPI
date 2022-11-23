@@ -66,7 +66,7 @@ const getTicketsFromPurchaseId = async(query, userId, profileId) => {
     //if... or switch
     const {count, rows} = await getAllTickets(where, page, perPage); 
     if(count <= 0) {
-        throw new Error('No hay tickets con id:'+ compraId)
+        return [];
     }
     //console.log(userId, profileId);
     const permissions = await findAllPermissionsFromUserAndProfile(userId,profileId)

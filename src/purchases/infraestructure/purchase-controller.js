@@ -68,13 +68,13 @@ const updatePurchase = async(req,res) => {
     try {
 
         const permissions = await findAllPermissionsFromUserAndProfile(req.user.id, req.user.profileId);
-        const editPermission = permissions.find((permission) => permission == 'COMPRA_EDITAR');
+        const editPermission = permissions.find((permission) => permission.name == 'COMPRA_EDITAR');
 
         const managedPurchases = await getAllPurchasesWithManager(req.user.id);
 
         const purchase = req.body;
         if (!editPermission && !managedPurchases.find( p => p.id == purchase.purchaseId)) {
-            sendHttpResponse(res, 403, 'Error', 'No tienes permisos de editar');
+            sendHttpResponse(res,'Error', 403, 'No tienes permisos de editar');
             return;
         }
 
@@ -95,9 +95,9 @@ const updatePurchase = async(req,res) => {
 
         }
 
-        if (purchase.purchaseTypeId  || purchase.supplierId) {
+        if (purchase.purchaseTypeId  || purchase.supplierId || purchase.totalAmmount) {
             updatedPurchase = await updatePurchaseById(purchase.purchaseId, {purchaseTypeId: purchase.purchaseTypeId,
-                 supplierId: purchase.supplierId});
+                 supplierId: purchase.supplierId, totalAmmount:  purchase.totalAmmount});
 
         }
         sendHttpResponse(res, updatedPurchase, 200);

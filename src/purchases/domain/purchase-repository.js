@@ -1,4 +1,5 @@
 const { Manager } = require("../../management/domain/models");
+const { SopiDetail, Supplies } = require("../../solicitude/domain/models");
 const { Purchase, PurchaseDetail, PurchaseStatus, Supplier, PurchaseType } = require("./models")
 
 
@@ -21,7 +22,7 @@ const getPurchaseById = async(purchaseId) => {
         where: {
             id:purchaseId
         },
-        include: [{model:PurchaseDetail}, {model:PurchaseStatus, as: 'status'}]
+        include: [{model:PurchaseDetail, include: [{model: SopiDetail, include: Supplies}]}, {model:PurchaseStatus, as: 'status'}]
     })
     return purchase;
 };

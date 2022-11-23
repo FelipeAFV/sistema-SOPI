@@ -72,6 +72,9 @@ class UserRepositorySequelMySQL{
         return userCreated;
     }
 
+    findAll = async () => {
+        return await User.findAll();
+    }
 }
 
 

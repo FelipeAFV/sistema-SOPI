@@ -62,6 +62,18 @@ class AuthController {
 
     }
 
+    getManagerUsers = async (req, res) => {
+        try {
+            const users = await userRepository.findAll()
+            sendHttpResponse(res, users, 200)
+            return
+        } catch (e) {
+            console.log(e)
+            sendHttpResponse(res, 'Error', 500)
+            return 
+        }
+    }
+
 
 
 
