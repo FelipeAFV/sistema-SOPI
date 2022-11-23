@@ -9,13 +9,11 @@ const { getTicketFromId } = require("../domain/ticket-repository");
 const ticketCreation = async (req, res) => {
     try {
         const ticketData = req.body;
-        const purchaseId = req.query.compraId;
-        if (!ticketData || !purchaseId) {
+
+        if (!ticketData) {
             throw new Error('campos faltantes')
         } else {
-            ticketData.purchaseId = purchaseId;
             ticketData.creator = req.user.id;
-            console.log(ticketData.purchaseId);
             const ticket = await createTicket(ticketData, req.user.id, req.user.profileId)
             sendHttpResponse(res, ticket, 200)
         }
