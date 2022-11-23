@@ -11,8 +11,7 @@ const addComment = async (req, res) => {
     const commentData = {
         ticketId,
         response,
-        /* creator: req.user.id,
-        profileId: req.user.profileId */
+        creator: req.user.id
     }
     const comment = await createComment(commentData, req.user.id);
     //if(comment == null) sendHttpResponse(res, "No estas asignado al ticket", 403);
