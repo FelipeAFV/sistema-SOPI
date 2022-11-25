@@ -46,6 +46,8 @@ const getTicket = async (req, res) => {
 
         var ticket = await findTicketFromTicketId(ticketId);
         const {rows} = await getCommentFromTicketId(ticketId);
+        // const comments = await getCommentFromTicketId(ticketId);
+        // console.log(comments)
 
 
 
@@ -75,6 +77,7 @@ const getTicket = async (req, res) => {
                 ticket,
                 comments:rows
             }
+            // console.log(data)
             if (auth) {
                 sendHttpResponse(res, data, 200);
             } else {
@@ -82,12 +85,13 @@ const getTicket = async (req, res) => {
                 const managerIds = [];
                 if (test) {
                     test.forEach(e => {
+                        console.log(e)
                         managerIds.push(e.id)
                     })
                 }
 
                 if (ticket.userId == req.user.id || managerIds.find(i => i == ticket.managerId)) {
-                    sendHttpResponse(res, ticket, 200);
+                    sendHttpResponse(res, data, 200);
                 } else {
                     sendHttpResponse(res, 'usuario no tiene permisos o ticket asiganado con id especificado', 400)
                 }
@@ -96,6 +100,7 @@ const getTicket = async (req, res) => {
         }
 
     } catch (e) {
+        console.log(e)
         sendHttpResponse(res, 'Error', 500, 'Error al obtener tickets');
     }
 }

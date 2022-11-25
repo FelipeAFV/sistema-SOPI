@@ -157,6 +157,7 @@ const findTicketFromTicketId = async(ticketId) => {
         return ticket; 
 
     } catch (error) {
+        console.log(error)
         throw new Error("Error en ticket service",error.message);
     }
 }

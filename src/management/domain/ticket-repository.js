@@ -1,11 +1,11 @@
 const { Manager } = require("./models")
 const { User } = require("../../auth/domain/models");
 const {Ticket} = require('./models');
-const { Purchase } = require("../../purchases/domain/models");
+const { Purchase, PurchaseStatus } = require("../../purchases/domain/models");
 
 
 const addTicket = async ({managerId, userId, title, content, date, purchaseId}) => {
-    const newTicket = await Ticket.create({title:title, content:content,expirationDate:date,managerId:managerId, ticketStatusId:1,userId:userId, purchaseId:purchaseId});
+    const newTicket = await Ticket.create({title:title, content:content,expirationDate:date,managerId: managerId, ticketStatusId:1,userId:userId, purchaseId:purchaseId});
     return newTicket
 };
 
@@ -15,7 +15,7 @@ const getTicketsFromManagerId = async(id) => {
     return ticket;
 }
 const getTicketsFromUserId = async(id) => {
-    const ticket = await Ticket.findAll({ where: {userId:id}, include: [Purchase]});
+    const ticket = await Ticket.findAll({ where: {userId:id}, include: [{model: Purchase, include: [{model: PurchaseStatus, as: 'status'}]}]});
 
     return ticket;
 }
