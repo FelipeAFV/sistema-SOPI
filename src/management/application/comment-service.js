@@ -1,20 +1,26 @@
 
 const { addComment } = require("../domain/comment-repository");
+const { findManagersWithConditions, findManager } = require("../domain/manager-repository");
 const { getTicketFromId } = require("../domain/ticket-repository");
 
 
-const createComment = async (commentData, id) => {
+const createComment = async (commentData, idUser) => {
     try {
         //Retrieve ticket
         //Validate user
         //Create comment
         //Change ticket status? owner?
         const ticket = await getTicketFromId(commentData.ticketId);
-        if(!ticket) throw new Error('No existe ticket con id'+ commentData.ticketId);
-        const {userId} = ticket;
+        if(!ticket) throw new Error('No existe ticket con id: '+ commentData.ticketId);
+        const {userId, managerId, purchaseId} = ticket;
 
-        const validation = userId === id ? true : null;
-        const ownerValidation = ticket.managerId === id ? true : null;
+        //Validación del asignado
+        const validation = userId === idUser ? true : null;
+
+        //Validdación del manager
+        const existingManager = await findManager({managerId:idUser, purchaseId:purchaseId});
+        const {id} = existingManager;
+        const ownerValidation = managerId === id ? true : null;
         
         const comment = (validation || ownerValidation) ? await addComment(commentData): null;
         if(comment === null) throw new Error('No es válido');

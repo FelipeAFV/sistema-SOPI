@@ -1,7 +1,7 @@
 const { userRepository } = require('../../auth/domain/user-repository');
 const {pagination} = require('../../share/utils/api-feature');
 const {Op} = require("sequelize");
-const { findOneManager, findAllManagers, findManager, findOneManagerForPurchase, findManagerPurchase } = require('../domain/manager-repository');
+const { findOneManager, findAllManagers, findManager, findOneManagerForPurchase, findManagerPurchase, findManagersWithConditions, saveManager } = require('../domain/manager-repository');
 const {addTicket, getTicketFromManagerId, getTicketsFromManagerId, getTicketFromId, getAllTickets, updateFromIdTicket} = require('../domain/ticket-repository');
 const { findAllPermissionsFromUserAndProfile } = require('../../auth/domain/permission-repository');
 
@@ -9,16 +9,46 @@ const { findAllPermissionsFromUserAndProfile } = require('../../auth/domain/perm
 const createTicket = async (ticketData, idUser, idProfile) => {
     try {
 
-        //TODO: revisar permiso TICKET_CREAR
-        const permissions = await findAllPermissionsFromUserAndProfile(idUser,idProfile)
-        //console.log(permissions);
-        const auth = permissions.find(a => a.name == 'TICKET_CREAR')
-        if(auth) {
+        //Verificar usuario
+        const user = await userRepository.findUserById(ticketData.userId);
+        if(!user) throw new Error('usuario no existe');
 
-            const user = await userRepository.findUserById(ticketData.userId)
+        //Verificar datos
+        if(!ticketData.title || !ticketData.content || !ticketData.date || !ticketData.purchaseId) throw new Error('ticket con campos faltantes');
+
+        //Verificar permisos
+        const permissions = await findAllPermissionsFromUserAndProfile(idUser,idProfile);
+        const auth = permissions.find(a => a.name == 'TICKET_CREAR');
+
+        //Verificar si el usuario es gestor de la compra
+        const existingManager = await findManager({managerId:idUser, purchaseId:ticketData.purchaseId});
+        if(auth && !existingManager) {
+            //Se crea manager en caso de no ser gestor y tener el permiso
+            const newManager = await saveManager({userId: idUser, purchaseId: ticketData.purchaseId});
+            console.log(newManager);
+            const {id} = newManager;
+            ticketData.managerId = id;
+            const ticket = await addTicket(ticketData);
+            return ticket
+            
+        } else if(auth && existingManager) {
+            ticketData.managerId = existingManager.id;
+            const ticket = await addTicket(ticketData);
+            return ticket;
+        } else {
+            throw new Error('No tienes los permisos')
+        }
+
+
+
+
+        /* if(auth) {
+            const user = await userRepository.findUserById(ticketData.userId);
+            
+            
             
             if(!user) {
-                throw new Error('usuario no existe')
+                throw new Error('usuario no existe');
             } else {
                 if(!ticketData.title || !ticketData.content || !ticketData.date || !ticketData.purchaseId){
                     throw new Error('ticket con campos faltantes')
@@ -47,7 +77,7 @@ const createTicket = async (ticketData, idUser, idProfile) => {
                 }
             }
         }
-        }
+        } */
         
     } catch (error) {
         throw new Error(error.message)
