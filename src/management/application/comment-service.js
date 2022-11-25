@@ -14,8 +14,9 @@ const createComment = async (commentData, id) => {
         const {userId} = ticket;
 
         const validation = userId === id ? true : null;
+        const ownerValidation = ticket.managerId === id ? true : null;
         
-        const comment = validation ? await addComment(commentData): null;
+        const comment = (validation || ownerValidation) ? await addComment(commentData): null;
         if(comment === null) throw new Error('No es válido');
 
         return comment;
