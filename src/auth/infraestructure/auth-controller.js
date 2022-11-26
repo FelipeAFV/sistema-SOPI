@@ -4,7 +4,7 @@ const bcrypt = require('bcrypt');
 const { sendHttpResponse } = require('../../share/utils/response-parser');
 const jwt = require("jsonwebtoken");
 const {sequelize} = require('../../database/db-init')
-const {login} = require('../application/auth-service')
+const {login, updateUserData} = require('../application/auth-service')
 const {add} = require('../application/auth-service')
 
 
@@ -77,6 +77,24 @@ class AuthController {
     userData = async (req, res) => {
         sendHttpResponse(res,'Authenticated', 200)
         return
+    }
+
+    userUpdateData = async (req,res) => {
+        const {userId} = req.params;
+        const data = req.body;
+        try {
+            if(userId){
+                const userUpdated = await updateUserData(userId, data)
+                sendHttpResponse(res,userUpdated,200)
+            }else{
+                const userUpdated = await updateUserData(req.user.id, data)
+                console.log(userUpdated);
+                sendHttpResponse(res,userUpdated,200)
+            }    
+        } catch (error) {
+            sendHttpResponse(res,error.message, 400)
+        }
+        
     }
 
 
