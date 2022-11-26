@@ -41,7 +41,7 @@ const updateFromIdTicket = async (id, updateValues) => {
 }
 
 const getAllTickets = async(condition, page ,perPage) => {
-    const tickets = await Ticket.findAndCountAll({condition, offset: (page-1)*page, limit:perPage, distinct:true});
+    const tickets = await Ticket.findAndCountAll({condition, offset: (page-1)*perPage, limit:perPage, distinct:true});
 
     return tickets;
 }

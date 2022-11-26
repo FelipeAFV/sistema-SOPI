@@ -87,14 +87,16 @@ const createTicket = async (ticketData, idUser, idProfile) => {
 const getTicketsFromPurchaseId = async(query, userId, profileId) => {
     
     const where = {};
+    console.log('Query perpage', query.per_page)
     const {compraId} = query;
     const page = query.page ? parseInt(query.page) : 1;
-    const perPage = query.per_page ? parseInt(query.per_page) : 1;
+    const perPage = query.per_page ? parseInt(query.per_page) : 20;
 
     //Filtros
     if(compraId) where.purchaseId = {[Op.eq]:`%${compraId}`}
     //if... or switch
     const {count, rows} = await getAllTickets(where, page, perPage); 
+    console.log(rows)
     if(count <= 0) {
         return [];
     }
@@ -110,7 +112,7 @@ const getTicketsFromPurchaseId = async(query, userId, profileId) => {
             managerIds.push(e.id)
         })
     }
-    console.log(count);
+
     
     if(auth){
         const ticketsFiltered = pagination({
@@ -119,10 +121,11 @@ const getTicketsFromPurchaseId = async(query, userId, profileId) => {
             page,
             perPage
         })
-    
+
         return ticketsFiltered;
     }else{
         //console.log('adsdasds');
+        console.log(rows)
         const newRows = rows.filter(a => {
             if(a.userId == userId || managerIds.find(i => i == a.managerId)){
                 return true;

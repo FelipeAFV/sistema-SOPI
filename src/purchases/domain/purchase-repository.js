@@ -1,4 +1,4 @@
-const { Manager } = require("../../management/domain/models");
+const { Manager, Ticket } = require("../../management/domain/models");
 const { SopiDetail, Supplies } = require("../../solicitude/domain/models");
 const { Purchase, PurchaseDetail, PurchaseStatus, Supplier, PurchaseType } = require("./models")
 
@@ -47,6 +47,11 @@ const getPurchaseWithManager = async (managerId, purchaseId) => {
     return await Purchase.findOne({ where: {id: purchaseId} ,include: [{model: Manager, where: {userId: managerId}}]});
 }
 
+const getPurchaseWithUserTickets = async (userId, purchaseId) => {
+
+    return await Purchase.findOne({where: {id:purchaseId},include:[{model: Ticket, where: {userId: userId}}]});
+}
+
 const getPurchaseFromManagerId = async(purchaseId, managerId) => {
     return await Purchase.findOne({where: {id:purchaseId},include:[{model: Manager, where: {userId: managerId}}]});
 }
@@ -59,3 +64,4 @@ exports.getAllPurchasesWithManager = getAllPurchasesWithManager;
 exports.getPurchase = getPurchase;
 exports.getPurchaseWithManager = getPurchaseWithManager;
 exports.getPurchaseFromManagerId = getPurchaseFromManagerId;
+exports.getPurchaseWithUserTickets = getPurchaseWithUserTickets;

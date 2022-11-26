@@ -4,7 +4,7 @@ const { findDocument, findDocFromManagerPurchase, findDocFromManagerPurchaseAndD
 const fs = require('fs');
 const { PermissionError } = require('../../share/models/errors');
 const { findPurchasesFilteredByPermissions } = require('../../purchases/application/purchase-service');
-const { getPurchaseById, getPurchaseWithManager } = require('../../purchases/domain/purchase-repository');
+const { getPurchaseById, getPurchaseWithManager, getPurchaseWithUserTickets } = require('../../purchases/domain/purchase-repository');
 
 const { findAllPermissionsFromUserAndProfile } = require('../../auth/domain/permission-repository');
 const { findManagerFromPurchaseDocument, findManager } = require('../domain/manager-repository');
@@ -97,27 +97,30 @@ const getDocuments = async (req, res) => {
     //TODO: chequear por usuario que tiene ticket asociado a la compra
 
     const purchaseManaged = await getPurchaseWithManager(req.user.id, compraId);
+    const purchaseTicket = await getPurchaseWithUserTickets(req.user.id, compraId);
 
-    if (!permissions.find(p => p.name == 'DOC_VER') && !purchaseManaged) {
+
+
+    if (permissions.find(p => p.name == 'DOC_VER') || purchaseManaged || purchaseTicket) {    
+        try {
+            // const docs = await docService.findDocsFromCompraWithPermissions(compraId, req.user.id, req.user.profileId);
+            const docs = await findDocsWithCondition({purchaseId: compraId});
+            sendHttpResponse(res, docs, 200)
+            
+        } catch (e) {
+            if (e instanceof PermissionError) {
+                
+                sendHttpResponse(res, 'Error', 403, e.message)
+                return;
+            }
+            sendHttpResponse(res, 'Error', 500);
+            console.log(e)
+        }
+        
+    } else {
         sendHttpResponse(res, 'Error', 403, 'No tienes permisos para buscar documento')
         return;
     }
-
-    try {
-        // const docs = await docService.findDocsFromCompraWithPermissions(compraId, req.user.id, req.user.profileId);
-        const docs = await findDocsWithCondition({purchaseId: compraId});
-        sendHttpResponse(res, docs, 200)
-
-    } catch (e) {
-        if (e instanceof PermissionError) {
-
-            sendHttpResponse(res, 'Error', 403, e.message)
-            return;
-        }
-        sendHttpResponse(res, 'Error', 500);
-        console.log(e)
-    }
-
 }
 
 
