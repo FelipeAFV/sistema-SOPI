@@ -1,6 +1,7 @@
-const { User, Profile } = require("./models")
+const { User, Profile, UserAccess } = require("./models")
 const bcrypt = require('bcrypt');
-const {sendHttpResponse} = require('../../share/utils/response-parser')
+const {sendHttpResponse} = require('../../share/utils/response-parser');
+const { findAllAccessFromUserId } = require("./permission-repository");
 
 class UserRepositorySequelMySQL{
 
@@ -23,6 +24,8 @@ class UserRepositorySequelMySQL{
             }, 
             include: Profile
         },)
+        const accesses = await findAllAccessFromUserId(id);
+        user.setDataValue('accesos', accesses);
         
         /**Retorna nulo si no existe */
         return user;
@@ -73,7 +76,9 @@ class UserRepositorySequelMySQL{
     }
 
     findAll = async () => {
-        return await User.findAll();
+        const users = await User.findAll();
+        
+        return users;
     }
 
     dataUpdateUser = async (id, data) => {

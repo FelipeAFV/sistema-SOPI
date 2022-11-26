@@ -116,6 +116,23 @@ class AuthController {
         }
     }
 
+    getAllUsers = async (req,res) => {
+        try {
+            const {userId} = req.params;
+            if(userId){
+                const users = await userRepository.findUserById(userId)
+                sendHttpResponse(res,users,200)    
+            }else{
+                console.log('hola');
+                const users = await userRepository.findAll()
+                sendHttpResponse(res,users,200)
+            }
+            
+        } catch (error) {
+            
+        }
+    }
+
 
 
 
