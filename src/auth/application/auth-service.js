@@ -98,6 +98,20 @@ const add = async (userData) => {
     }
 }
 
+const updateUserData = async (userId,data) => {
 
+    try {
+        if(data.username){
+            const user = await userRepository.findUserByUsername(data.username)
+            if(user) throw new Error('nombre de usuario en uso')
+        }
+        const updatedUser = await userRepository.dataUpdateUser(userId, data)
+        return updatedUser
+    } catch (error) {
+        throw new Error(error.message)
+    }
+}
+
+exports.updateUserData = updateUserData;
 exports.login = login;
 exports.add = add;

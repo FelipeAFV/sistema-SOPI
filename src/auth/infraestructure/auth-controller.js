@@ -1,11 +1,12 @@
 const {userRepository} = require('../domain/user-repository')
-const {Profile} = require('../domain/models')
+const {Profile, User} = require('../domain/models')
 const bcrypt = require('bcrypt');
 const { sendHttpResponse } = require('../../share/utils/response-parser');
 const jwt = require("jsonwebtoken");
 const {sequelize} = require('../../database/db-init')
-const {login} = require('../application/auth-service')
-const {add} = require('../application/auth-service')
+const {login, updateUserData} = require('../application/auth-service')
+const {add} = require('../application/auth-service');
+const { findAllAccessFromUserId } = require('../domain/permission-repository');
 
 
 
@@ -77,6 +78,42 @@ class AuthController {
     userData = async (req, res) => {
         sendHttpResponse(res,'Authenticated', 200)
         return
+    }
+
+    userUpdateData = async (req,res) => {
+        const {userId} = req.params;
+        const data = req.body;
+        try {
+            if(userId){
+                const userUpdated = await updateUserData(userId, data)
+                sendHttpResponse(res,userUpdated,200)
+            }else{
+                const userUpdated = await updateUserData(req.user.id, data)
+                console.log(userUpdated);
+                sendHttpResponse(res,userUpdated,200)
+            }    
+        } catch (error) {
+            sendHttpResponse(res,error.message, 400)
+        }
+        
+    }
+
+
+    getUserAccesses = async (req,res) => {
+        const {userId} = req.params;
+        if(!userId) {
+            sendHttpResponse(res,'usuario no entregado',400)
+        }else {
+            const usuario = await userRepository.findUserById(userId)
+            if(!usuario) {
+                sendHttpResponse(res,'usuario no existe', 400)
+            }else{
+                const accessos = await findAllAccessFromUserId(userId);
+                sendHttpResponse(res,accessos,200)
+            }
+            
+
+        }
     }
 
 
