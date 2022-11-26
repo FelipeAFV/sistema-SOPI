@@ -26,7 +26,7 @@ const ticketCreation = async (req, res) => {
 const getTickets = async (req, res) => {
     try {
         const tickets = await getTicketsFromPurchaseId(req.query, req.user.id, req.user.profileId);
-
+        console.log(tickets, 'Tickets ')
         // if(tickets.length !== 0) {
         sendHttpResponse(res, tickets, 200);
         // } else {
