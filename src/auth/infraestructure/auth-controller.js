@@ -1,11 +1,12 @@
 const {userRepository} = require('../domain/user-repository')
-const {Profile} = require('../domain/models')
+const {Profile, User} = require('../domain/models')
 const bcrypt = require('bcrypt');
 const { sendHttpResponse } = require('../../share/utils/response-parser');
 const jwt = require("jsonwebtoken");
 const {sequelize} = require('../../database/db-init')
 const {login, updateUserData} = require('../application/auth-service')
-const {add} = require('../application/auth-service')
+const {add} = require('../application/auth-service');
+const { findAllAccessFromUserId } = require('../domain/permission-repository');
 
 
 
@@ -95,6 +96,24 @@ class AuthController {
             sendHttpResponse(res,error.message, 400)
         }
         
+    }
+
+
+    getUserAccesses = async (req,res) => {
+        const {userId} = req.params;
+        if(!userId) {
+            sendHttpResponse(res,'usuario no entregado',400)
+        }else {
+            const usuario = await userRepository.findUserById(userId)
+            if(!usuario) {
+                sendHttpResponse(res,'usuario no existe', 400)
+            }else{
+                const accessos = await findAllAccessFromUserId(userId);
+                sendHttpResponse(res,accessos,200)
+            }
+            
+
+        }
     }
 
 

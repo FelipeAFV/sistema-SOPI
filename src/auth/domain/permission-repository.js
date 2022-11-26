@@ -1,4 +1,4 @@
-const { Profile } = require("./models")
+const { Profile, UserAccess } = require("./models")
 const {sequelize} = require('../../database/db-init')
 
 const findAllPermisionFromProfileId = async (profileId) => {
@@ -16,5 +16,12 @@ const findAllPermissionsFromUserAndProfile = async (userId, profileId) => {
 
 }
 
+const findAllAccessFromUserId = async (userId) => {
+    const accesses = await UserAccess.findAll({where: { userId: userId}});
+    return accesses;
+
+} 
+
+exports.findAllAccessFromUserId = findAllAccessFromUserId
 exports.findAllPermisionFromProfileId = findAllPermisionFromProfileId; 
 exports.findAllPermissionsFromUserAndProfile = findAllPermissionsFromUserAndProfile;

@@ -18,6 +18,7 @@ router.get('/usuarios/permisos', getUserPermissions);
 router.get('/usuarios/:userId/permisos', getUserPermissions);
 router.post('/usuarios/editar',AuthController.userUpdateData);
 router.post('/usuarios/:userId/editar' ,hasPermission(['USUARIO_EDITAR']),AuthController.userUpdateData);
+router.post('/usuarios/:userId/accesos', AuthController.getUserAccesses);
 
 
 
