@@ -13,9 +13,15 @@ router.post('/verify', AuthController.userData);
 router.get('/logout', AuthController.logOutUser);
 router.get('/perfiles', getAllProfile);
 router.post('/usuarios', hasPermission(['USUARIO_INGRESAR']),AuthController.addUser);
-router.get('/usuarios', AuthController.getManagerUsers);
+router.get('/usuarios', AuthController.getAllUsers);
+router.get('/usuarios/:userId', AuthController.getAllUsers);
 router.get('/usuarios/permisos', getUserPermissions);
 router.get('/usuarios/:userId/permisos', getUserPermissions);
+router.put('/usuarios/',AuthController.userUpdateData);
+router.put('/usuarios/:userId/' ,hasPermission(['USUARIO_EDITAR']),AuthController.userUpdateData);
+router.post('/usuarios/:userId/accesos', AuthController.getUserAccesses);
+
+
 
 
 

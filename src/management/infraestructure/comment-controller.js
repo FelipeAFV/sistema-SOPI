@@ -18,6 +18,7 @@ const addComment = async (req, res) => {
     sendHttpResponse(res, comment, 200);
 
   } catch (error) {
+    console.log(error)
     sendHttpResponse(res, error.message, 500);
   }
 };

@@ -165,8 +165,13 @@ const getTicketsFromPurchaseId = async (query, userId, profileId) => {
 
         return ticketsFiltered;
     }else{
+<<<<<<< HEAD
 
+=======
+        //console.log('adsdasds');
+>>>>>>> abb8dbe0bb0eeeb177aa99f7062d3029cd3e999b
         const newRows = rows.filter(a => {
+            // console.log('Ticket filtrado',a.title)
             if(a.userId == userId || managerIds.find(i => i == a.managerId)){
                 return true;
             }

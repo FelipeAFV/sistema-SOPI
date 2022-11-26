@@ -19,8 +19,12 @@ const createComment = async (commentData, idUser) => {
 
         //Validdación del manager
         const existingManager = await findManager({managerId:idUser, purchaseId:purchaseId});
-        const {id} = existingManager;
-        const ownerValidation = managerId === id ? true : null;
+        let ownerValidation = true;
+        if (existingManager) {
+
+            const {id} = existingManager;
+            ownerValidation = managerId === id ? true : null;
+        }
         
         const comment = (validation || ownerValidation) ? await addComment(commentData): null;
         if(comment === null) throw new Error('No es válido');
