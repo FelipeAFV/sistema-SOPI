@@ -28,12 +28,12 @@ const findOneManagerForPurchase = async ({creatorId, purchaseId}) => {
 
 const findManagerPurchase = async (userId) => {
     const result = await Manager.findAll({where:{userId},include: [{model: Purchase, include: [{ model: PurchaseStatus, as: 'status'}]}]})
-    //console.log(result);
-    /*if(result.length === 0){
-        
-        throw new Error('usuario no tiene asignado ningun proceso de compra')
-    }*/
     
+    return result;
+}
+
+const findOneManagerByUserId = async ({userId}) => {
+    const result = await Manager.findOne({where:{userId:userId}});
     return result;
 }
 
@@ -73,3 +73,4 @@ exports.findManager = findManager;
 exports.saveManager = saveManager;
 exports.findOneManager = findOneManager;
 exports.findManagersWithConditions = findManagersWithConditions;
+exports.findOneManagerByUserId = findOneManagerByUserId;

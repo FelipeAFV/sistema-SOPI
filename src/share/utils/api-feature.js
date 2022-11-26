@@ -5,7 +5,7 @@ module.exports.pagination = (data) => {
     const previus = currentPage == 1 ? null: currentPage-1;
     const next = currentPage == totalPages ? null : currentPage +1;
 
-    console.log('Total pages', data.count/data.perPage)
+    
     const allData = {
         data: data.data,
         pagination: {
