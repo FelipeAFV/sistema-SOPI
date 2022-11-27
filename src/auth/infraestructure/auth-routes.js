@@ -2,7 +2,7 @@ const {Router} = require('express')
 const {AuthController} = require('./auth-controller');
 const { hasPermission } = require('./check-auth-middleware');
 const { getUserPermissions } = require('./permissions-controller');
-const {getAllProfile} = require('./profile-controller');
+const {getAllProfile, getProfileAccesses} = require('./profile-controller');
 const { addUser } = require('./user-controller');
 
 const router = Router();
@@ -13,6 +13,7 @@ router.post('/verify', AuthController.userData);
 router.get('/logout', AuthController.logOutUser);
 router.get('/perfiles', getAllProfile);
 router.get('/perfiles/:profileId', getAllProfile);
+router.get('/permisos', AuthController.allPermissions);
 router.post('/usuarios', hasPermission(['USUARIO_INGRESAR']),AuthController.addUser);
 router.get('/usuarios', hasPermission(['USUARIO_VER']),AuthController.getAllUsers);
 router.get('/usuarios/:userId', AuthController.getAllUsers);

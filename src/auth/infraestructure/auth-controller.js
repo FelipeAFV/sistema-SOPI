@@ -6,7 +6,7 @@ const jwt = require("jsonwebtoken");
 const {sequelize} = require('../../database/db-init')
 const {login, updateUserData} = require('../application/auth-service')
 const {add} = require('../application/auth-service');
-const { findAllAccessFromUserId, createUserAccess, findAllPermissionsFromUserAndProfile } = require('../domain/permission-repository');
+const { findAllAccessFromUserId, createUserAccess, findAllPermissionsFromUserAndProfile, getAllPermissions } = require('../domain/permission-repository');
 const { modifyUserPermissions } = require('../application/permissions-service');
 
 
@@ -157,6 +157,15 @@ class AuthController {
             sendHttpResponse(res,updatedPermissions,200)
         }
     }
+
+    allPermissions = async (req,res) => {
+        try {
+            const permissions = await getAllPermissions();
+            sendHttpResponse(res,permissions,200)
+        } catch (error) {
+            sendHttpResponse(res,'error al obtener permisos',400)
+        }
+    } 
 
 
 

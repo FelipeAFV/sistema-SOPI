@@ -1,4 +1,4 @@
-const { Profile, UserAccess } = require("./models")
+const { Profile, UserAccess, Permission } = require("./models")
 const {sequelize} = require('../../database/db-init')
 
 const findAllPermisionFromProfileId = async (profileId) => {
@@ -23,15 +23,21 @@ const findAllAccessFromUserId = async (userId) => {
 }
 
 const createUserAccess = async (userId,permissionId) => {
-    const acceso = await UserAccess.create({userId:userId, permissionId:permissionId})
-    return acceso;
+    const accesses = await UserAccess.create({userId:userId, permissionId:permissionId})
+    return accesses;
 }
 
 const removeUserAccess = async (userId,permissionId) => {
-    const acceso = await UserAccess.destroy({where:{userId:userId, permissionId:permissionId}})
-    return acceso;
+    const accesses = await UserAccess.destroy({where:{userId:userId, permissionId:permissionId}})
+    return accesses;
 }
 
+const getAllPermissions = async () => {
+    const permssions = await Permission.findAll();
+    return permssions
+}
+
+exports.getAllPermissions = getAllPermissions;
 exports.removeUserAccess = removeUserAccess;
 exports.createUserAccess = createUserAccess;
 exports.findAllAccessFromUserId = findAllAccessFromUserId
