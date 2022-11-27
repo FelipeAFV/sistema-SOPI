@@ -20,7 +20,8 @@ router.get('/usuarios/permisos', getUserPermissions);
 router.get('/usuarios/:userId/permisos', getUserPermissions);
 router.put('/usuarios/',AuthController.userUpdateData);
 router.put('/usuarios/:userId/' ,hasPermission(['USUARIO_EDITAR']),AuthController.userUpdateData);
-router.post('/usuarios/:userId/accesos', AuthController.getUserAccesses);
+router.get('/usuarios/:userId/accesos', AuthController.getUserAccesses);
+router.put('/usuarios/:userId/accesos', AuthController.modifyAccesses);
 
 
 

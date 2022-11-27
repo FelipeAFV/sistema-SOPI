@@ -6,7 +6,8 @@ const jwt = require("jsonwebtoken");
 const {sequelize} = require('../../database/db-init')
 const {login, updateUserData} = require('../application/auth-service')
 const {add} = require('../application/auth-service');
-const { findAllAccessFromUserId } = require('../domain/permission-repository');
+const { findAllAccessFromUserId, createUserAccess } = require('../domain/permission-repository');
+const { modifyUserPermissions } = require('../application/permissions-service');
 
 
 
@@ -131,6 +132,24 @@ class AuthController {
             
         } catch (error) {
             
+        }
+    }
+
+    giveAccess = async(req,res) => {
+        const {userId, permissionId} = req.body
+        const resp = await createUserAccess(userId,permissionId)
+        sendHttpResponse(res,resp,200)
+    }
+
+    modifyAccesses = async(req,res) => {
+        const {userId} = req.params
+        const {newAccesses} = req.body;
+        if(!userId || !newAccesses){
+            sendHttpResponse(res,'body incompleto', 400)
+        }else {
+            const currentPermissions = await findAllAccessFromUserId(userId)
+            const updatedPermissions = await modifyUserPermissions(userId, currentPermissions,newAccesses);
+            sendHttpResponse(res,updatedPermissions,200)
         }
     }
 

@@ -20,8 +20,20 @@ const findAllAccessFromUserId = async (userId) => {
     const accesses = await UserAccess.findAll({where: { userId: userId}});
     return accesses;
 
-} 
+}
 
+const createUserAccess = async (userId,permissionId) => {
+    const acceso = await UserAccess.create({userId:userId, permissionId:permissionId})
+    return acceso;
+}
+
+const removeUserAccess = async (userId,permissionId) => {
+    const acceso = await UserAccess.destroy({where:{userId:userId, permissionId:permissionId}})
+    return acceso;
+}
+
+exports.removeUserAccess = removeUserAccess;
+exports.createUserAccess = createUserAccess;
 exports.findAllAccessFromUserId = findAllAccessFromUserId
 exports.findAllPermisionFromProfileId = findAllPermisionFromProfileId; 
 exports.findAllPermissionsFromUserAndProfile = findAllPermissionsFromUserAndProfile;
