@@ -12,6 +12,7 @@ router.post('/ingresar', AuthController.loginUser);
 router.post('/verify', AuthController.userData);
 router.get('/logout', AuthController.logOutUser);
 router.get('/perfiles', getAllProfile);
+router.get('/perfiles/:profileId', getAllProfile);
 router.post('/usuarios', hasPermission(['USUARIO_INGRESAR']),AuthController.addUser);
 router.get('/usuarios', AuthController.getAllUsers);
 router.get('/usuarios/:userId', AuthController.getAllUsers);

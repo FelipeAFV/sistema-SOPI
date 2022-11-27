@@ -85,6 +85,7 @@ class AuthController {
         const data = req.body;
         try {
             if(userId){
+                console.log('hola');
                 const userUpdated = await updateUserData(userId, data)
                 sendHttpResponse(res,userUpdated,200)
             }else{
