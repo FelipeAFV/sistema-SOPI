@@ -3,6 +3,7 @@ const { User } = require("../../auth/domain/models");
 const { Ticket } = require('./models');
 const { Purchase, PurchaseStatus } = require("../../purchases/domain/models");
 const { sequelize } = require("../../database/db-init");
+const { Op } = require("sequelize");
 
 
 const addTicket = async ({ managerId, userId, title, content, date, purchaseId }) => {
@@ -41,9 +42,8 @@ const updateFromIdTicket = async (id, updateValues) => {
 
 }
 
-const getAllTickets = async(condition, page ,perPage) => {
-    const tickets = await Ticket.findAndCountAll({condition, offset: (page-1)*page, limit:perPage, order: [['fecha_creacion','ASC']]
-});
+const getAllTickets = async(conditions, page ,perPage) => {
+    const tickets = await Ticket.findAndCountAll({where:conditions , offset: (page-1)*perPage, limit:perPage, distinct: true,order: [['fecha_creacion','ASC'] ]});
 
     return tickets;
 }

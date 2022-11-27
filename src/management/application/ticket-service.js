@@ -20,6 +20,7 @@ const {
 const {
   findAllPermissionsFromUserAndProfile,
 } = require("../../auth/domain/permission-repository");
+const { Ticket } = require("../domain/models");
 
 const createTicket = async (ticketData, idUser, idProfile) => {
   try {
@@ -66,51 +67,114 @@ const createTicket = async (ticketData, idUser, idProfile) => {
     } else {
       throw new Error("No tienes los permisos");
     }
-
   } catch (error) {
     throw new Error(error.message);
   }
 };
 
 const getTicketsFromPurchaseId = async (query, userId, profileId) => {
-  const where = {};
+  let where = {};
   const { compraId } = query;
-  const page = query.page ? parseInt(query.page) : 1;
-  const perPage = query.per_page ? parseInt(query.per_page) : 20;
+  const page = query.page ? Number.parseInt(query.page) : 1;
+  const perPage = query.per_page ? Number.parseInt(query.per_page) : 20;
 
   //Filtros
-  if (compraId) where.purchaseId = { [Op.eq]: `%${compraId}` };
-  //if... or switch
-  const { count, rows } = await getAllTickets(where, page, perPage);
-  if (count <= 0) {
-    return [];
-  }
+  if (compraId) where.purchaseId = { [Op.eq]: `${compraId}` };
+
   const permissions = await findAllPermissionsFromUserAndProfile(
     userId,
     profileId
   );
-  const ticketsFiltered = pagination({
-    data: rows,
-    count,
-    page,
-    perPage,
-  });
+
   //Ver con permiso
   const auth = permissions.find((a) => a.name == "TICKET_VER");
 
   if (auth) {
+    console.log("PERMISO")
+    const { count, rows } = await getAllTickets(where, page, perPage);
+    const ticketsFiltered = pagination({
+      data: rows,
+      count,
+      page,
+      perPage,
+    });
     return ticketsFiltered;
+  } else {
+    //Verificación de manager
+    console.log(userId)
+    console.log("TICKET MANAGER")
+    const existingManager = await findOneManagerByUserId({ userId: userId });
+    if (existingManager != null) {
+      const { id } = existingManager;
+      if(compraId) {
+        where = {
+            purchaseId: { [Op.eq]: `${compraId}` },
+            [Op.or]: [{ userId: `${userId}` }, { managerId: `${id}` }],
+          };
+          const { count, rows } = await getAllTickets(where, page, perPage);
+          const ticketsFiltered = pagination({
+            data: rows,
+            count,
+            page,
+            perPage,
+          });
+          return ticketsFiltered;
+      } else {
+        where = {
+            [Op.or]: [{ userId: `${userId}` }, { managerId: `${id}` }],
+          };
+          const { count, rows } = await getAllTickets(where, page, perPage);
+          const ticketsFiltered = pagination({
+            data: rows,
+            count,
+            page,
+            perPage,
+          });
+          return ticketsFiltered;
+      }
+      
+    } else {
+      console.log("TICKET ASIGNADO");
+      if (compraId) {
+        where = {
+          purchaseId: { [Op.eq]: `${compraId}` },
+          [Op.or]: [{ userId: `${userId}` }],
+        };
+        const { count, rows } = await getAllTickets(where, page, perPage);
+        const ticketsFiltered = pagination({
+          data: rows,
+          count,
+          page,
+          perPage,
+        });
+        return ticketsFiltered;
+      } else {
+        where = {
+          userId: { [Op.eq]: `${userId}` },
+        };
+        const { count, rows } = await getAllTickets(where, page, perPage);
+        const ticketsFiltered = pagination({
+          data: rows,
+          count,
+          page,
+          perPage,
+        });
+        return ticketsFiltered;
+      }
+    }
   }
-
   //Ver si es asignado y es owner
-  const existingManager = await findOneManagerByUserId({ userId: userId });
-  let assignedValidation = rows.filter(
-    (assignedValidation) => assignedValidation.userId == userId
-  );
+  //const existingManager = await findOneManagerByUserId({ userId: userId });
+  /* let assignedValidation = rows.filter(
+    assignedValidation => assignedValidation.userId == userId
+  ); */
+  /* let assignedValidation = rows.map((a)=> a.userId == userId);
+  console.log(assignedValidation)
 
   if (existingManager != null) {
+
     const { id } = existingManager;
-    let ownerValidation = rows.filter((owner) => owner.managerId == id);
+    var ownerValidation = rows.filter((owner) => owner.managerId == id);
 
     const val = ownerValidation && assignedValidation ? true : null;
 
@@ -140,7 +204,7 @@ const getTicketsFromPurchaseId = async (query, userId, profileId) => {
       perPage,
     });
     return ticketsFilteredByassigned;
-  }
+  } */
 
   //Ver asignado
 
