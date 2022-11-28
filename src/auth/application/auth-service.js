@@ -103,7 +103,6 @@ const updateUserData = async (userId,data) => {
     try {
         if(data.username){
             const user = await userRepository.findUserByUsername(data.username)
-            console.log(user);
             if(user){
                 if(user.id != userId) throw new Error('nombre de usuario en uso')
             } 
