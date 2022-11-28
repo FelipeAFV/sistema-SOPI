@@ -36,13 +36,24 @@ const updatePurchaseById = async (id, purchase) => {
     return await purchaseToUpdate.update(purchase);
 }
 
-const getAllPurchases = async () => {
-    return await Purchase.findAll({ include: [{model: PurchaseStatus, as: 'status'}, {model: Supplier}, {model: PurchaseType}]});
+const getAllPurchases = async (page, perPage) => {
+    return await Purchase.findAll({ include: [{model: PurchaseStatus, as: 'status'}, {model: Supplier}, {model: PurchaseType}], offset:(page-1)*perPage, limit: perPage, order: [['createdAt','ASC'] ]});
 }
+
 
 const getAllPurchasesWithManager = async (managerId) => {
     return await Purchase.findAll({ include: [{model: Manager, where: {userId: managerId}}]});
-}
+};
+
+const getAllPurchasesByConditions = async (conditions, page, perPage) => {
+    return await Purchase.findAll({ include: [{model: Manager, where: conditions}, {model:PurchaseStatus, as: 'status'}, {model: PurchaseType}, {model:Supplier}], offset: (page-1)*perPage, limit:perPage, distinct: true,order: [['createdAt','ASC'] ]});
+};
+
+const getAllPurchasesAssignedByConditions = async (conditions, page, perPage) => {
+    return await Purchase.findAll({include: [{model: PurchaseStatus, as: 'status'}, {model: Supplier}, {model: PurchaseType}],where:conditions, offset: (page-1)*perPage, limit:perPage, distinct: true,order: [['createdAt','ASC'] ]});
+};
+
+
 const getPurchaseWithManager = async (managerId, purchaseId) => {
     return await Purchase.findOne({ where: {id: purchaseId} ,include: [{model: Manager, where: {userId: managerId}}]});
 }
@@ -65,3 +76,5 @@ exports.getPurchase = getPurchase;
 exports.getPurchaseWithManager = getPurchaseWithManager;
 exports.getPurchaseFromManagerId = getPurchaseFromManagerId;
 exports.getPurchaseWithUserTickets = getPurchaseWithUserTickets;
+exports.getAllPurchasesByConditions = getAllPurchasesByConditions;
+exports.getAllPurchasesAssignedByConditions = getAllPurchasesAssignedByConditions;

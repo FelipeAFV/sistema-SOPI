@@ -32,8 +32,8 @@ const createPurchase = async (req, res) => {
 const getAllPurchases = async (req, res) => {
 
     try {
-        const purchasesAllowed = await findPurchasesFilteredByPermissions(req.user.profileId, req.user.id);
-        console.log(purchasesAllowed)
+        const purchasesAllowed = await findPurchasesFilteredByPermissions(req.query,req.user.profileId, req.user.id);
+        //console.log(purchasesAllowed)
         sendHttpResponse(res, purchasesAllowed, 200);
         return;
 
