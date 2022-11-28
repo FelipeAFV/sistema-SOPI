@@ -86,13 +86,18 @@ class AuthController {
         const data = req.body;
         try {
             if(userId){
-                console.log('hola');
-                const userUpdated = await updateUserData(userId, data)
-                sendHttpResponse(res,userUpdated,200)
+                const permissions = await findAllPermissionsFromUserAndProfile(req.user.id,req.user.profileId)
+                const auth = permissions.find((a) => a.name == "USUARIO_EDITAR");
+                if(auth || (req.user.id == userId)){
+                    const userUpdated = await updateUserData(userId, data)
+                    sendHttpResponse(res,userUpdated,200)
+                }else{
+                    sendHttpResponse(res,'no tienen los permisos necesarios',403)
+                }
+                
             }else{
-                const userUpdated = await updateUserData(req.user.id, data)
-                console.log(userUpdated);
-                sendHttpResponse(res,userUpdated,200)
+                
+                sendHttpResponse(res,'userId no entregado',400)
             }    
         } catch (error) {
             sendHttpResponse(res,error.message, 400)
