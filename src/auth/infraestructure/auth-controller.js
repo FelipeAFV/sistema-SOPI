@@ -6,7 +6,7 @@ const jwt = require("jsonwebtoken");
 const {sequelize} = require('../../database/db-init')
 const {login, updateUserData} = require('../application/auth-service')
 const {add} = require('../application/auth-service');
-const { findAllAccessFromUserId, createUserAccess } = require('../domain/permission-repository');
+const { findAllAccessFromUserId, createUserAccess, findAllPermissionsFromUserAndProfile, getAllPermissions } = require('../domain/permission-repository');
 const { modifyUserPermissions } = require('../application/permissions-service');
 
 
@@ -120,14 +120,19 @@ class AuthController {
 
     getAllUsers = async (req,res) => {
         try {
+
+            const permissions = await findAllPermissionsFromUserAndProfile(req.user.id,req.user.profileId)
+            const auth = permissions.find((a) => a.name == "USUARIO_VER");
             const {userId} = req.params;
-            if(userId){
+            if(userId && (auth || userId == req.user.id)){
                 const users = await userRepository.findUserById(userId)
                 sendHttpResponse(res,users,200)    
-            }else{
+            }else if (auth){
                 console.log('hola');
                 const users = await userRepository.findAll()
                 sendHttpResponse(res,users,200)
+            }else {
+                sendHttpResponse(res,'No tienes los permisos necesarios',403)
             }
             
         } catch (error) {
@@ -152,6 +157,15 @@ class AuthController {
             sendHttpResponse(res,updatedPermissions,200)
         }
     }
+
+    allPermissions = async (req,res) => {
+        try {
+            const permissions = await getAllPermissions();
+            sendHttpResponse(res,permissions,200)
+        } catch (error) {
+            sendHttpResponse(res,'error al obtener permisos',400)
+        }
+    } 
 
 
 

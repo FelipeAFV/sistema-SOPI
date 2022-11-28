@@ -1,38 +1,39 @@
 insert into permisos(id, nombre) values(1, 'USUARIO_INGRESAR');
-insert into permisos(id, nombre) values(2, 'USUARIO_EDITAR');
-insert into permisos(id, nombre) values(3, 'USUARIO_ACTUALIZAR');
-insert into permisos(id, nombre) values(4, 'USUARIO_ELIMINAR');
+insert into permisos(id, nombre) values(2, 'USUARIO_VER');
+insert into permisos(id, nombre) values(3, 'USUARIO_EDITAR');
+insert into permisos(id, nombre) values(4, 'USUARIO_ACTUALIZAR');
+insert into permisos(id, nombre) values(5, 'USUARIO_ELIMINAR');
 
-insert into permisos(id, nombre) values(5, 'SOPI_CREAR');
-insert into permisos(id, nombre) values(6, 'SOPI_EDITAR');
-insert into permisos(id, nombre) values(7, 'SOPI_EDITAR_ESTADO_RECHAZADA');
-insert into permisos(id, nombre) values(8, 'SOPI_EDITAR_ESTADO_REVISION_REFERENTE');
-insert into permisos(id, nombre) values(9, 'SOPI_EDITAR_ESTADO_REVISADO_REFERENTE');
-insert into permisos(id, nombre) values(10,'SOPI_EDITAR_ESTADO_EN_GESTION');
-insert into permisos(id, nombre) values(11,'SOPI_ELIMINAR');
-insert into permisos(id, nombre) values(12,'SOPI_VER');
-insert into permisos(id, nombre) values(13,'SOPI_VER_CREADAS');
+insert into permisos(id, nombre) values(6, 'SOPI_CREAR');
+insert into permisos(id, nombre) values(7, 'SOPI_EDITAR');
+insert into permisos(id, nombre) values(8, 'SOPI_EDITAR_ESTADO_RECHAZADA');
+insert into permisos(id, nombre) values(9, 'SOPI_EDITAR_ESTADO_REVISION_REFERENTE');
+insert into permisos(id, nombre) values(10, 'SOPI_EDITAR_ESTADO_REVISADO_REFERENTE');
+insert into permisos(id, nombre) values(11,'SOPI_EDITAR_ESTADO_EN_GESTION');
+insert into permisos(id, nombre) values(12,'SOPI_ELIMINAR');
+insert into permisos(id, nombre) values(13,'SOPI_VER');
+insert into permisos(id, nombre) values(14,'SOPI_VER_CREADAS');
 
 
-insert into permisos(id, nombre) values(14,'COMPRA_CREAR');
-insert into permisos(id, nombre) values(15,'COMPRA_EDITAR');
-insert into permisos(id, nombre) values(16,'COMPRA_ELIMINAR');
-insert into permisos(id, nombre) values(17,'COMPRA_VER');
-insert into permisos(id, nombre) values(18,'COMPRA_VER_RELACIONADO');
+insert into permisos(id, nombre) values(15,'COMPRA_CREAR');
+insert into permisos(id, nombre) values(16,'COMPRA_EDITAR');
+insert into permisos(id, nombre) values(17,'COMPRA_ELIMINAR');
+insert into permisos(id, nombre) values(18,'COMPRA_VER');
+insert into permisos(id, nombre) values(19,'COMPRA_VER_RELACIONADO');
 
-insert into permisos(id, nombre) values(19,'TICKET_CREAR');
-insert into permisos(id, nombre) values(20,'TICKET_EDITAR');
-insert into permisos(id, nombre) values(21,'TICKET_VER');
-insert into permisos(id, nombre) values(22,'TICKET_VER_RELACIONADO');
+insert into permisos(id, nombre) values(20,'TICKET_CREAR');
+insert into permisos(id, nombre) values(21,'TICKET_EDITAR');
+insert into permisos(id, nombre) values(22,'TICKET_VER');
+insert into permisos(id, nombre) values(23,'TICKET_VER_RELACIONADO');
 
-insert into permisos(id, nombre) values(23,'DOC_CREAR');
-insert into permisos(id, nombre) values(24,'DOC_ELIMINAR');
-insert into permisos(id, nombre) values(25,'DOC_VER');
+insert into permisos(id, nombre) values(24,'DOC_CREAR');
+insert into permisos(id, nombre) values(25,'DOC_ELIMINAR');
+insert into permisos(id, nombre) values(26,'DOC_VER');
 
-insert into permisos(id, nombre) values(26,'RESPONSABLE_CREAR');
-insert into permisos(id, nombre) values(27,'RESPONSABLE_ELIMINAR');
+insert into permisos(id, nombre) values(27,'RESPONSABLE_CREAR');
+insert into permisos(id, nombre) values(28,'RESPONSABLE_ELIMINAR');
 
-insert into permisos(id, nombre) values(28,'ACCESOS_EDITAR');
+insert into permisos(id, nombre) values(29,'ACCESOS_EDITAR');
 
 
 
@@ -73,10 +74,10 @@ insert into accesos(perfil_id, permiso_id) values(1,24);
 insert into accesos(perfil_id, permiso_id) values(1,25);
 insert into accesos(perfil_id, permiso_id) values(1,26);
 insert into accesos(perfil_id, permiso_id) values(1,27);
+insert into accesos(perfil_id, permiso_id) values(1,28);
 
 
-insert into accesos(perfil_id, permiso_id) values(2,12);
-insert into accesos(perfil_id, permiso_id) values(2,14);
+insert into accesos(perfil_id, permiso_id) values(2,13);
 insert into accesos(perfil_id, permiso_id) values(2,15);
 insert into accesos(perfil_id, permiso_id) values(2,16);
 insert into accesos(perfil_id, permiso_id) values(2,17);
@@ -90,25 +91,27 @@ insert into accesos(perfil_id, permiso_id) values(2,24);
 insert into accesos(perfil_id, permiso_id) values(2,25);
 insert into accesos(perfil_id, permiso_id) values(2,26);
 insert into accesos(perfil_id, permiso_id) values(2,27);
+insert into accesos(perfil_id, permiso_id) values(2,28);
 
-insert into accesos(perfil_id, permiso_id) values(3,18);
-insert into accesos(perfil_id, permiso_id) values(3,22);
+insert into accesos(perfil_id, permiso_id) values(3,19);
+insert into accesos(perfil_id, permiso_id) values(3,23);
 
-insert into accesos(perfil_id, permiso_id) values(4,18);
-insert into accesos(perfil_id, permiso_id) values(4,22);
+insert into accesos(perfil_id, permiso_id) values(4,19);
+insert into accesos(perfil_id, permiso_id) values(4,23);
 
-insert into accesos(perfil_id, permiso_id) values(5,9);
-insert into accesos(perfil_id, permiso_id) values(5,18);
-insert into accesos(perfil_id, permiso_id) values(5,22);
+insert into accesos(perfil_id, permiso_id) values(5,10);
+insert into accesos(perfil_id, permiso_id) values(5,19);
+insert into accesos(perfil_id, permiso_id) values(5,23);
 
-insert into accesos(perfil_id, permiso_id) values(6,5);
-insert into accesos(perfil_id, permiso_id) values(6,13);
+insert into accesos(perfil_id, permiso_id) values(6,6);
+insert into accesos(perfil_id, permiso_id) values(6,14);
 
-insert into accesos(perfil_id, permiso_id) values(7,28);
+insert into accesos(perfil_id, permiso_id) values(7,29);
 insert into accesos(perfil_id, permiso_id) values(7,1);
 insert into accesos(perfil_id, permiso_id) values(7,2);
 insert into accesos(perfil_id, permiso_id) values(7,3);
 insert into accesos(perfil_id, permiso_id) values(7,4);
+insert into accesos(perfil_id, permiso_id) values(7,5);
 
 
 

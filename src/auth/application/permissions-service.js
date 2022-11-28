@@ -10,7 +10,10 @@ const modifyUserPermissions = async (userId,currentPermissions, updatedPermissio
         
     });
     await updatedPermissions.forEach(async e => {
-        if(!currentPermissions.find( a => a.permissionId == e.id)) await createUserAccess(userId,e.id)
+        if(!currentPermissions.find( a => a.permissionId == e.id)) {
+            console.log('agregando permiso')
+            await createUserAccess(userId,e.id)
+        }
 
         
     });
