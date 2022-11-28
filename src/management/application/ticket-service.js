@@ -2,11 +2,7 @@ const { userRepository } = require("../../auth/domain/user-repository");
 const { pagination } = require("../../share/utils/api-feature");
 const { Op } = require("sequelize");
 const {
-  findOneManager,
   findManager,
-  findOneManagerForPurchase,
-  findManagerPurchase,
-  findManagersWithConditions,
   saveManager,
   findOneManagerByUserId,
 } = require("../domain/manager-repository");
@@ -122,7 +118,7 @@ const getTicketsFromPurchaseId = async (query, userId, profileId) => {
       } else {
         where = {
             [Op.or]: [{ userId: `${userId}` }, { managerId: `${id}` }],
-          };
+          };        
           const { count, rows } = await getAllTickets(where, page, perPage);
           const ticketsFiltered = pagination({
             data: rows,
