@@ -85,8 +85,14 @@ class UserRepositorySequelMySQL{
         try {
             const user = await User.findOne({where:{id:id}})
             if(!user) throw new Error('usuario no existe')
-            if(data.password) data.password = await bcrypt.hash(data.password, 5)
-            return await user.update(data)
+            if(data.password) {
+                data.password = await bcrypt.hash(data.password, 5)
+                
+
+            }else {
+                delete data.password;
+                return await user.update(data)
+            }
         } catch (error) {
             throw new Error(error.message)
         }
