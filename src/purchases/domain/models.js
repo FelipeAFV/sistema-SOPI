@@ -142,8 +142,7 @@ PurchaseDetail.loadAssociations = () => {
 PurchaseLog.loadAssociations = () => {
 
     const { User } = require("../../auth/domain/models");
-    PurchaseLog.belongsTo(User, { foreignKey: {field: 'usuario_id'}});
-    
+    PurchaseLog.belongsTo(User, { foreignKey: {field: 'usuario_id'}});   
 }
 PurchaseType.loadAssociations = () => {
     PurchaseType.hasMany(Purchase, { foreignKey: {field: 'tipo_id'}})
