@@ -1,6 +1,6 @@
 const { sequelize } = require("../../database/db-init");
 const { findSopi } = require("../../solicitude/domain/sopi-repository");
-const { savePurchase, updatePurchaseById, getAllPurchases, getPurchaseById, getPurchaseFromManagerId, getAllPurchasesWithManager } = require("../domain/purchase-repository");
+const { savePurchase, updatePurchaseById, getAllPurchases, getPurchaseById, getPurchaseFromManagerId, getAllPurchasesWithManager, getAllPurchasesWithManagerByConditions, getAllPurchasesByConditions, getAllPurchasesAssignedByConditions } = require("../domain/purchase-repository");
 const {
   saveAllPurchaseDatails,
   getPurchaseDetailById,
@@ -10,11 +10,15 @@ const { findStatusByName } = require("../domain/purchasestatus-repository");
 const {
   findManagerPurchase,
   findAllManager,
+  findOneManagerByUserId,
 } = require("../../management/domain/manager-repository");
 const { addlogByStatusId } = require("../domain/purchaselog-repository");
 const { findAllPermisionFromProfileId, findAllPermissionsFromUserAndProfile } = require("../../auth/domain/permission-repository");
 const { getTicketsFromUserId } = require("../../management/domain/ticket-repository");
 const { sendHttpResponse } = require("../../share/utils/response-parser");
+const { pagination } = require("../../share/utils/api-feature");
+const { Op } = require("sequelize");
+const { borrarRepetidos, borrarRepetidos2 } = require("../../share/utils/deleteDuplicates");
 
 const createPurchaseFromCompleteSopi = async ({ sopiId }) => {
   try {
@@ -90,23 +94,24 @@ const updatePurchaseStatus = async ({ purchaseId, statusId, userId }) => {
 }
 
 
-const findPurchasesFilteredByPermissions = async (profileId, userId) => {
+const findPurchasesFilteredByPermissions = async (query,profileId, userId) => {
   // let purchases = [];
-
+  let where = {}
+  const page = query.page ? Number.parseInt(query.page) : 1;
+  const perPage = query.per_page ? Number.parseInt(query.per_page) : 20;
   const permissions = await findAllPermisionFromProfileId(profileId);
-
-  
   const purchasesPermissions = permissions.filter(permission => permission.name.includes('COMPRA'))
-  
-  console.log('Consultando todas las compras', permissions)
 
   const viewAll = purchasesPermissions.find((permission) => permission.name == 'COMPRA_VER');
   if (viewAll) {
-    return await getAllPurchases();
+    const purchases= await getAllPurchases(page,perPage);
+    return pagination({
+      data:purchases,
+      count: purchases.length,
+      page,
+      perPage
+    })
   }
-
-  
-
   // const managerPermission = await purchasesPermissions.find(p => p.name.includes('VER_GESTOR'));
   // const ticketPermission = await purchasesPermissions.find(p => p.name.includes('VER_TICKET'));
   
@@ -115,10 +120,56 @@ const findPurchasesFilteredByPermissions = async (profileId, userId) => {
   // } else {
   //   purchases = await getAllPurchases();
   // }
-  const purchasesManager = await findPurchasesAsignedToManager(userId);
-  const purchasesTicket = await findPurchasesWithTicketFromUser(userId);
+  //Ven compras manager y ticket asociado a compra
+  const existingManager = await findOneManagerByUserId({userId: userId});
+  if(existingManager != null) {
+    const {id} = existingManager;
+    where = {
+      [Op.or]: [{ userId: `${userId}` }]
+    };
+    const purchasesM = await getAllPurchasesByConditions(where, page, perPage);
+    console.log("COMPRAS");
+    return pagination({
+      data:purchasesM,
+      count: purchasesM.length,
+      page,
+      perPage
+    })
+  } else {
 
-  const finalPurchases = [...purchasesManager, ...purchasesTicket]
+    //Obtener ids de compras por medio de los tickets
+    const purchasesWithTickets = await getTicketsFromUserId(userId);
+    //Se rescatan ids de compras que tienes asociados los tickets
+    const result = purchasesWithTickets.reduce((acc,item)=>{
+      if(!acc.includes(item.purchaseId)){
+        acc.push(item.purchaseId);
+      }
+      return acc;
+    },[]);
+    //Obtener las compras por medio de un array
+    where = {
+      id: {
+        [Op.in]: result
+      }
+    };
+
+    const purchaseWithTickets = await getAllPurchasesAssignedByConditions(where, page, perPage);
+    return pagination({
+      data: purchaseWithTickets,
+      count: purchaseWithTickets.length,
+      page,
+      perPage
+    });
+    /* throw new Error('No tienes accesos o no eres gestor'); */
+  }
+
+
+  //const purchasesManager = await findPurchasesAsignedToManager(userId, page, perPage);
+
+  //const purchasesTicket = await findPurchasesWithTicketFromUser(userId, page, perPage);
+
+  //const finalPurchases = [...purchasesManager, ...purchasesTicket];
+
 
   // Status filter
   // const filteredPurchasesByStatus = purchases.filter(purchase => {
@@ -132,14 +183,14 @@ const findPurchasesFilteredByPermissions = async (profileId, userId) => {
   //   }
   //   return permitted;
   // });
-  return finalPurchases;
+  //return finalPurchases;
 
 }
 
-const findPurchasesAsignedToManager = async (userId) => {
+const findPurchasesAsignedToManager = async (userId, page, perPage) => {
   try {
-    const result = await findManagerPurchase(userId);
-    const purchases = result.map((manager) => manager.purchase)
+    const result = await findManagerPurchase(userId, page, perPage);
+    const purchases = result.map((manager) => manager.purchase);
 
     return purchases;
   } catch (error) {
@@ -151,6 +202,7 @@ const findPurchasesAsignedToManager = async (userId) => {
 const findPurchasesWithTicketFromUser = async (userId)  => {
   const ticketFromUser = await  getTicketsFromUserId(userId);
   const purchases = ticketFromUser.map(ticket => ticket.purchase)
+
   return purchases;
 }
 
