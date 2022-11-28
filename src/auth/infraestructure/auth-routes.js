@@ -19,7 +19,7 @@ router.get('/usuarios', hasPermission(['USUARIO_VER']),AuthController.getAllUser
 router.get('/usuarios/permisos', getUserPermissions);
 router.get('/usuarios/:userId/permisos', getUserPermissions);
 router.get('/usuarios/:userId', AuthController.getAllUsers);
-router.put('/usuarios/:userId' ,hasPermission(['USUARIO_EDITAR']),AuthController.userUpdateData);
+router.put('/usuarios/:userId' ,AuthController.userUpdateData);
 router.get('/usuarios/:userId/accesos', AuthController.getUserAccesses);
 router.put('/usuarios/:userId/accesos', hasPermission(['USUARIO_EDITAR']),AuthController.modifyAccesses);
 
