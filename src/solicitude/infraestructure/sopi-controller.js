@@ -76,7 +76,7 @@ const getAllSopi = async (req, res) => {
     try {
         const user = req.user;
 
-        const sopisFiltered = await sopiService.getSopisFilteredByUserPermissions(user.profileId, user.id );
+        const sopisFiltered = await sopiService.getSopisFilteredByUserPermissions(req.query,user.profileId, user.id );
 
         sendHttpResponse(res, sopisFiltered, 200);
     } catch (e) {

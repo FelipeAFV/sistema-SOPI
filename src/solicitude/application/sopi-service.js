@@ -1,6 +1,7 @@
 const { findAllPermisionFromProfileId, findAllPermissionsFromUserAndProfile } = require("../../auth/domain/permission-repository");
 const { sequelize } = require("../../database/db-init");
 const { getAllPurchasesWithManager } = require("../../purchases/domain/purchase-repository");
+const { pagination } = require("../../share/utils/api-feature");
 const { SopiLog, Sopi } = require("../domain/models");
 const { saveSopi, updateSopi, findSopi, getAllSopis, getAllSopisByConditions, getSopiById } = require("../domain/sopi-repository");
 const { saveSopiDetail, getSopiDetailsById } = require("../domain/sopidetail-repository");
@@ -149,23 +150,35 @@ const getSopisFilteredByUserPermissions = async (profileId, userId) => {
     return sopisFiltered;
 }
 
-const getSopisFilteredByUserPermissions2 = async (profileId, userId) => {
+const getSopisFilteredByUserPermissions2 = async (query, profileId, userId) => {
 
     const access = await findAllPermissionsFromUserAndProfile(userId, profileId);
+    const page = query.page ? Number.parseInt(query.page) : 1;
+    const perPage = query.per_page ? Number.parseInt(query.per_page) : 20;
     let sopis = [];
 
     // Tiene permiso para ver todo
     if (access.find(a => a.name == 'SOPI_VER')) {
-        sopis = await getAllSopis();
+        sopis = await getAllSopis(page, perPage);
         // TODO: PAginacion
-        return sopis;
+        return pagination({
+            data:sopis,
+            count: sopis.length,
+            page,
+            perPage
+        });
     }
     
     //TODO: Buscar sopis que el user haya creado
+    
+    const createdSopis = await getAllSopisByConditions({userId}, page,perPage );
 
-    const createdSopis = await getAllSopisByConditions({ userId });
-
-    return createdSopis;
+    return pagination({
+        data:createdSopis,
+        count: createdSopis.length,
+        page,
+        perPage
+    });
    
 }
 
