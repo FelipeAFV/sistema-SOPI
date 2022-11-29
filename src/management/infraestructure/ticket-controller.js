@@ -41,15 +41,12 @@ const getTickets = async (req, res) => {
 
 const getTicket = async (req, res) => {
     const { ticketId } = req.params;
+    console.log('Buscarndo detalle de ticket')
 
     try {
 
         var ticket = await findTicketFromTicketId(ticketId);
         const {rows} = await getCommentFromTicketId(ticketId);
-        // const comments = await getCommentFromTicketId(ticketId);
-        // console.log(comments)
-
-
 
         if (!ticket) {
             sendHttpResponse(res, 'Error', 500, 'Ticket no existe');
@@ -59,8 +56,6 @@ const getTicket = async (req, res) => {
             let auxDate = currentDate.toISOString().split('T')[0]
             auxDate = auxDate.split('-')
             let auxTicketExpiration = ticket.expirationDate.split('-')
-            console.log(auxDate);
-            console.log(auxTicketExpiration);
             for (let i = 0; i < auxDate.length; i++) {
                 if (((auxTicketExpiration[i] - auxDate[i]) > 0) && i > 0) {
                     break;
@@ -85,7 +80,6 @@ const getTicket = async (req, res) => {
                 const managerIds = [];
                 if (test) {
                     test.forEach(e => {
-                        console.log(e)
                         managerIds.push(e.id)
                     })
                 }

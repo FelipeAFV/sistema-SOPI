@@ -27,7 +27,14 @@ const findOneManagerForPurchase = async ({creatorId, purchaseId}) => {
 }
 
 const findManagerPurchase = async (userId, page, perPage) => {
-    const result = await Manager.findAll({where:{userId},include: [{model: Purchase, include: [{ model: PurchaseStatus, as: 'status'}]}], offset: (page-1)*perPage, limit:perPage, distinct: true,order: [['createdAt','ASC'] ]})
+    let result = ''
+    if (page && perPage) {
+
+        result = await Manager.findAll({where:{userId},include: [{model: Purchase, include: [{ model: PurchaseStatus, as: 'status'}]}], offset: (page-1)*perPage, limit:perPage, distinct: true,order: [['createdAt','ASC'] ]})
+    } else {
+        result = await Manager.findAll({where:{userId},include: [{model: Purchase, include: [{ model: PurchaseStatus, as: 'status'}]}],  distinct: true,order: [['createdAt','ASC'] ]})
+
+    }
     
     return result;
 }
