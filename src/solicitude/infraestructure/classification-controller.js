@@ -41,9 +41,9 @@ class CategoryController {
     updateCategory = async (req,res) => {
      
         try {
-            const {categoryId, ...data} = req.body
-            if(!categoryId || !data) throw new Error('body incompleto')
-            const category = await updateCategoryBydId(categoryId, data)
+            const {id, ...data} = req.body
+            if(!id || !data) throw new Error('body incompleto')
+            const category = await updateCategoryBydId(id, data)
             sendHttpResponse(res,category,200)
         } catch (error) {
             sendHttpResponse(res,error.message, 400)
@@ -54,9 +54,9 @@ class CategoryController {
     
     deleteCategory = async (req,res) => {
         try {
-            const {categoryId} = req.body
-            if(!categoryId) throw new Error('body incompleto')
-            const category = await deleteCategoryBydId(categoryId)
+            const {id} = req.body
+            if(!ic) throw new Error('body incompleto')
+            const category = await deleteCategoryBydId(id)
             sendHttpResponse(res,category,200)
         } catch (error) {
             sendHttpResponse(res,error.message, 400)

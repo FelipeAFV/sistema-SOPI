@@ -23,9 +23,9 @@ const createPurchaseType = async (req,res) => {
 
 const updateTypePurchase = async (req,res) => {
     try {
-        const {purchaseTypeId, ...data} = req.body;
-        if(!purchaseTypeId || !data) throw new Error('body incompleto')
-        const purchase = await updatePurchaseType(purchaseTypeId, data)
+        const {id, ...data} = req.body;
+        if(!id || !data) throw new Error('body incompleto')
+        const purchase = await updatePurchaseType(id, data)
         sendHttpResponse(res,purchase,200)
     } catch (error) {
         sendHttpResponse(res,error.message,400)
@@ -34,9 +34,9 @@ const updateTypePurchase = async (req,res) => {
 
 const deleteTypePurchase = async (req,res) => {
     try {
-        const {purchaseTypeId} = req.body;
-        if(!purchaseTypeId) throw new Error('body incompleto')
-        const resp = await deletePurchaseType(purchaseTypeId)
+        const {id} = req.body;
+        if(!id) throw new Error('body incompleto')
+        const resp = await deletePurchaseType(id)
         sendHttpResponse(res,resp,200)
     } catch (error) {
         sendHttpResponse(res,error.message,400)
