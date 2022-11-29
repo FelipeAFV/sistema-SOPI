@@ -16,6 +16,10 @@ const Sopi = sequelize.define('sopi', {
     totalAmmount: {
         type: DataTypes.DOUBLE,
         field: 'costo_total'
+    },
+    technicalSpecification: {
+        type: DataTypes.STRING,
+        field: 'especificacion_tecnica'
     }
 },
     {

@@ -87,6 +87,16 @@ const updateSopiStatus = async ({ sopiId, statusId, userId, comment }) => {
     return sopiUpdated;
 };
 
+const updateSopiWithStatus = async ({sopiId, statusId, technicalSpecification, userId, comment}) => {
+    console.log(technicalSpecification)
+    const sopiUpdated = await updateSopi(sopiId, {statusId: statusId, userId:userId, technicalSpecification:technicalSpecification});
+
+    await addLogEntryByStatusId(sopiId, userId, comment,statusId);
+
+    return sopiUpdated;
+
+}
+
 const getSopiByIdWithDetails = async(sopiId) => {
     const sopi = await getSopiById(sopiId);
     const status = await sopi.getSopiLogStatus();
@@ -186,3 +196,4 @@ exports.createSopi = createSopiSeqTransactional;
 exports.updateSopiStatus = updateSopiStatus;
 exports.getSopiByIdWithDetails = getSopiByIdWithDetails;
 exports.getSopisFilteredByUserPermissions = getSopisFilteredByUserPermissions2;
+exports.updateSopiWithStatus = updateSopiWithStatus;

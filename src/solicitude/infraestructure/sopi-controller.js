@@ -40,21 +40,22 @@ const updateSopi = async (req, res) => {
 
     try {
         const permissions = await findAllPermissionsFromUserAndProfile(req.user.id, req.user.profileId);
-        // if (!permissions.find(p => p.name == 'SOPI_EDITAR')) {
-        //     sendHttpResponse(res, 'Error', 403, 'No tienes permisos para editar');
-        //     return;
-        // }
-        const {sopiId, statusId, comment, financingId, costCenterId} = req.body;
-        
+        const {sopiId, statusId, comment, financingId, costCenterId, technicalSpecification} = req.body;
+        let updatedSopi = '';
         
         if (!sopiId) {
             sendHttpResponse(res, '', 400, 'Datos faltantes en solicitud');
             return;
         }
 
-        let updatedSopi = '';
-        if (statusId) {
+        if (permissions.find(p => p.name == 'SOPI_EDITAR_ESTADO_REVISADO_REFERENTE')) {
+            console.log("Estado revisión referente");
 
+            updatedSopi = await sopiService.updateSopiWithStatus({sopiId, statusId:5 ,technicalSpecification:technicalSpecification, userId: req.user.id, comment: "Cambiado a revisado por referente"});
+        }
+
+        
+        if (statusId) {
             updatedSopi = await sopiService.updateSopiStatus({sopiId, statusId, userId: req.user.id, comment});
         }
         if (financingId || costCenterId) {
@@ -62,7 +63,7 @@ const updateSopi = async (req, res) => {
         }
     
         sendHttpResponse(res, updatedSopi,200);
-        return;
+        return; 
         
     } catch (e) {
         console.log(e)
