@@ -36,9 +36,9 @@ class SupplierController {
 
     updateSupplier = async (req,res) => {
         try {
-            const {supplierId, ...data} = req.body;
-            if(!supplierId || !data) throw new Error('body incompleto')
-            const supplier = await updateSupplierById(supplierId, data)
+            const {id, ...data} = req.body;
+            if(!id || !data) throw new Error('body incompleto')
+            const supplier = await updateSupplierById(id, data)
             sendHttpResponse(res,supplier, 200)
 
         } catch (error) {
@@ -48,9 +48,9 @@ class SupplierController {
 
     deleteSupplier = async (req,res) => {
         try {
-            const {supplierId} = req.body;
-            if(!supplierId) throw new Error('body incompleto')
-            const resp = await deleteSupplierById(supplierId)
+            const {id} = req.body;
+            if(!id) throw new Error('body incompleto')
+            const resp = await deleteSupplierById(id)
             sendHttpResponse(res,resp, 200)
 
         } catch (error) {

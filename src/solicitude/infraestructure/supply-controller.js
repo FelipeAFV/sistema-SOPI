@@ -41,9 +41,9 @@ class SupplyController {
     
     updateSupply = async (req,res) => {
         try {
-            const {supplyId, ...data} = req.body
-            if(!supplyId || !data) throw new Error('body incompleto')
-            const supply = await updateSupplyBydId(supplyId, data)
+            const {id, ...data} = req.body
+            if(!id || !data) throw new Error('body incompleto')
+            const supply = await updateSupplyBydId(id, data)
             sendHttpResponse(res,supply,200)
         } catch (error) {
             sendHttpResponse(res,error.message, 400)
@@ -53,9 +53,9 @@ class SupplyController {
     
     deleteSupply = async (req,res) => {
         try {
-            const {supplyId} = req.body
-            if(!supplyId) throw new Error('body incompleto')
-            const resp = await deleteSupplyBydId(supplyId)
+            const {id} = req.body
+            if(!id) throw new Error('body incompleto')
+            const resp = await deleteSupplyBydId(id)
             sendHttpResponse(res,resp,200)
         } catch (error) {
             sendHttpResponse(res,error.message, 400)
