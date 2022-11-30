@@ -150,13 +150,13 @@ insert into compras_estado(nombre) values('CERRADA_CON_ERRORES');
 insert into compras_estado(nombre) values('CERRADA_SIN_ERRORES');
 insert into compras_estado(nombre) values('COMPLETADA');
 
-insert into usuarios(usuario, contrasena, nombre, apellido, perfil_id, creacion, ultima_actualizacion) values('director', '$2b$05$PqLQrRPX3V0SOF8BVOcxCuj0t3oour0x2ppw2luiZBPmA.ijmaXDK', 'director', 'director', 1, '2022-10-10', '2022-10-10');
-insert into usuarios(usuario, contrasena, nombre, apellido, perfil_id, creacion, ultima_actualizacion) values('admin', '$2b$05$MJLV7V5v9ZsCzytVt/ElneN16ZFnVG1/31ZJ3b4iYVrt.Wa.Rax2O', 'admin', 'admin', 7, '2022-10-10', '2022-10-10');
-insert into usuarios(usuario, contrasena, nombre, apellido, perfil_id, creacion, ultima_actualizacion) values('jefe_compra', '$2b$05$KEGVhafRLScLkhyLgKLKXOY/CAyW7PjGFgAmRDOSsRaaipXIshZUW', 'jefe_compra', 'jefe_compra', 2, '2022-10-10', '2022-10-10');
-insert into usuarios(usuario, contrasena, nombre, apellido, perfil_id, creacion, ultima_actualizacion) values('gestor_compra', '$2b$05$qBX3zQtU/CLPbS5iHJ/Sn.WwCknICfR.zCl8S0ZXbTzB9.ZwEqdDy', 'gestor_compra', 'gestor_compra', 3, '2022-10-10', '2022-10-10');
-insert into usuarios(usuario, contrasena, nombre, apellido, perfil_id, creacion, ultima_actualizacion) values('referente', '$2b$10$Jco9BCyd3hu8GkoE8mS9FuaZf6la.7ge0/Go6RhDNMnlHHlka/nOy', 'referente', 'referente', 5, '2022-10-10', '2022-10-10');
-insert into usuarios(usuario, contrasena, nombre, apellido, perfil_id, creacion, ultima_actualizacion) values('juridico', '$2b$10$cHDUjwS7SfMco.GJR9SMueba45vqYBFxSji6tEKYKCibizbPYzMTS', 'juridico', 'juridico', 4, '2022-10-10', '2022-10-10');
-insert into usuarios(usuario, contrasena, nombre, apellido, perfil_id, creacion, ultima_actualizacion) values('solicitante', '$2b$10$n/drnSboPaK6Gmwww79fveeS8w8BSRZ0X4u1ttUTirFxj7/j9GylW', 'solicitante', 'solicitante', 6, '2022-10-10', '2022-10-10');
+insert into usuarios(usuario, contrasena, nombre, apellido, perfil_id, creacion, ultima_actualizacion, activo, fecha_expiracion) values('director', '$2b$05$PqLQrRPX3V0SOF8BVOcxCuj0t3oour0x2ppw2luiZBPmA.ijmaXDK', 'director', 'director', 1, '2022-10-10', '2022-10-10',1,'2022-12-31');
+insert into usuarios(usuario, contrasena, nombre, apellido, perfil_id, creacion, ultima_actualizacion, activo, fecha_expiracion) values('admin', '$2b$05$MJLV7V5v9ZsCzytVt/ElneN16ZFnVG1/31ZJ3b4iYVrt.Wa.Rax2O', 'admin', 'admin', 7, '2022-10-10', '2022-10-10',1,'2022-12-31');
+insert into usuarios(usuario, contrasena, nombre, apellido, perfil_id, creacion, ultima_actualizacion, activo, fecha_expiracion) values('jefe_compra', '$2b$05$KEGVhafRLScLkhyLgKLKXOY/CAyW7PjGFgAmRDOSsRaaipXIshZUW', 'jefe_compra', 'jefe_compra', 2, '2022-10-10', '2022-10-10',1,'2022-12-31');
+insert into usuarios(usuario, contrasena, nombre, apellido, perfil_id, creacion, ultima_actualizacion, activo, fecha_expiracion) values('gestor_compra', '$2b$05$qBX3zQtU/CLPbS5iHJ/Sn.WwCknICfR.zCl8S0ZXbTzB9.ZwEqdDy', 'gestor_compra', 'gestor_compra', 3, '2022-10-10', '2022-10-10',1,'2022-12-31');
+insert into usuarios(usuario, contrasena, nombre, apellido, perfil_id, creacion, ultima_actualizacion, activo, fecha_expiracion) values('referente', '$2b$10$Jco9BCyd3hu8GkoE8mS9FuaZf6la.7ge0/Go6RhDNMnlHHlka/nOy', 'referente', 'referente', 5, '2022-10-10', '2022-10-10',1,'2022-12-31');
+insert into usuarios(usuario, contrasena, nombre, apellido, perfil_id, creacion, ultima_actualizacion, activo, fecha_expiracion) values('juridico', '$2b$10$cHDUjwS7SfMco.GJR9SMueba45vqYBFxSji6tEKYKCibizbPYzMTS', 'juridico', 'juridico', 4, '2022-10-10', '2022-10-10',1,'2022-12-31');
+insert into usuarios(usuario, contrasena, nombre, apellido, perfil_id, creacion, ultima_actualizacion, activo, fecha_expiracion) values('solicitante', '$2b$10$n/drnSboPaK6Gmwww79fveeS8w8BSRZ0X4u1ttUTirFxj7/j9GylW', 'solicitante', 'solicitante', 6, '2022-10-10', '2022-10-10',1,'2022-12-31');
 
 insert into ticket_status (id,estado) values (1,'PENDIENTE');
 insert into ticket_status (id,estado) values (2,'COMPLETADO');
