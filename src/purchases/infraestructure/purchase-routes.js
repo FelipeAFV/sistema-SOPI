@@ -5,7 +5,7 @@ const { purchaseDetailPermission } = require("./purchase-middleware");
 const { getAllStatuses } = require("./purchasestatus-controller");
 const { getPurchaseTypes, createPurchaseType, updateTypePurchase, deleteTypePurchase } = require("./purchasetype-controller");
 const purchaseTypeController = require("./purchasetype-controller");
-const { SupplierController } = require("./Supplier-controller");
+const { SupplierController } = require("./supplier-controller");
 
 
 
