@@ -14,7 +14,6 @@ const router = Router();
 
 router.post('/responsables', hasProfile(['jefe_compra','director']), addManager);
 router.get('/responsables', possibleManager)
-router.get('/responsables/:compraId', possibleManager)
 router.post('/documentos', uploadMiddleware.single('doc'), addDocument);
 router.get('/documentos',  getDocuments);
 router.delete('/documentos', deleteDoc);
