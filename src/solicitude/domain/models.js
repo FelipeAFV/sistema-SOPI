@@ -13,9 +13,9 @@ const Sopi = sequelize.define('sopi', {
         type: DataTypes.BOOLEAN,
         field: 'prioridad'
     },
-    technicalSpecification: {
-        type: DataTypes.STRING,
-        field: 'especificacion_tecnica'
+    totalAmmount: {
+        type: DataTypes.DOUBLE,
+        field: 'costo_total'
     }
 },
     {

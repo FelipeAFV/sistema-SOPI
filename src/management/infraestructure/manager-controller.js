@@ -34,7 +34,7 @@ const addManager = async (req, res) => {
 
 const possibleManager = async (req,res) => {
     try {
-        const {compraId} = req.params;
+        const {compraId} = req.query;
         if(!compraId){
             const possibleManagers = await findPossibleManagers();
             sendHttpResponse(res,possibleManagers,200)   
