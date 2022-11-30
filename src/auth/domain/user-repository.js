@@ -98,6 +98,8 @@ class UserRepositorySequelMySQL{
             throw new Error(error.message)
         }
     }
+
+    
 }
 
 
