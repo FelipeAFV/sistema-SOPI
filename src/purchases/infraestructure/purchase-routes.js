@@ -13,21 +13,21 @@ const router = Router()
 
 router.post('/', createPurchase);
 router.get('/', hasAnyPermission(['COMPRA_VER', 'COMPRA_VER_RELACIONADO']), getAllPurchases);
-
+router.put('/',  hasProfile(['jefe_compra', 'director']),  updatePurchase);
+router.get('/:compraId', purchaseDetailPermission(), getPurchaseDetail);
 //Proveedores
 router.post('/proveedor', SupplierController.createSupplier);
 router.get('/proveedor', SupplierController.getSuppliers);
 router.get('/estados', getAllStatuses);
 router.put('/proveedor', SupplierController.updateSupplier);
 router.delete('/proveedor', SupplierController.deleteSupplier);
-
+//Tipos de compra
 router.get('/tipos', getPurchaseTypes);
 router.post('/tipos', createPurchaseType);
 router.put('/tipos', updateTypePurchase);
 router.delete('/tipos', deleteTypePurchase)
 
-router.put('/',  hasProfile(['jefe_compra', 'director']),  updatePurchase);
-router.get('/:compraId', purchaseDetailPermission(), getPurchaseDetail);
+
 
 
 exports.purchaseRoutes = router;
