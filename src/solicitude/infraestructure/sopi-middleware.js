@@ -116,6 +116,7 @@ const sopiDetailPermission2 = () => {
     return async (req, res, next) => {
         const permissions = await findAllPermissionsFromUserAndProfile(req.user.id, req.user.profileId);
         const viewAll = permissions.find((permission) => permission.name == 'SOPI_VER');
+        const view = permissions.find((permission) => permission.name == 'SOPI_EDITAR_ESTADO_REVISADO_REFERENTE');
 
         if (!req.params.sopiId) {
             sendHttpResponse(res, 'Error', 400, 'Debes enviar el {sopiId}')
@@ -126,6 +127,11 @@ const sopiDetailPermission2 = () => {
             next();
             return;
 
+        }
+        if(view) {
+            
+            next();
+            return;
         }
         const requestedSopi = await findSopi({ id: req.params.sopiId });
 

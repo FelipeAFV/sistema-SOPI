@@ -60,6 +60,27 @@ const getAllSopisByConditions = async (conditions, page, perPage) => {
   return sopis;
 };
 
+const getAllSopisByStatus = async (conditions, page, perPage) => {
+  return await Sopi.findAll({
+    include: [
+      { model: SopiStatus, as: "status", where: conditions },
+      { model: SopiStatus, as: "status" },
+      { model: Financing },
+      { model: CostCenter },
+      {
+        model: User,
+        attributes: {
+          exclude: ["password"],
+        },
+      },
+    ],
+    offset: (page - 1) * perPage,
+    limit: perPage,
+    distinct: true,
+    order: [["createdAt", "ASC"]],
+  });
+};
+
 const findSopi = async (conditions) => {
   const sopi = await Sopi.findOne({
     where: conditions,
@@ -111,3 +132,4 @@ exports.updateSopi = updateSopi;
 exports.getAllSopis = getAllSopis;
 exports.getAllSopisByConditions = getAllSopisByConditions;
 exports.getSopiFromPurchaseManager = getSopiFromPurchaseManager;
+exports.getAllSopisByStatus = getAllSopisByStatus;

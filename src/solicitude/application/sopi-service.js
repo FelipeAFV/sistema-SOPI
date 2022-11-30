@@ -3,7 +3,7 @@ const { sequelize } = require("../../database/db-init");
 const { getAllPurchasesWithManager } = require("../../purchases/domain/purchase-repository");
 const { pagination } = require("../../share/utils/api-feature");
 const { SopiLog, Sopi } = require("../domain/models");
-const { saveSopi, updateSopi, findSopi, getAllSopis, getAllSopisByConditions, getSopiById } = require("../domain/sopi-repository");
+const { saveSopi, updateSopi, findSopi, getAllSopis, getAllSopisByConditions, getSopiById, getAllSopisByStatus } = require("../domain/sopi-repository");
 const { saveSopiDetail, getSopiDetailsById } = require("../domain/sopidetail-repository");
 const { addLogEntryByStatusName, addLogEntryByStatusId } = require("../domain/sopilog-repository");
 const { findStatusByName } = require("../domain/sopistatus-repository");
@@ -179,6 +179,17 @@ const getSopisFilteredByUserPermissions2 = async (query, profileId, userId) => {
         });
     }
     
+    if(access.find(a=> a.name == 'SOPI_EDITAR_ESTADO_REVISADO_REFERENTE')) {
+        
+        sopis = await getAllSopisByStatus({name:'REVISION_REFERENTE'}, page, perPage);
+        
+        return pagination({
+            data: sopis,
+            count: sopis.length,
+            page,
+            perPage
+        });
+    }
     //TODO: Buscar sopis que el user haya creado
     
     const createdSopis = await getAllSopisByConditions({userId}, page,perPage );
