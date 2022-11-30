@@ -54,6 +54,7 @@ class UserRepositorySequelMySQL{
             firstname: userData.firstname,
             lastname: userData.lastname,
             mail: userData.mail,
+            active:true
         })
     
         const profile = await Profile.findOne({
@@ -85,7 +86,7 @@ class UserRepositorySequelMySQL{
         try {
             const user = await User.findOne({where:{id:id}})
             if(!user) throw new Error('usuario no existe')
-            if(data.password == "") {
+            if(data.password == "" || !data.password) {
                 
                 delete data.password;
                 

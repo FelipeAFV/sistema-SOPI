@@ -11,12 +11,31 @@ const login = async ({username, password}) => {
         throw new Error('Body vacio')
     }
     
-    const user = await userRepository.findUserByUsername(username)
-    console.log(user)
+    var user = await userRepository.findUserByUsername(username)
     
-    if(!user) {
-        throw new Error('Usuario no existe')
+    if(!user) throw new Error('Usuario no existe') 
+        
+    const currentDate = new Date()
+    let auxDate = currentDate.toISOString().split('T')[0]
+    auxDate = auxDate.split('-')
+    let auxUserExpiration = user.expirationDate.toISOString().split('T')[0]
+    auxUserExpiration = auxUserExpiration.split('-')
+    for (let i = 0; i < auxDate.length; i++) {
+        if (((auxUserExpiration[i] - auxDate[i]) > 0) && i > 0) {
+            break;
+        }else if (i == 0) {
+            continue;
+        } else {
+            console.log('hola');
+            user = await userRepository.dataUpdateUser(user.id,{active:false})
+        }
+
     }
+    
+    
+    if(!user.active) throw new Error('Usuario no esta activo')
+        
+    
 
 
     const result = await bcrypt.compare(password ,user.password)
