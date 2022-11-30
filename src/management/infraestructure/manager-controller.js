@@ -12,8 +12,12 @@ const addManager = async (req, res) => {
 
     const {managerId, purchaseId} = req.body;
 
+    
+    
     try {
-        const manager = await addManagerForSopi({managerId, purchaseId})
+        const user = await userRepository.findUserById(managerId)
+
+        const manager = await addManagerForSopi({managerId, purchaseId, profileId: user.profile.id })
         sendHttpResponse(res, manager, 200);
         return;
     } catch (e) {

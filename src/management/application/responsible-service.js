@@ -4,12 +4,15 @@ const { sendHttpResponse } = require("../../share/utils/response-parser");
 const { ApiValidationError } = require("../domain/api-errors");
 const { saveManager, findManager, findAllManager, findAllManagers } = require("../domain/manager-repository");
 
-const addManagerForSopi = async ({managerId, purchaseId}) => {
+const addManagerForSopi = async ({managerId, purchaseId, profileId}) => {
     
     const user = await userRepository.findUserById(managerId);
     console.log(user);
+    const permissions = await findAllPermissionsFromUserAndProfile(managerId, profileId);
 
-    if (user.profile.name != 'gestor_compra') {
+
+
+    if ( !permissions.find((p) => p.name == 'RESPONSABLE_ASIGNABLE')) {
         throw new ApiValidationError('El usuario no tiene el perfil gestor_compra');
         
     }

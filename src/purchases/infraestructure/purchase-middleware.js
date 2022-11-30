@@ -1,18 +1,19 @@
 const { findAllPermissionsFromUserAndProfile } = require("../../auth/domain/permission-repository");
 const { sendHttpResponse } = require("../../share/utils/response-parser");
 const { findPurchaseDetailByPurchaseId } = require("../application/purchase-service");
-const { getPurchase, getAllPurchasesWithManager, getPurchaseFromManagerId, getPurchaseById } = require("../domain/purchase-repository");
+const { getPurchase, getAllPurchasesWithManager, getPurchaseFromManagerId, getPurchaseById, getPurchaseWithUserTickets } = require("../domain/purchase-repository");
 
 const purchaseDetailPermission = () => {
     return async (req, res, next) => {
         const permissions = await findAllPermissionsFromUserAndProfile(req.user.id, req.user.profileId);
-        const viewAll = permissions.filter((permission) => permission == 'COMPRA_VER');
+
+        const viewAll = permissions.find((permission) => permission.name == 'COMPRA_VER');
         if (!req.params.compraId) {
             sendHttpResponse(res, 'Error', 400, 'Debes enviar el {compraId}')
             return;
         };
-        if (viewAll) {
-
+        if (viewAll != null) {
+            console.log('Tiene permiso')
             next();
             return;
         };
@@ -24,8 +25,11 @@ const purchaseDetailPermission = () => {
         };
         //const managerPermission = await getPurchaseFromManagerId(req.params.compraId, req.user.id);
         const m = await getPurchaseFromManagerId(req.params.compraId, req.user.id);
+        const purchases = await getPurchaseWithUserTickets(req.user.id, req.params.compraId)
 
-        if(!m) {
+        console.log(purchases.tickets)
+
+        if(!m && purchases.tickets.length == 0) {
             sendHttpResponse(res, 'Error', 403, 'No tienes permisos')
             return;
         }
