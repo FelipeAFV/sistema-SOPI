@@ -3,7 +3,7 @@ const { uploadMiddleware } = require('../..');
 const { hasProfile } = require('../../auth/infraestructure/check-auth-middleware');
 const { addComment } = require('./comment-controller');
 const { addDocument, getDocument, getDocuments, deleteDoc } = require('./document-controller');
-const { addManager } = require('./manager-controller');
+const { addManager, possibleManager } = require('./manager-controller');
 const { ticketCreation, getTickets, getTicket, updateTicket } = require('./ticket-controller');
 
 
@@ -13,6 +13,8 @@ const router = Router();
 
 
 router.post('/responsables', hasProfile(['jefe_compra','director']), addManager);
+router.get('/responsables', possibleManager)
+router.get('/responsables/:compraId', possibleManager)
 router.post('/documentos', uploadMiddleware.single('doc'), addDocument);
 router.get('/documentos',  getDocuments);
 router.delete('/documentos', deleteDoc);

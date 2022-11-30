@@ -34,6 +34,7 @@ insert into permisos(id, nombre) values(27,'RESPONSABLE_CREAR');
 insert into permisos(id, nombre) values(28,'RESPONSABLE_ELIMINAR');
 
 insert into permisos(id, nombre) values(29,'ACCESOS_EDITAR');
+insert into permisos(id, nombre) values(30,'RESPONSABLE_ASIGNABLE');
 
 
 
@@ -95,6 +96,7 @@ insert into accesos(perfil_id, permiso_id) values(2,28);
 
 insert into accesos(perfil_id, permiso_id) values(3,19);
 insert into accesos(perfil_id, permiso_id) values(3,23);
+insert into accesos(perfil_id, permiso_id) values(3,30);
 
 insert into accesos(perfil_id, permiso_id) values(4,19);
 insert into accesos(perfil_id, permiso_id) values(4,23);

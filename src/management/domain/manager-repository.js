@@ -53,8 +53,8 @@ const findAllManager = async () => {
 }
 
 const findAllManagers = async (id) => {
-    const managers = await Manager.findAll({where:{purchaseId:id}});
-    if(!managers){
+    const managers = await Manager.findAll({where:{purchaseId:id}, include:{model: User}});
+    if(managers.length == 0){
         throw new Error('No hay managers asociados a la compra')
     }
     return managers;
@@ -71,7 +71,7 @@ const findManagerFromPurchaseDocument = async (docId) => {
 
 
 
-
+exports.findAllManagers = findAllManagers;
 exports.findManagerFromPurchaseDocument = findManagerFromPurchaseDocument;
 exports.findManagerPurchase = findManagerPurchase;
 exports.findAllManager = findAllManager;

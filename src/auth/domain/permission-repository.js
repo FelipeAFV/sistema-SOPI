@@ -37,6 +37,8 @@ const getAllPermissions = async () => {
     return permssions
 }
 
+
+
 exports.getAllPermissions = getAllPermissions;
 exports.removeUserAccess = removeUserAccess;
 exports.createUserAccess = createUserAccess;

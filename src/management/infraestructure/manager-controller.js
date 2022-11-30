@@ -1,6 +1,7 @@
+const { userRepository } = require("../../auth/domain/user-repository");
 const { Purchase } = require("../../purchases/domain/models");
 const { sendHttpResponse } = require("../../share/utils/response-parser");
-const { addManagerForSopi } = require("../application/responsible-service");
+const { addManagerForSopi, findPossibleManagers, findAllManagerInPurchase } = require("../application/responsible-service");
 const { ApiValidationError } = require("../domain/api-errors");
 const { saveManager } = require("../domain/manager-repository");
 const { Manager } = require("../domain/models");
@@ -31,6 +32,23 @@ const addManager = async (req, res) => {
 
 }
 
+const possibleManager = async (req,res) => {
+    try {
+        const {compraId} = req.params;
+        if(!compraId){
+            const possibleManagers = await findPossibleManagers();
+            sendHttpResponse(res,possibleManagers,200)   
+        }else{
+            const managers = await findAllManagerInPurchase(compraId)
+            sendHttpResponse(res,managers,200)
+        }
+         
+    } catch (error) {
+        sendHttpResponse(res,error.message, 403)
+    }
+    
+}
 
 
+exports.possibleManager = possibleManager;
 exports.addManager = addManager;
