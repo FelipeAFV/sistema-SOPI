@@ -7,7 +7,7 @@ class SupplierController {
         try {
             const supplierData = req.body;
             const isCreated = await getSupplierByName(supplierData.supplierName);
-
+            delete supplierData.id
             if(isCreated) {
                 sendHttpResponse(res, 'El proveedor ya existe, por favor vuelta a intentarlo');
             } else {
