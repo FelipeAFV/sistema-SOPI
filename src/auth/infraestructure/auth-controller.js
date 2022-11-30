@@ -36,7 +36,7 @@ class AuthController {
                 profileId: resp.profile.id
             },process.env.SECRET_KEY, { expiresIn: '8h'}))  
             
-            res.cookie('jwt',token,{httpOnly:false})
+            res.cookie('jwt',token,{httpOnly:false, sameSite: 'none', secure: false})
             sendHttpResponse(res, resp,200)
         } catch (error) {
             sendHttpResponse(res, 'Error al ingresar', 500, error.message || '');
