@@ -49,9 +49,13 @@ const updateSopi = async (req, res) => {
         }
 
         if (permissions.find(p => p.name == 'SOPI_EDITAR_ESTADO_REVISADO_REFERENTE')) {
-            console.log("Estado revisión referente");
-
-            updatedSopi = await sopiService.updateSopiWithStatus({sopiId, statusId:5 ,technicalSpecification:technicalSpecification, userId: req.user.id, comment: "Cambiado a revisado por referente"});
+            const sopiToUpdate = await sopiService.getSopiByIdWithDetails(sopiId);
+            const {sopi} = sopiToUpdate;
+            if(sopi.status.name === 'REVISION_REFERENTE') {
+                updatedSopi = await sopiService.updateSopiWithStatus({sopiId, statusId:5 ,technicalSpecification:technicalSpecification, userId: req.user.id, comment: "Cambiado a revisado por referente"});
+                sendHttpResponse(res, updatedSopi,200);
+                return;
+            }   
         }
 
         

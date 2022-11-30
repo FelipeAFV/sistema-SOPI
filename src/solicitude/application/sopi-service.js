@@ -88,7 +88,7 @@ const updateSopiStatus = async ({ sopiId, statusId, userId, comment }) => {
 };
 
 const updateSopiWithStatus = async ({sopiId, statusId, technicalSpecification, userId, comment}) => {
-    console.log(technicalSpecification)
+
     const sopiUpdated = await updateSopi(sopiId, {statusId: statusId, userId:userId, technicalSpecification:technicalSpecification});
 
     await addLogEntryByStatusId(sopiId, userId, comment,statusId);
@@ -99,8 +99,9 @@ const updateSopiWithStatus = async ({sopiId, statusId, technicalSpecification, u
 
 const getSopiByIdWithDetails = async(sopiId) => {
     const sopi = await getSopiById(sopiId);
-    const status = await sopi.getSopiLogStatus();
-    sopi.status = status.map((status)=>status.name);
+/*     console.log(sopi.sopiStatusId) */
+    /* const status = await sopi.getSopiLogStatus(); */
+/*     sopi.status = status.map((status)=>status.name); */
     const details = await getSopiDetailsById(sopiId);
     const sopiWithDetails = {
         sopi: sopi,

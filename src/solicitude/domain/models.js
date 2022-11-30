@@ -1,5 +1,5 @@
 
-const { DataTypes } = require("sequelize");
+const { DataTypes, Sequelize } = require("sequelize");
 const { sequelize } = require("../../database/db-init");
 
 
@@ -52,7 +52,12 @@ const SopiDetail = sequelize.define('sopiDetail', {
     });
 
 const SopiLog = sequelize.define('sopiLog', {
-
+    id: {
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        autoIncrement: true,
+        allowNull: false
+    },
     updateDate: {
         type: DataTypes.DATE,
         field: 'fecha_actualización'
@@ -136,7 +141,7 @@ const Financing = sequelize.define('financing', {
 Sopi.loadAssociations = () => {
     Sopi.belongsTo(CostCenter, { foreignKey: { field: 'centro_costo_id' } });
     Sopi.belongsTo(Financing, { foreignKey: { field: 'financiamiento_id' } });
-    Sopi.belongsToMany(SopiStatus, { as: 'sopiLogStatus', through: SopiLog, foreignKey: { field: 'sopi_id', name: 'sopiId' } });
+    Sopi.hasMany(SopiLog /* { as: 'sopiLogStatus', through: SopiLog, uniqueKey:false  *//* foreignKey: { field: 'sopi_id', name: 'sopiId' }  }*/);
     Sopi.hasMany(SopiDetail, { foreignKey: { field: 'solicitud_id' } });
     Sopi.belongsTo(SopiStatus, { as: 'status', foreignKey: { field: 'estado_id' } });
 
@@ -156,14 +161,14 @@ SopiDetail.loadAssociations = () => {
 
 }
 SopiLog.loadAssociations = () => {
-    // SopiLog.belongsTo(Sopi);
-    // SopiLog.belongsTo(SopiStatus);
+    SopiLog.belongsTo(Sopi);
+    SopiLog.belongsTo(SopiStatus);
     const { User } = require("../../auth/domain/models");
     SopiLog.belongsTo(User, { foreignKey: { field: 'usuario_id' } });
 
 }
 SopiStatus.loadAssociations = () => {
-    SopiStatus.belongsToMany(Sopi, { through: SopiLog, foreignKey: { field: 'estado_id', name: 'statusId' } });
+    SopiStatus.hasMany(SopiLog,/* { through: SopiLog, uniqueKey:false *//* foreignKey: { field: 'estado_id', name: 'statusId' }  }*/);
     SopiStatus.hasMany(Sopi, { foreignKey: { field: 'estado_id' } });
 
 }

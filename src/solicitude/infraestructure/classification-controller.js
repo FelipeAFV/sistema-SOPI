@@ -55,7 +55,7 @@ class CategoryController {
     deleteCategory = async (req,res) => {
         try {
             const {id} = req.body
-            if(!ic) throw new Error('body incompleto')
+            if(!id) throw new Error('body incompleto')
             const category = await deleteCategoryBydId(id)
             sendHttpResponse(res,category,200)
         } catch (error) {

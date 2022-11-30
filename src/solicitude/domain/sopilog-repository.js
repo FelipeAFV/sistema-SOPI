@@ -8,7 +8,7 @@ const addLogEntryByStatusName = async (sopiId, userId, statusName) => {
 
 const addLogEntryByStatusId = async (sopiId, userId, comment, statusId) => {
 
-    const logEntry = await SopiLog.create({userId, sopiId, statusId: statusId, comment: comment})
+    const logEntry = await SopiLog.create({userId, sopiId, sopiStatusId: statusId, comment: comment})
 
     return logEntry;
 }
