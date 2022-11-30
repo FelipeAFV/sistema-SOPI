@@ -61,7 +61,7 @@ const findAllManagerInPurchase = async (id) => {
     } catch (error) {
         throw new Error(error.message)
     }
-}
+};
 
 exports.findAllManagerInPurchase = findAllManagerInPurchase;
 exports.findPossibleManagers = findPossibleManagers;

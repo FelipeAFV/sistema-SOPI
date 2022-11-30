@@ -69,6 +69,14 @@ const findManagerFromPurchaseDocument = async (docId) => {
         include: [{ model: Document, where: {id: docId} }]}]});
 }
 
+const disableManagerById = async (id) => {
+    try {
+        const manager = await Manager.findOne({where:id});
+        return await manager.update({isActive: false});
+    } catch (error) {
+        throw new Error('Error al actualizar Manager')
+    }
+}
 
 
 exports.findAllManagers = findAllManagers;
@@ -81,3 +89,4 @@ exports.saveManager = saveManager;
 exports.findOneManager = findOneManager;
 exports.findManagersWithConditions = findManagersWithConditions;
 exports.findOneManagerByUserId = findOneManagerByUserId;
+exports.disableManagerById = disableManagerById;

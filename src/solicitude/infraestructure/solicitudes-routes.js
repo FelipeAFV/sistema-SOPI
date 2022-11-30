@@ -15,7 +15,6 @@ const router = Router();
 router.get('/', hasAnyPermission(['SOPI_VER', 'SOPI_VER_CREADAS', 'SOPI_EDITAR_ESTADO_REVISADO_REFERENTE']),getAllSopi);
 router.post('/', hasPermission(['SOPI_CREAR']), addNewSopi);
 router.put('/', hasAnyPermission(['SOPI_EDITAR', 'SOPI_EDITAR_ESTADO_REVISADO_REFERENTE']), updateSopi);
-router.get('/', getAllSopi);
 //routes for cost center
 router.post('/centroCosto', createCostCenter);
 router.put('/centroCosto', updateCostCenter);
