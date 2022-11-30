@@ -1,5 +1,5 @@
 const { sendHttpResponse } = require("../../share/utils/response-parser");
-const { findAllCostCenter, saveCostCenter, getCostCenterByName } = require("../domain/costcenter-repository")
+const { findAllCostCenter, saveCostCenter, getCostCenterByName, updateCostCenterById, deleteCostCenterById } = require("../domain/costcenter-repository")
 
 const getAllCostCenter = async (req, res) => {
     const costCenters = await findAllCostCenter();
@@ -24,7 +24,32 @@ const createCostCenter = async (req, res) => {
         const costCenterCreated = await saveCostCenter(costCenterData);
         sendHttpResponse(res,costCenterCreated,200);
     }
+};
+
+const updateCostCenter = async (req,res) => {
+    try {
+        const {id, name} = req.body;
+        if(!id || !name) throw new Error('Body incompleto');
+        const costCenter = await updateCostCenterById(id, {name});
+        sendHttpResponse(res, costCenter, 200);
+
+    } catch (error) {
+        sendHttpResponse(res, error.message, 400);
+    }
+};
+
+const deleteCostCenter = async(req,res) => {
+    try {
+        const {id} = req.body;
+        if(!id) throw new Error('No hay id relacionado a dicho cost center');
+        const deleteCostCenter = await deleteCostCenterById(id);
+        sendHttpResponse(res, deleteCostCenter, 200);
+    } catch (error) {
+        sendHttpResponse(res, error.message, 400);
+    }
 }
 
 exports.getAllCostCenter = getAllCostCenter;
 exports.createCostCenter = createCostCenter;
+exports.updateCostCenter = updateCostCenter;
+exports.deleteCostCenter = deleteCostCenter;

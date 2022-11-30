@@ -1,7 +1,7 @@
 const { hasProfile, hasPermission, hasAnyPermission } = require('../../auth/infraestructure/check-auth-middleware');
 const { CategoryController} = require('./classification-controller');
-const { getAllCostCenter, createCostCenter } = require('./costcenter-controller');
-const { getAllFinancing, createFinancing, updateFinancing } = require('./financing-controller');
+const { getAllCostCenter, createCostCenter, updateCostCenter, deleteCostCenter } = require('./costcenter-controller');
+const { getAllFinancing, createFinancing, updateFinancing, deleteFinancing } = require('./financing-controller');
 const { addNewSopi, getSopi, updateSopi, getAllSopi } = require('./sopi-controller');
 const { verifyUpdateStatusPermissions, sopiDetailPermission } = require('./sopi-middleware');
 const { getStatuses } = require('./sopistatus-controller');
@@ -17,17 +17,15 @@ router.post('/', hasPermission(['SOPI_CREAR']), addNewSopi);
 router.put('/', hasAnyPermission(['SOPI_EDITAR', 'SOPI_EDITAR_ESTADO_REVISADO_REFERENTE']), updateSopi);
 router.get('/', getAllSopi);
 //routes for cost center
-router.post('/centroCosto', createCostCenter );
-//router.put('/centroCosto', updateCostCenter);
+router.post('/centroCosto', createCostCenter);
+router.put('/centroCosto', updateCostCenter);
 router.get('/centroCosto', getAllCostCenter);
-//router.delete()
-
-
+router.delete('/centroCosto', deleteCostCenter);
 //router for financing
 router.post('/financiamiento', createFinancing);
-//router.put('/financiamiento', updateFinancing);
+router.put('/financiamiento', updateFinancing);
 router.get('/financiamiento', getAllFinancing);
-//router.delete();
+router.delete('/financiamiento', deleteFinancing);
 //routes for supplies
 router.post('/insumos', SupplyController.createSupply);
 router.get('/insumos', SupplyController.getSupplies);
@@ -41,7 +39,6 @@ router.delete('/insumos/clasificacion', CategoryController.deleteCategory);
 
 // status
 router.get('/estados', getStatuses);
-
 router.get('/:sopiId', sopiDetailPermission() , getSopi);
 
 

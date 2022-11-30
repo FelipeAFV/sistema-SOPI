@@ -1,6 +1,6 @@
 const { sendHttpResponse } = require("../../share/utils/response-parser");
 const { findAllCostCenter } = require("../domain/costcenter-repository");
-const { findAllFinancing, getFinancingByName, saveFinancing } = require("../domain/financing-repository");
+const { findAllFinancing, getFinancingByName, saveFinancing, updateFinancingById, deleteFinancingById } = require("../domain/financing-repository");
 
 const getAllFinancing = async (req, res) => {
     
@@ -28,20 +28,32 @@ const createFinancing = async (req, res) => {
 
 const updateFinancing = async (req,res) => {
     try {
-        const {financingId, name} = req.body;
+        const {id, name} = req.body;
         console.log(req.body)
-        if(!financingId) {
+        if(!id) {
             sendHttpResponse(res, '', 403, 'No existe financiamiento');
         }
-        const updatedFinancing = await updateFinancing(financingId, {name});
+        const updatedFinancing = await updateFinancingById(id, {name});
         sendHttpResponse(res, updatedFinancing, 200)
     } catch (error) {
         console.log(error.message);
         sendHttpResponse(res, '', 500, 'Error al actualizar');
         return;
     }
+};
+
+const deleteFinancing = async(req,res) => {
+    try {
+        const {id} = req.body;
+        if(!id) throw new Error('No hay id relacionado a dicho financiamiento');
+        const deleteFinancing = await deleteFinancingById(id);
+        sendHttpResponse(res, deleteFinancing, 200);
+    } catch (error) {
+        sendHttpResponse(res, error.message, 400);
+    }
 }
 
 exports.getAllFinancing = getAllFinancing;
 exports.createFinancing = createFinancing;
 exports.updateFinancing = updateFinancing;
+exports.deleteFinancing = deleteFinancing;

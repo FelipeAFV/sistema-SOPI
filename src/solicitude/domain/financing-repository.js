@@ -21,14 +21,26 @@ const saveFinancing = async(financing) => {
     return await Financing.create(financing);
 };
 
-const updateFinancing = async(id , financing) => {
+const updateFinancingById = async(id , financing) => {
     const financingToUpdate = await Financing.findOne({where:id});
     return await financingToUpdate.update(financing);
-}
+};
+
+const deleteFinancingById = async(id) => {
+    try {
+        const financing = await Financing.findOne({where: {id}});
+        if(!financing) throw new Error('No existe financiamiento con ese id');
+        financing.destroy();
+        return 'Financiamiento eliminado exitosamente'
+    } catch (error) {
+        throw new Error(error.message);
+    }
+};
 
 
 
 exports.findAllFinancing = findAllFinancing;
 exports.saveFinancing = saveFinancing;
 exports.getFinancingByName = getFinancingByName;
-exports.updateFinancing = updateFinancing;
+exports.updateFinancingById = updateFinancingById;
+exports.deleteFinancingById = deleteFinancingById;
