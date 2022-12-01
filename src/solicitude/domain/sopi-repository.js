@@ -12,7 +12,7 @@ const {
 const getSopiById = async (id) => {
   const sopi = await Sopi.findOne({
     where: { id: id },
-    include: [{ model: SopiStatus, as: "status" }, {model:CostCenter},{model:Financing}, {model:User}],
+    include: [{ model: SopiStatus, as: "status" }, {model:CostCenter},{model:Financing}, {model: User, attributes:['username','firstname','lastname']}],
   });
   return sopi;
 };
