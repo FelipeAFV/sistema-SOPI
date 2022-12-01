@@ -45,6 +45,49 @@ const generateSopiDetails = async (items, sopiId) => {
     }
     const { name, features, quantity } = item;
 
+    return sopiDetails;
+
+
+
+}
+}
+
+
+/*const createSopiSeqTransactional = async ({ costCenterId, financingId, basis, userId, items, priority }) => {
+
+    try {
+        console.log(items.length)
+        if (!items || items.length == 0) {
+            throw new Error('La sopi debe ser ingresada con detalles')
+        }
+        const response = await sequelize.transaction(async (t) => {
+
+            const status = await findStatusByName('INGRESADA');
+
+            let sopiCreated = await saveSopi({ costCenterId, financingId, basis: '', userId, statusId: status.id, priority })
+                .catch(e => { console.log(e); throw new Error('Centro de costo o financiamiento no existe') });
+
+            sopiCreated = await updateSopi(sopiCreated.id, { basis: basis || null })
+                .catch(e => { throw new Error('Fundamento debe existir') });
+
+            await addLogEntryByStatusName(sopiCreated.id, userId, 'INGRESADA');
+            console.log('A añadir entrada de logs')
+
+            const details = await generateSopiDetails(items, sopiCreated.id);
+
+            // for (let detail of details) {
+
+            //     await sopiCreated.setSopiDetails(detail);
+            // }
+
+
+            return sopiCreated;
+        });
+        return response;
+
+    } catch (e) {
+        console.log(e)
+        throw new Error(e.message);
     if (!name || !features || !quantity) {
       throw new Error(`Datos faltantes para item ${JSON.stringify(item)}`);
     }
@@ -58,7 +101,7 @@ const generateSopiDetails = async (items, sopiId) => {
   }
 
   return sopiDetails;
-};
+};*/
 
 const createSopiSeqTransactional = async ({
   costCenterId,
@@ -66,6 +109,7 @@ const createSopiSeqTransactional = async ({
   basis,
   userId,
   items,
+  priority
 }) => {
   try {
     console.log(items.length);
@@ -81,6 +125,7 @@ const createSopiSeqTransactional = async ({
         basis: "",
         userId,
         statusId: status.id,
+        priority
       }).catch((e) => {
         console.log(e);
         throw new Error("Centro de costo o financiamiento no existe");
@@ -125,11 +170,13 @@ const updateSopiWithStatus = async ({
   technicalSpecification,
   userId,
   comment,
+  priority
 }) => {
   const sopiUpdated = await updateSopi(sopiId, {
     statusId: statusId,
     userId: userId,
     technicalSpecification: technicalSpecification,
+    priority:priority
   });
 
   await addLogEntryByStatusId(sopiId, userId, comment, statusId);
