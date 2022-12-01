@@ -6,8 +6,8 @@ const { sequelize } = require("../../database/db-init");
 const { Op } = require("sequelize");
 
 
-const addTicket = async ({ managerId, userId, title, content, date, purchaseId }) => {
-    const newTicket = await Ticket.create({ title: title, content: content, expirationDate: date, managerId: managerId, ticketStatusId: 1, userId: userId, purchaseId: purchaseId });
+const addTicket = async ({ managerId, userId, title, content, date, purchaseId, statusId }) => {
+    const newTicket = await Ticket.create({ title: title, content: content, expirationDate: date, managerId: managerId, ticketStatusId: statusId, userId: userId, purchaseId: purchaseId });
     return newTicket
 };
 

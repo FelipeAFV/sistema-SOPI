@@ -5,6 +5,7 @@ const { addComment } = require('./comment-controller');
 const { addDocument, getDocument, getDocuments, deleteDoc } = require('./document-controller');
 const { addManager, possibleManager, disableManager } = require('./manager-controller');
 const { ticketCreation, getTickets, getTicket, updateTicket } = require('./ticket-controller');
+const { getTicketStatuses } = require('./ticketstatus-controller');
 
 
 
@@ -20,6 +21,7 @@ router.get('/documentos',  getDocuments);
 router.delete('/documentos', deleteDoc);
 router.post('/ticket', ticketCreation);
 router.get('/ticket', getTickets);
+router.get('/ticket/estados', getTicketStatuses);
 router.get('/ticket/:ticketId', getTicket);
 router.get('/documentos/:docId',  getDocument);
 router.put('/ticket', updateTicket);

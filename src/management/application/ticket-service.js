@@ -17,13 +17,16 @@ const {
   findAllPermissionsFromUserAndProfile,
 } = require("../../auth/domain/permission-repository");
 const { Ticket } = require("../domain/models");
+const { findStatusByName } = require("../domain/ticketstatus-repository");
 
 const createTicket = async (ticketData, idUser, idProfile) => {
   try {
+
+    const status = await findStatusByName('PENDIENTE');
     //Verificar usuario
     const user = await userRepository.findUserById(ticketData.userId);
     if (!user) throw new Error("usuario no existe");
-
+    ticketData.statusId = status.id;
     //Verificar datos
     if (
       !ticketData.title ||
