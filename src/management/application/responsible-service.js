@@ -2,7 +2,7 @@ const { findAllPermissionsFromUserAndProfile } = require("../../auth/domain/perm
 const { userRepository } = require("../../auth/domain/user-repository");
 const { sendHttpResponse } = require("../../share/utils/response-parser");
 const { ApiValidationError } = require("../domain/api-errors");
-const { saveManager, findManager, findAllManager, findAllManagers } = require("../domain/manager-repository");
+const { saveManager, findManager, findAllManager, findAllManagers, updateManager } = require("../domain/manager-repository");
 
 const addManagerForSopi = async ({managerId, purchaseId, profileId}) => {
     
@@ -19,12 +19,14 @@ const addManagerForSopi = async ({managerId, purchaseId, profileId}) => {
     
     const existingManager = await findManager({managerId, purchaseId});
 
-    if (existingManager && existingManager.isActive) {
+    if (existingManager && !existingManager.isActive) {
 
+        return await updateManager(managerId, { isActive: true})
 
-
+        
+    } else if (existingManager && existingManager.isActive) {
+        
         throw new ApiValidationError(`El gestor ya se encuentra asociado a la compra con id ${purchaseId}`);
-
     }
 
     const manager = await saveManager({userId: managerId, purchaseId});

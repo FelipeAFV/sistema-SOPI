@@ -8,6 +8,15 @@ const saveManager = async ({userId, purchaseId}) => {
     
 }
 
+const updateManager = async (managerId, data) => {
+
+    const manager = await Manager.findOne({ where: {
+        userId: managerId
+    }})
+    return await manager.update(data);
+
+}
+
 const findManager = async ({managerId, purchaseId}) => {
     const manager = await Manager.findOne({where:{userId: managerId, purchaseId:purchaseId}});
     return manager;
@@ -90,3 +99,4 @@ exports.findOneManager = findOneManager;
 exports.findManagersWithConditions = findManagersWithConditions;
 exports.findOneManagerByUserId = findOneManagerByUserId;
 exports.disableManagerById = disableManagerById;
+exports.updateManager = updateManager;
