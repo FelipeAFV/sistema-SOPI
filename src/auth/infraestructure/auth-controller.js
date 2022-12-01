@@ -35,7 +35,7 @@ class AuthController {
                 username: resp.username,
                 profileId: resp.profile.id
             },process.env.SECRET_KEY, { expiresIn: '8h'}))  
-            
+            //res.cookie('jwt',token,{httpOnly:true})
             res.cookie('jwt',token,{httpOnly:false, sameSite: 'none', secure: true})
             sendHttpResponse(res, resp,200)
         } catch (error) {
