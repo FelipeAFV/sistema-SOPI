@@ -31,8 +31,8 @@ const getSopi = async  (req, res) => {
         sendHttpResponse(res, sopiWithDetails, 200);
         
     } catch (e) {
-        console.log(e)
-        sendHttpResponse(res, 'Error al buscar sopi con id ' + sopiId, 400);
+        console.log(e.message)
+        sendHttpResponse(res, 'Error al buscar sopi con id ' + sopiId, 400, e.message);
 
     }
 }
