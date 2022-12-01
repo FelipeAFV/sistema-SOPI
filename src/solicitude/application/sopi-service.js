@@ -50,6 +50,7 @@ const generateSopiDetails = async (items, sopiId) => {
 
 
 }
+}
 
 
 /*const createSopiSeqTransactional = async ({ costCenterId, financingId, basis, userId, items, priority }) => {
@@ -108,6 +109,7 @@ const createSopiSeqTransactional = async ({
   basis,
   userId,
   items,
+  priority
 }) => {
   try {
     console.log(items.length);
@@ -123,6 +125,7 @@ const createSopiSeqTransactional = async ({
         basis: "",
         userId,
         statusId: status.id,
+        priority
       }).catch((e) => {
         console.log(e);
         throw new Error("Centro de costo o financiamiento no existe");
@@ -167,11 +170,13 @@ const updateSopiWithStatus = async ({
   technicalSpecification,
   userId,
   comment,
+  priority
 }) => {
   const sopiUpdated = await updateSopi(sopiId, {
     statusId: statusId,
     userId: userId,
     technicalSpecification: technicalSpecification,
+    priority:priority
   });
 
   await addLogEntryByStatusId(sopiId, userId, comment, statusId);
