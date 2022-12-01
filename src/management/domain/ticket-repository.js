@@ -1,4 +1,4 @@
-const { Manager } = require("./models")
+const { Manager, TicketStatus } = require("./models")
 const { User } = require("../../auth/domain/models");
 const { Ticket } = require('./models');
 const { Purchase, PurchaseStatus } = require("../../purchases/domain/models");
@@ -24,7 +24,7 @@ const getTicketsFromUserId = async (id) => {
 
 const getTicketFromId = async (id) => {
 
-    const ticket = await Ticket.findOne({ where: { id: id } })
+    const ticket = await Ticket.findOne({ where: { id: id }, include:[{model: User},{model:TicketStatus},{model:Manager, include:[{model:User}]}] })
 
     return ticket;
 };
@@ -43,7 +43,7 @@ const updateFromIdTicket = async (id, updateValues) => {
 }
 
 const getAllTickets = async(conditions, page ,perPage) => {
-    const tickets = await Ticket.findAndCountAll({where:conditions , offset: (page-1)*perPage, limit:perPage, distinct: true,order: [['fecha_creacion','ASC'] ]});
+    const tickets = await Ticket.findAndCountAll({where:conditions,include:[{model:User}] , offset: (page-1)*perPage, limit:perPage, distinct: true,order: [['fecha_creacion','ASC'] ]});
 
     return tickets;
 }
