@@ -57,7 +57,7 @@ const getTicket = async (req, res) => {
             auxDate = auxDate.split('-')
             let auxTicketExpiration = ticket.expirationDate.split('-')
             for (let i = 0; i < auxDate.length; i++) {
-                if (((auxTicketExpiration[i] - auxDate[i]) > 0) && i > 0) {
+                if (((auxTicketExpiration[i] - auxDate[i]) >= 0) && i > 0) {
                     break;
                 } else if (i == 0) {
                     continue;
