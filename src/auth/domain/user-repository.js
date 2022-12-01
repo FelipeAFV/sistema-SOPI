@@ -77,7 +77,7 @@ class UserRepositorySequelMySQL{
     }
 
     findAll = async () => {
-        const users = await User.findAll();
+        const users = await User.findAll({include:[{model:Profile}], attributes:{exclude:['password']}});
         
         return users;
     }
