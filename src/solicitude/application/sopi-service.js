@@ -38,7 +38,7 @@ const generateSopiDetails = async (items, sopiId) => {
 }
 
 
-const createSopiSeqTransactional = async ({ costCenterId, financingId, basis, userId, items }) => {
+const createSopiSeqTransactional = async ({ costCenterId, financingId, basis, userId, items, priority }) => {
 
     try {
         console.log(items.length)
@@ -49,7 +49,7 @@ const createSopiSeqTransactional = async ({ costCenterId, financingId, basis, us
 
             const status = await findStatusByName('INGRESADA');
 
-            let sopiCreated = await saveSopi({ costCenterId, financingId, basis: '', userId, statusId: status.id })
+            let sopiCreated = await saveSopi({ costCenterId, financingId, basis: '', userId, statusId: status.id, priority })
                 .catch(e => { console.log(e); throw new Error('Centro de costo o financiamiento no existe') });
 
             sopiCreated = await updateSopi(sopiCreated.id, { basis: basis || null })
