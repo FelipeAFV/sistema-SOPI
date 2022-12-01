@@ -52,20 +52,24 @@ const getTicket = async (req, res) => {
             sendHttpResponse(res, 'Error', 500, 'Ticket no existe');
 
         } else {
-            const currentDate = new Date()
-            let auxDate = currentDate.toISOString().split('T')[0]
-            auxDate = auxDate.split('-')
-            let auxTicketExpiration = ticket.expirationDate.split('-')
-            for (let i = 0; i < auxDate.length; i++) {
-                if (((auxTicketExpiration[i] - auxDate[i]) >= 0) && i > 0) {
-                    break;
-                } else if (i == 0) {
-                    continue;
-                } else {
-                    ticket = await updateTicketFromId(ticket, { ticketStatusId: 4 })
+            if (ticket.ticketStatus == 'COMPLETADO' || ticket.ticketStatus == 'CANCELADO') {
+                const currentDate = new Date()
+                let auxDate = currentDate.toISOString().split('T')[0]
+                auxDate = auxDate.split('-')
+                let auxTicketExpiration = ticket.expirationDate.split('-')
+                for (let i = 0; i < auxDate.length; i++) {
+                    if (((auxTicketExpiration[i] - auxDate[i]) >= 0) && i > 0) {
+                        break;
+                    } else if (i == 0) {
+                        continue;
+                    } else {
+                        ticket = await updateTicketFromId(ticket, { ticketStatusId: 4 })
                 }
 
             }
+                
+            }
+            
             const permissions = await findAllPermissionsFromUserAndProfile(req.user.id, req.user.profileId)
             const auth = permissions.find(a => a.name == 'TICKET_VER');
             const data = {
