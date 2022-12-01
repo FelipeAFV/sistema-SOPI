@@ -24,14 +24,15 @@ const addNewSopi = async (req, res) => {
 
 const getSopi = async  (req, res) => {
     const sopiId = req.params.sopiId;
+    const user = req.user;
     try {
-        const sopiWithDetails = await sopiService.getSopiByIdWithDetails(sopiId);
+        const sopiWithDetails = await sopiService.getSopiByIdWithDetails(sopiId , user.profileId, user.id);
 
         sendHttpResponse(res, sopiWithDetails, 200);
         
     } catch (e) {
-        console.log(e)
-        sendHttpResponse(res, 'Error al buscar sopi con id ' + sopiId, 400);
+        console.log(e.message)
+        sendHttpResponse(res, 'Error al buscar sopi con id ' + sopiId, 400, e.message);
 
     }
 }

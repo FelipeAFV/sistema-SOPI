@@ -17,6 +17,14 @@ const getSopiById = async (id) => {
   return sopi;
 };
 
+const getSopyByConditions = async(conditions) => {
+  const sopi = await Sopi.findOne({
+    where: conditions,
+    include: [{model: SopiStatus, as: "status"}, {model: CostCenter}, {model:Financing}, {model:User, attributes: ['username','firstname','lastname']}]
+  })
+  return sopi;
+}
+
 const getAllSopis = async (page, perPage) => {
   const sopis = await Sopi.findAll({
     include: [
@@ -133,3 +141,4 @@ exports.getAllSopis = getAllSopis;
 exports.getAllSopisByConditions = getAllSopisByConditions;
 exports.getSopiFromPurchaseManager = getSopiFromPurchaseManager;
 exports.getAllSopisByStatus = getAllSopisByStatus;
+exports.getSopyByConditions = getSopyByConditions;
