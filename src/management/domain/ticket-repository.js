@@ -24,7 +24,7 @@ const getTicketsFromUserId = async (id) => {
 
 const getTicketFromId = async (id) => {
 
-    const ticket = await Ticket.findOne({ where: { id: id }, include:[{model: User},{model:TicketStatus},{model:Manager, include:[{model:User}]}] })
+    const ticket = await Ticket.findOne({ where: { id: id }, include:[{model: User, attributes:['username','firstname','lastname']},{model:TicketStatus},{model:Manager, attributes:['id'],include:[{model:User, attributes:['username','firstname','lastname']}]}] })
 
     return ticket;
 };
@@ -43,8 +43,8 @@ const updateFromIdTicket = async (id, updateValues) => {
 }
 
 const getAllTickets = async(conditions, page ,perPage) => {
-    const tickets = await Ticket.findAndCountAll({where:conditions,include:[{model:User}] , offset: (page-1)*perPage, limit:perPage, distinct: true,order: [['fecha_creacion','ASC'] ]});
-
+    const tickets = await Ticket.findAndCountAll({where:conditions,include:[{model:User, attributes:['username','firstname','lastname']}] , offset: (page-1)*perPage, limit:perPage, distinct: true,order: [['fecha_creacion','ASC'] ]});
+    
     return tickets;
 }
 
