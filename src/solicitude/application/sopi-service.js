@@ -173,16 +173,16 @@ const updateSopiWithStatus = async ({
   userId,
   comment,
   priority,
-  ccBiding,
-  ccPurchaseOrder
+  
+  
 }) => {
   const sopiUpdated = await updateSopi(sopiId, {
     statusId: statusId,
     userId: userId,
     technicalSpecification: technicalSpecification,
     priority:priority,
-    ccBiding:ccBiding,
-    ccPurchaseOrder:ccPurchaseOrder
+    
+    
   });
 
   await addLogEntryByStatusId(sopiId, userId, comment, statusId);
