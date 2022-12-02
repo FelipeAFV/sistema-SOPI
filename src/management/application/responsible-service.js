@@ -21,7 +21,7 @@ const addManagerForSopi = async ({managerId, purchaseId, profileId}) => {
 
     if (existingManager && !existingManager.isActive) {
 
-        return await updateManager(managerId, { isActive: true})
+        return await updateManager(managerId, purchaseId, { isActive: true})
 
         
     } else if (existingManager && existingManager.isActive) {

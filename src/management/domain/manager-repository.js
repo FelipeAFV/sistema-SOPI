@@ -8,10 +8,10 @@ const saveManager = async ({userId, purchaseId}) => {
     
 }
 
-const updateManager = async (managerId, data) => {
+const updateManager = async (managerId, purchaseId, data) => {
 
     const manager = await Manager.findOne({ where: {
-        userId: managerId
+        userId: managerId, purchaseId
     }})
     return await manager.update(data);
 
