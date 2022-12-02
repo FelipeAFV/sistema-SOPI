@@ -6,6 +6,14 @@ const Purchase = sequelize.define('purchase',{
     totalAmmount: {
         type: DataTypes.DOUBLE,
         field: 'costo_total'
+    },
+    ccPurchaseOrder: {
+        type: DataTypes.STRING,
+        field: 'orden_CC'
+    },
+    ccBidding:{
+        type: DataTypes.STRING,
+        field: 'licitacion_CC'
     }
 }, {
     tableName: 'compras'
