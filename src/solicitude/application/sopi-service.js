@@ -195,8 +195,8 @@ const getSopiByIdWithDetails = async (sopiId, profileId, userId) => {
       profileId
     );
 
+    const sopi = await getSopiById(sopiId);
     if (access.find((a) => a.name == "SOPI_VER")) {
-      const sopi = await getSopiById(sopiId);
       const details = await getSopiDetailsById(sopiId);
       const sopiWithDetails = {
         sopi: sopi,
@@ -214,6 +214,13 @@ const getSopiByIdWithDetails = async (sopiId, profileId, userId) => {
       if (sopi === null) {
         throw new Error("No existe sopi con ese estado");
       }
+      const details = await getSopiDetailsById(sopiId);
+      const sopiWithDetails = {
+        sopi: sopi,
+        details: details,
+      };
+      return sopiWithDetails;
+    } else if (access.find(p => p.name == 'SOPI_VER_CREADAS') && sopi.userId == userId ) {
       const details = await getSopiDetailsById(sopiId);
       const sopiWithDetails = {
         sopi: sopi,

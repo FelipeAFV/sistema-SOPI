@@ -125,19 +125,13 @@ class AuthController {
 
     getAllUsers = async (req,res) => {
         try {
-
-            const permissions = await findAllPermissionsFromUserAndProfile(req.user.id,req.user.profileId)
-            const auth = permissions.find((a) => a.name == "USUARIO_VER");
             const {userId} = req.params;
-            if(userId && (auth || userId == req.user.id)){
+            if(userId ){
                 const users = await userRepository.findUserById(userId)
                 sendHttpResponse(res,users,200)    
-            }else if (auth){
-                console.log('hola');
+            }else {
                 const users = await userRepository.findAll()
                 sendHttpResponse(res,users,200)
-            }else {
-                sendHttpResponse(res,'No tienes los permisos necesarios',403)
             }
             
         } catch (error) {

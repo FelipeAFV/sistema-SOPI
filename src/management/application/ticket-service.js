@@ -120,6 +120,7 @@ const getTicketsFromPurchaseId = async (query, userId, profileId) => {
             [Op.or]: [{ userId: `${userId}` },{ managerId: {[Op.in]: result}}],
           };
           const { count, rows } = await getAllTickets(where, page, perPage);
+          console.log(count, rows)
           const ticketsFiltered = pagination({
             data: rows,
             count,

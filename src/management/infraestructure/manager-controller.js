@@ -44,7 +44,9 @@ const possibleManager = async (req,res) => {
             sendHttpResponse(res,possibleManagers,200)   
         }else{
             const managers = await findAllManagerInPurchase(compraId)
+            console.log(managers)
             const activeManagers = managers.filter((m) => m.isActive)
+            console.log(activeManagers)
             sendHttpResponse(res,activeManagers,200)
         }
          

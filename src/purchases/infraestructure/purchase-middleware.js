@@ -27,9 +27,9 @@ const purchaseDetailPermission = () => {
         const m = await getPurchaseFromManagerId(req.params.compraId, req.user.id);
         const purchases = await getPurchaseWithUserTickets(req.user.id, req.params.compraId)
 
-        console.log(purchases.tickets)
 
-        if(!m && purchases.tickets.length == 0) {
+
+        if(!m && purchases.tickets && purchases.tickets.length == 0) {
             sendHttpResponse(res, 'Error', 403, 'No tienes permisos')
             return;
         }
