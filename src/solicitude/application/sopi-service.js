@@ -125,9 +125,7 @@ const createSopiSeqTransactional = async ({
         basis: "",
         userId,
         statusId: status.id,
-        priority,
-        ccPurchaseOrder,
-        ccBidding
+        priority
       }).catch((e) => {
         console.log(e);
         throw new Error("Centro de costo o financiamiento no existe");
