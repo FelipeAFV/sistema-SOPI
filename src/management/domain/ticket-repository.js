@@ -48,15 +48,21 @@ const getAllTicketsOnlyManager = async(conditions, page ,perPage) => {
     return tickets;
 }
 const getAllTickets = async(conditions, page ,perPage) => {
-<<<<<<< HEAD
-    const tickets = await Ticket.findAndCountAll({where:conditions,include:[{ model: Manager},{model:User, attributes:['username','firstname','lastname']},{model:TicketStatus}] , offset: (page-1)*perPage, limit:perPage, distinct: true,order: [['fecha_creacion','ASC'] ]});
-    
-=======
     const tickets = await Ticket.findAndCountAll({where:conditions,include:[{model:User, attributes:['username','firstname','lastname']},{model:TicketStatus}] , offset: (page-1)*perPage, limit:perPage, distinct: true,order: [['fecha_creacion','ASC'] ]});
->>>>>>> dd3e6785fbe1230354e3fb40b58bedd2df307257
     return tickets;
 }
 
+
+const getAllTicketsFromManagerOrUser = async (userId, purchaseId) => {
+    if (purchaseId) {
+        const [tickets, metadata] =  await sequelize.query({ query: 'select * from tickets t left join compras c on t.compra_id = c.id left join gestores g on g.compra_id = c.id where(g.usuario_id = ? and(t.responsable_id = ? or t.gestor_id = g.id)) and c.id = ?;'}, { replacements: [userId, userId, purchaseId]})
+        return tickets;
+    } else {
+        const [tickets, metadata] =  await sequelize.query({ query: 'select * from tickets t left join compras c on t.compra_id = c.id left join gestores g on g.compra_id = c.id where(g.usuario_id = ? and(t.responsable_id = ? or t.gestor_id = g.id));'}, { replacements: [userId, userId]})
+        return tickets;
+
+    }
+}
 const getTicketFromPurchase = async (purchaseId) => {
     return await Ticket.findAll({ where: { purchaseId } });
 }
@@ -69,3 +75,4 @@ exports.getTicketsFromUserId = getTicketsFromUserId;
 exports.getAllTickets = getAllTickets;
 exports.getTicketFromPurchase = getTicketFromPurchase;
 exports.getAllTicketsOnlyManager = getAllTicketsOnlyManager;
+exports.getAllTicketsFromManagerOrUser = getAllTicketsFromManagerOrUser;
