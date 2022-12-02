@@ -6,6 +6,7 @@ const {
   saveManager,
   findOneManagerByUserId,
   findOneManagerForPurchase,
+  findManagersWithConditions,
 } = require("../domain/manager-repository");
 const {
   addTicket,
@@ -103,16 +104,20 @@ const getTicketsFromPurchaseId = async (query, userId, profileId) => {
     //Verificación de manager
     console.log(userId)
     console.log("TICKET MANAGER")
-    const existingManager = await findOneManagerByUserId({ userId:userId });
-    if (existingManager != null) {
-      
+    const existingManagers = await findManagersWithConditions({ userId:userId });
+    const result = existingManagers.reduce((acc,item)=>{
+      if(!acc.includes(item.id)){
+        acc.push(item.id);
+      }
+      return acc;
+    },[]);
+    console.log(result)
+
+    if (existingManagers != null) {
       if(compraId) {
-        const existingManagerForPurchase = await findOneManagerForPurchase({ creatorId: userId, purchaseId:compraId });
-        const { id } = existingManagerForPurchase;
-        console.log(id)
         where = {
             purchaseId: { [Op.eq]: `${compraId}` },
-            [Op.or]: [{ userId: `${userId}` },{ managerId: `${id}` }],
+            [Op.or]: [{ userId: `${userId}` },{ managerId: {[Op.in]: result}}],
           };
           const { count, rows } = await getAllTickets(where, page, perPage);
           const ticketsFiltered = pagination({
@@ -124,7 +129,7 @@ const getTicketsFromPurchaseId = async (query, userId, profileId) => {
           return ticketsFiltered;
       } else {
         where = {
-            [Op.or]: [{ userId: `${userId}` }, { managerId: `${id}` }],
+            [Op.or]: [{ userId: `${userId}` }, { managerId: {[Op.in]: result} }],
           };        
           const { count, rows } = await getAllTickets(where, page, perPage);
           const ticketsFiltered = pagination({
