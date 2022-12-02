@@ -96,9 +96,10 @@ const updatePurchase = async(req,res) => {
 
         }
 
-        if (purchase.purchaseTypeId  || purchase.supplierId || purchase.totalAmmount) {
+        if (purchase.purchaseTypeId  || purchase.supplierId || purchase.totalAmmount || purchase.ccPurchaseOrder || purchase.ccBidding) {
             updatedPurchase = await updatePurchaseById(purchase.purchaseId, {purchaseTypeId: purchase.purchaseTypeId,
-                 supplierId: purchase.supplierId, totalAmmount:  purchase.totalAmmount});
+                 supplierId: purchase.supplierId, totalAmmount:  purchase.totalAmmount, ccBidding: purchase.ccBidding,
+                 ccPurchaseOrder: purchase.ccPurchaseOrder });
 
         }
         sendHttpResponse(res, updatedPurchase, 200);
