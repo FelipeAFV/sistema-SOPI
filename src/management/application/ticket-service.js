@@ -103,14 +103,16 @@ const getTicketsFromPurchaseId = async (query, userId, profileId) => {
     //Verificación de manager
     console.log(userId)
     console.log("TICKET MANAGER")
-    // const existingManager = await findOneManagerByUserId({ userId: userId });
-    const existingManager = await findOneManagerForPurchase({ creatorId: userId, purchaseId: compraId });
+    const existingManager = await findOneManagerByUserId({ userId:userId });
     if (existingManager != null) {
-      const { id } = existingManager;
+      
       if(compraId) {
+        const existingManagerForPurchase = await findOneManagerForPurchase({ creatorId: userId, purchaseId:compraId });
+        const { id } = existingManagerForPurchase;
+        console.log(id)
         where = {
             purchaseId: { [Op.eq]: `${compraId}` },
-            [Op.or]: [{ userId: `${userId}` }, { managerId: `${id}` }],
+            [Op.or]: [{ userId: `${userId}` },{ managerId: `${id}` }],
           };
           const { count, rows } = await getAllTickets(where, page, perPage);
           console.log(count, rows)
