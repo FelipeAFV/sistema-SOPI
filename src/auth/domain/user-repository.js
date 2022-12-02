@@ -22,7 +22,9 @@ class UserRepositorySequelMySQL{
             where: {
                 id: id
             }, 
-            include: Profile
+            include: Profile,
+            attributes:{exclude:['password']}
+            
         },)
         const accesses = await findAllAccessFromUserId(id);
         user.setDataValue('accesos', accesses);
@@ -38,7 +40,7 @@ class UserRepositorySequelMySQL{
                 where: {
                     name: profile
                 }
-            } }
+            },attributes:{exclude:['password']} }
             )
         return users;
     }
