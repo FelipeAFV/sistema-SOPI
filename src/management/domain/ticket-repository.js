@@ -48,7 +48,8 @@ const getAllTicketsOnlyManager = async(conditions, page ,perPage) => {
     return tickets;
 }
 const getAllTickets = async(conditions, page ,perPage) => {
-    const tickets = await Ticket.findAndCountAll({where:conditions,include:[{model:User, attributes:['username','firstname','lastname']},{model:TicketStatus}] , offset: (page-1)*perPage, limit:perPage, distinct: true,order: [['fecha_creacion','ASC'] ]});
+    const tickets = await Ticket.findAndCountAll({where:conditions,include:[{ model: Manager},{model:User, attributes:['username','firstname','lastname']},{model:TicketStatus}] , offset: (page-1)*perPage, limit:perPage, distinct: true,order: [['fecha_creacion','ASC'] ]});
+    
     return tickets;
 }
 
