@@ -41,7 +41,7 @@ const updateSopi = async (req, res) => {
 
     try {
         const permissions = await findAllPermissionsFromUserAndProfile(req.user.id, req.user.profileId);
-        const {sopiId, statusId, comment, financingId, costCenterId, technicalSpecification} = req.body;
+        const {sopiId, statusId, comment, financingId, costCenterId, technicalSpecification, priority} = req.body;
         let updatedSopi = '';
         
         if (!sopiId) {
@@ -63,8 +63,8 @@ const updateSopi = async (req, res) => {
         if (statusId) {
             updatedSopi = await sopiService.updateSopiStatus({sopiId, statusId, userId: req.user.id, comment});
         }
-        if (financingId || costCenterId) {
-            updatedSopi = await sopiRepo.updateSopi(sopiId, {financingId, costCenterId});
+        if (financingId || costCenterId || priority) {
+            updatedSopi = await sopiRepo.updateSopi(sopiId, {financingId, costCenterId, priority});
         }
     
         sendHttpResponse(res, updatedSopi,200);
