@@ -62,7 +62,8 @@ const findAllManagerInPurchase = async (id) => {
                 firstname: e.user.firstname,
                 lastname: e.user.lastname,
                 mail:e.user.mail,
-                profileId: e.user.profileId
+                profileId: e.user.profileId,
+                isActive: e.isActive
             })
         });
         return managersArray;

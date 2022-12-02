@@ -26,7 +26,7 @@ require('./database/db-associate-models').loadAllAssociations();
 
 const app = express();
 
-app.use(cors({credentials: true, origin: 'https://das-sopi.felipeafigueroav.com'}));
+app.use(cors({credentials: true, origin: 'http://localhost:4200'}));
 
 app.use(bodyParser.json());
 app.use(cookieParser());
