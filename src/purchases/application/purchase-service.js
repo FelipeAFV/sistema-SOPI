@@ -11,6 +11,7 @@ const {
   findManagerPurchase,
   findAllManager,
   findOneManagerByUserId,
+  findManagersWithConditions,
 } = require("../../management/domain/manager-repository");
 const { addlogByStatusId } = require("../domain/purchaselog-repository");
 const { findAllPermisionFromProfileId, findAllPermissionsFromUserAndProfile } = require("../../auth/domain/permission-repository");
@@ -78,8 +79,8 @@ const createPurchaseFromCompleteSopi = async ({ sopiId, userId }) => {
 const findPurchaseDetailByPurchaseId = async (id) => {
 
       const purchase = await getPurchaseById(id);
-      const status = await purchase.getPurchaseLogStatus();
-      purchase.status = status.map((status)=>status.name);
+      /* const status = await purchase.getPurchaseLogStatus();
+      purchase.status = status.map((status)=>status.name); */
       
       return purchase;
 };
@@ -126,8 +127,9 @@ const findPurchasesFilteredByPermissions = async (query,profileId, userId) => {
   // }
   //Ven compras manager y ticket asociado a compra
   const existingManager = await findOneManagerByUserId({userId: userId});
-  if(existingManager != null) {
-    const {id} = existingManager;
+  const existingManagers = await findManagersWithConditions({userId:userId});
+  if(existingManagers != null) {
+    /* const {id} = existingManager; */
     where = {
       [Op.or]: [{ userId: `${userId}` }]
     };
@@ -164,30 +166,7 @@ const findPurchasesFilteredByPermissions = async (query,profileId, userId) => {
       page,
       perPage
     });
-    /* throw new Error('No tienes accesos o no eres gestor'); */
   }
-
-
-  //const purchasesManager = await findPurchasesAsignedToManager(userId, page, perPage);
-
-  //const purchasesTicket = await findPurchasesWithTicketFromUser(userId, page, perPage);
-
-  //const finalPurchases = [...purchasesManager, ...purchasesTicket];
-
-
-  // Status filter
-  // const filteredPurchasesByStatus = purchases.filter(purchase => {
-  //   let permitted = false;
-  //   for (let access of purchasesPermissions) {
-  //     if (access.name.includes(purchase.status.name)) {
-  //       permitted = true;
-  //       break;
-  //     }
-
-  //   }
-  //   return permitted;
-  // });
-  //return finalPurchases;
 
 }
 
