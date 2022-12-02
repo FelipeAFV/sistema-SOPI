@@ -11,7 +11,7 @@ const createPurchase = async (req, res) => {
     try {
         switch (creationType) {
             case 'SOPI_COMPLETA':
-                response = await createPurchaseFromCompleteSopi({sopiId});
+                response = await createPurchaseFromCompleteSopi({sopiId, userId: req.user.id});
             default:
         }
         if (!response) {

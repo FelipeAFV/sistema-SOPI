@@ -19,8 +19,9 @@ const { sendHttpResponse } = require("../../share/utils/response-parser");
 const { pagination } = require("../../share/utils/api-feature");
 const { Op } = require("sequelize");
 const { borrarRepetidos, borrarRepetidos2 } = require("../../share/utils/deleteDuplicates");
+const { updateSopiStatus } = require("../../solicitude/application/sopi-service");
 
-const createPurchaseFromCompleteSopi = async ({ sopiId }) => {
+const createPurchaseFromCompleteSopi = async ({ sopiId, userId }) => {
   try {
     const response = await sequelize.transaction(async () => {
       // STEP 1: Find sopi with items
@@ -60,6 +61,9 @@ const createPurchaseFromCompleteSopi = async ({ sopiId }) => {
 
       // STEP 4: Link SOPI to Purchase
       await savePurchaseSopi({ sopiId: sopi.id, purchaseId: purchaseSaved.id });
+
+      
+      await updateSopiStatus({sopiId, statusId: 6, userId})
       return jsonPurchase;
     });
 

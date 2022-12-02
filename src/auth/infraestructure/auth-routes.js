@@ -15,7 +15,7 @@ router.get('/perfiles', getAllProfile);
 router.get('/perfiles/:profileId', getAllProfile);
 router.get('/permisos', AuthController.allPermissions);
 router.post('/usuarios', hasPermission(['USUARIO_INGRESAR']),AuthController.addUser);
-router.get('/usuarios', hasPermission(['USUARIO_VER']),AuthController.getAllUsers);
+router.get('/usuarios', AuthController.getAllUsers);
 router.get('/usuarios/permisos', getUserPermissions);
 router.get('/usuarios/:userId/permisos', getUserPermissions);
 router.get('/usuarios/:userId', AuthController.getAllUsers);

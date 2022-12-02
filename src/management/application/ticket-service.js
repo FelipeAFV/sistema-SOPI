@@ -5,6 +5,7 @@ const {
   findManager,
   saveManager,
   findOneManagerByUserId,
+  findOneManagerForPurchase,
 } = require("../domain/manager-repository");
 const {
   addTicket,
@@ -102,7 +103,8 @@ const getTicketsFromPurchaseId = async (query, userId, profileId) => {
     //Verificación de manager
     console.log(userId)
     console.log("TICKET MANAGER")
-    const existingManager = await findOneManagerByUserId({ userId: userId });
+    // const existingManager = await findOneManagerByUserId({ userId: userId });
+    const existingManager = await findOneManagerForPurchase({ creatorId: userId, purchaseId: compraId });
     if (existingManager != null) {
       const { id } = existingManager;
       if(compraId) {
@@ -111,6 +113,7 @@ const getTicketsFromPurchaseId = async (query, userId, profileId) => {
             [Op.or]: [{ userId: `${userId}` }, { managerId: `${id}` }],
           };
           const { count, rows } = await getAllTickets(where, page, perPage);
+          console.log(count, rows)
           const ticketsFiltered = pagination({
             data: rows,
             count,
