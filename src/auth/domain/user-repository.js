@@ -52,7 +52,6 @@ class UserRepositorySequelMySQL{
         const newUser = await User.create({
             username: userData.username,
             password: password,
-            expirationDate: date.setDate(date.getDate() + 31),
             firstname: userData.firstname,
             lastname: userData.lastname,
             mail: userData.mail,

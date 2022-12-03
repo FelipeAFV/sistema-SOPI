@@ -14,28 +14,6 @@ const login = async ({username, password}) => {
     var user = await userRepository.findUserByUsername(username)
     
     if(!user) throw new Error('Usuario no existe') 
-        
-    const currentDate = new Date()
-    let auxDate = currentDate.toISOString().split('T')[0]
-    auxDate = auxDate.split('-')
-    let auxUserExpiration = user.expirationDate.toISOString().split('T')[0]
-    //console.log(auxUserExpiration);
-    //console.log(auxDate);
-    auxUserExpiration = auxUserExpiration.split('-')
-    for (let i = 0; i < auxDate.length; i++) {
-        if (((auxUserExpiration[i] - auxDate[i]) >= 0) && i > 0) {
-            break;
-        }else if (i == 0) {
-            continue;
-        } else {
-            console.log(auxUserExpiration[i]);
-            console.log(auxDate[i]);
-            console.log('hola');
-            user = await userRepository.dataUpdateUser(user.id,{active:false})
-        }
-
-    }
-    
     
     if(!user.active) throw new Error('Usuario no esta activo')
         

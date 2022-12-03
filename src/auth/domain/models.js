@@ -14,10 +14,6 @@ const User = sequelize.define('user', {
         type: DataTypes.STRING(500),
         field: 'contrasena'
     },
-    expirationDate: {
-        type: DataTypes.DATE,
-        field: 'fecha_expiracion'
-    },
     firstname: {
         type: DataTypes.STRING,
         field: 'nombre'
