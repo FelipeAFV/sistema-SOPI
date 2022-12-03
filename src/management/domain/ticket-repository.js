@@ -53,6 +53,17 @@ const getAllTickets = async(conditions, page ,perPage) => {
     return tickets;
 }
 
+
+const getAllTicketsFromManagerOrUser = async (userId, purchaseId) => {
+    if (purchaseId) {
+        const [tickets, metadata] =  await sequelize.query({ query: 'select * from tickets t left join compras c on t.compra_id = c.id left join gestores g on g.compra_id = c.id where(g.usuario_id = ? and(t.responsable_id = ? or t.gestor_id = g.id)) and c.id = ?;'}, { replacements: [userId, userId, purchaseId]})
+        return tickets;
+    } else {
+        const [tickets, metadata] =  await sequelize.query({ query: 'select * from tickets t left join compras c on t.compra_id = c.id left join gestores g on g.compra_id = c.id where(g.usuario_id = ? and(t.responsable_id = ? or t.gestor_id = g.id));'}, { replacements: [userId, userId]})
+        return tickets;
+
+    }
+}
 const getTicketFromPurchase = async (purchaseId) => {
     return await Ticket.findAll({ where: { purchaseId } });
 }
@@ -65,3 +76,4 @@ exports.getTicketsFromUserId = getTicketsFromUserId;
 exports.getAllTickets = getAllTickets;
 exports.getTicketFromPurchase = getTicketFromPurchase;
 exports.getAllTicketsOnlyManager = getAllTicketsOnlyManager;
+exports.getAllTicketsFromManagerOrUser = getAllTicketsFromManagerOrUser;
