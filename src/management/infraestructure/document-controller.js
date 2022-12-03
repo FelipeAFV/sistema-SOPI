@@ -65,7 +65,7 @@ const getDocument = async (req, res) => {
                 res.end(data)
                 return
             }
-            res.status(200).end(data)
+            res.status(200).json({data: data, doc})
             return;
             // sendHttpResponse(res, data, 200)
         })
