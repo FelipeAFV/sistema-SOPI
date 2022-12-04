@@ -13,7 +13,7 @@ const router = Router()
 
 router.post('/', createPurchase);
 router.get('/', hasAnyPermission(['COMPRA_VER', 'COMPRA_VER_RELACIONADO']), getAllPurchases);
-router.put('/',  hasProfile(['jefe_compra', 'director']),  updatePurchase);
+router.put('/', updatePurchase);
 //Proveedores
 router.post('/proveedor', SupplierController.createSupplier);
 router.get('/proveedor', SupplierController.getSuppliers);

@@ -128,7 +128,8 @@ const findPurchasesFilteredByPermissions = async (query,profileId, userId) => {
   //Ven compras manager y ticket asociado a compra
   const existingManager = await findOneManagerByUserId({userId: userId});
   const existingManagers = await findManagersWithConditions({userId:userId});
-  if(existingManagers != null) {
+  console.log('managers de compra', existingManagers)
+  if(existingManagers != null && existingManagers.length > 0) {
     /* const {id} = existingManager; */
     where = {
       [Op.or]: [{ userId: `${userId}` }]
@@ -145,6 +146,8 @@ const findPurchasesFilteredByPermissions = async (query,profileId, userId) => {
 
     //Obtener ids de compras por medio de los tickets
     const purchasesWithTickets = await getTicketsFromUserId(userId);
+
+
     //Se rescatan ids de compras que tienes asociados los tickets
     const result = purchasesWithTickets.reduce((acc,item)=>{
       if(!acc.includes(item.purchaseId)){

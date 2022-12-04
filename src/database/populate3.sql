@@ -57,7 +57,7 @@ insert into accesos(perfil_id, permiso_id) values(1,5);
 insert into accesos(perfil_id, permiso_id) values(1,6);
 insert into accesos(perfil_id, permiso_id) values(1,7);
 insert into accesos(perfil_id, permiso_id) values(1,8);
-insert into accesos(perfil_id, permiso_id) values(1,10);
+insert into accesos(perfil_id, permiso_id) values(1,9);
 insert into accesos(perfil_id, permiso_id) values(1,11);
 insert into accesos(perfil_id, permiso_id) values(1,12);
 insert into accesos(perfil_id, permiso_id) values(1,13);

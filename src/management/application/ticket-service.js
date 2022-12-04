@@ -50,6 +50,8 @@ const createTicket = async (ticketData, idUser, idProfile) => {
       managerId: idUser,
       purchaseId: ticketData.purchaseId,
     });
+
+    console.log('Manager existente ', existingManager)
     if (auth && !existingManager) {
       //Se crea manager en caso de no ser gestor y tener el permiso
       const newManager = await saveManager({
@@ -61,7 +63,7 @@ const createTicket = async (ticketData, idUser, idProfile) => {
       ticketData.managerId = id;
       const ticket = await addTicket(ticketData);
       return ticket;
-    } else if (auth && existingManager) {
+    } else if (existingManager) {
       ticketData.managerId = existingManager.id;
       const ticket = await addTicket(ticketData);
       return ticket;
