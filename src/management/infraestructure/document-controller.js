@@ -1,6 +1,6 @@
 const docService = require('../application/document-service')
 const { sendHttpResponse } = require("../../share/utils/response-parser");
-const { findDocument, findDocFromManagerPurchase, findDocFromManagerPurchaseAndDocId, findDocsWithCondition } = require('../domain/document-repository');
+const { findDocument, findDocFromManagerPurchase, findDocFromManagerPurchaseAndDocId, findDocsWithCondition, findDocFromPurchaseTicketAssigned } = require('../domain/document-repository');
 const fs = require('fs');
 const { PermissionError } = require('../../share/models/errors');
 const { findPurchasesFilteredByPermissions } = require('../../purchases/application/purchase-service');
@@ -45,10 +45,11 @@ const getDocument = async (req, res) => {
         const permissions = await findAllPermissionsFromUserAndProfile(req.user.id, req.user.profileId);
 
         const isDocAssignedToUser = await findDocFromManagerPurchaseAndDocId(req.user.id, docId);
+        const isTicketAssigned = await findDocFromPurchaseTicketAssigned(req.user.id, docId);
 
         //TODO: chequear por usuario que tiene ticket asociado a la compra
 
-        if (!permissions.find(p => p.name == 'DOC_VER') && !isDocAssignedToUser) {
+        if (!permissions.find(p => p.name == 'DOC_VER') && !isDocAssignedToUser && !isTicketAssigned) {
             sendHttpResponse(res, 'Error', 403, 'No tienes permisos para buscar documento')
             return;
         }

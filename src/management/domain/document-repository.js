@@ -1,6 +1,6 @@
 const { where } = require("sequelize");
 const { Purchase } = require("../../purchases/domain/models");
-const { Document, Manager } = require("./models");
+const { Document, Manager, Ticket } = require("./models");
 
 
 const saveDocument = async ({purchaseId, type, name, path}) => {
@@ -36,9 +36,31 @@ const findDocFromManagerPurchaseAndDocId = async (managerId, docId) => {
      where: { userId: managerId } }]}]});
 }
 
+const findDocFromPurchaseTicketAssigned = async (userId, docId) => {
+    return await Document.findOne({
+        where: { id: docId},
+        include: [
+            {
+                model: Purchase,
+                required: true,
+                include: [
+                    {
+                        model: Ticket,
+                        required: true,
+                        where: {
+                            userId
+                        }
+                    }
+                ]
+            }
+        ]
+    })
+}
+
 exports.saveDocument = saveDocument;
 exports.findDocument = findDocument;
 exports.findDocsWithCondition = findDocsWithCondition;
 exports.removeDocument = removeDocument;
 exports.findDocFromManagerPurchase = findDocFromManagerPurchase;
 exports.findDocFromManagerPurchaseAndDocId = findDocFromManagerPurchaseAndDocId
+exports.findDocFromPurchaseTicketAssigned = findDocFromPurchaseTicketAssigned;
